@@ -1,11 +1,16 @@
 const fs = require("fs")
 const placeholders = require("./placeholders.js")
 
-var pages = fs.readdirSync("../")
+console.log("Started Building")
+
+var pages = fs.readdirSync("./")
+
+console.log(pages)
+
 pages.forEach(page => {
     if (!page.endsWith(".html")) return
 
-    var content = fs.readFileSync("../" + page).toString()
+    var content = fs.readFileSync("./" + page).toString()
 
     console.log(page)
 
@@ -15,5 +20,5 @@ pages.forEach(page => {
         content = content.replace(new RegExp("{" + key + "}", "g"), placeholders[key])
     }
 
-    fs.writeFileSync("../" + page, content)
+    fs.writeFileSync("./" + page, content)
 })
