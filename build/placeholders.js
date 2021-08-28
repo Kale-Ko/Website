@@ -8,7 +8,6 @@ module.exports = {
     <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Github, Games, Projects">
     <meta name="author" content="Kale Ko (https://kaleko.ga)">
     <link rel="author" href="https://kaleko.ga/">
-    <link rel="license" href="/LICENSE">
-    <link rel="manifest" href="/manifest.json">`
+    <link rel="license" href="/LICENSE">`
     }
 }
