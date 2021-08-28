@@ -10,13 +10,13 @@ pages.forEach(page => {
 
     var content = fs.readFileSync("./" + page).toString()
 
-    console.log(placeholders, Object.keys(placeholders))
+    console.log(Object.keys(placeholders))
 
-    for (var key in Object.keys(placeholders)) {
+    Object.keys(placeholders).forEach(key => {
         console.log(key)
 
         content = content.replace(new RegExp("{" + key + "}", "g"), placeholders[key])
-    }
+    })
 
     fs.writeFileSync("./" + page, content)
 })
