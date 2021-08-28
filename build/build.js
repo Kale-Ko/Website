@@ -7,7 +7,11 @@ pages.forEach(page => {
 
     var content = fs.readFileSync("../" + page).toString()
 
+    console.log(page)
+
     for (var key in Object.keys(placeholders)) {
+        console.log("{" + key + "}", "g")
+
         content = content.replace(new RegExp("{" + key + "}", "g"), placeholders[key])
     }
 
