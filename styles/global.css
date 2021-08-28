@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css?family=Kaisei HarunoUmi");
+@import url("https://fonts.googleapis.com/css?family=Noto Serif");
+
+:root {
+    --backgroundcolor: #038d7b;
+
+    --font: "Kaisei HarunoUmi";
+    --textcolor: #ffffff;
+    --alternatetextcolor: #000000;
+
+    --headerfont: "Noto Serif";
+    --headercolor: #ffbb00;
+}
+
+html,
+head,
+body,
+#page {
+    background: var(--backgroundcolor);
+
+    margin: 0px;
+    padding: 0px;
+
+    font-family: var(--font), Arial, sans-serif;
+    color: var(--textcolor);
+
+    text-align: center;
+}
+
+#page {
+    margin: 1%;
+}
+
+#page h1 {
+    font-family: var(--headerfont), Arial, sans-serif;
+    color: var(--headercolor);
+
+    font-size: 60px;
+}
