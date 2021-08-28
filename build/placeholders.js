@@ -1,6 +1,6 @@
 module.exports = {
     placeholders: {
-        meta: `<link ref="icon" href="/assets/icon.png">
+        meta: `<link rel="icon" href="/assets/icon.png">
     <link rel="stylesheet" href="/styles/global.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
