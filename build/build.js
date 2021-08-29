@@ -1,5 +1,5 @@
 const fs = require("fs")
-const replacements = require("./replacements.js")
+const builddata = require("./builddata.js")
 
 console.log("Started building pages")
 
@@ -10,9 +10,9 @@ pages.forEach(page => {
 
     var content = fs.readFileSync("./pages/" + page).toString()
 
-    Object.keys(replacements.placeholders).forEach(key => { content = content.replace(new RegExp("{" + key + "}", "g"), replacements.placeholders[key]) })
+    Object.keys(builddata.placeholders).forEach(key => { content = content.replace(new RegExp("{" + key + "}", "g"), builddata.placeholders[key]) })
 
-    replacements.replacements.forEach(replacement => { content = content.replace(replacement.from, replacement.to) })
+    builddata.replacements.forEach(replacement => { content = content.replace(replacement.from, replacement.to) })
 
     if (page == "index.html" || page == "404.html") fs.writeFileSync("./" + page, content)
     else {
@@ -21,3 +21,5 @@ pages.forEach(page => {
         fs.writeFileSync("./" + page.replace(".html", "") + "/index.html", content)
     }
 })
+
+builddata.moves.forEach(move => { fs.renameSync(move.from, move.to) })

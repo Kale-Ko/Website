@@ -24,7 +24,7 @@ scan("./", "/")
 
 console.log("Building pages")
 
-exec("cd " + "./test/ && node build/build.js", (err, stdout, stderr) => {
+exec("cd ./test/ && node build/build.js", (err, stdout, stderr) => {
     if (stdout && stdout.toString() != "Started building pages\n") console.log(stdout)
     if (stderr) console.log(stderr)
 })
@@ -32,9 +32,48 @@ exec("cd " + "./test/ && node build/build.js", (err, stdout, stderr) => {
 console.log("Starting server")
 
 const server = http.createServer((req, res) => {
-    if (req.url.endsWith("/")) req.url += "index.html"
+    if (req.url.endsWith("/")) req.url = req.url.slice(0, req.url.length - 1)
 
-    res.end(fs.existsSync("./test" + req.url) ? fs.readFileSync("./test" + req.url) : fs.readFileSync("./test/404.html"))
+    var typeMappings = {
+        "html": "text/html",
+        "js": "text/javascript",
+        "json": "application/json",
+        "xml": "application/xml",
+        "css": "text/css",
+        "png": "image/png",
+        "jpg": "image/jpeg",
+        "ico": "image/vnd.microsoft.icon",
+        "svg": "image/svg+xml",
+        "pdf": "application/pdf",
+        "gif": "image/gif",
+        "mp3": "audio/mpeg",
+        "mp4": "video/mp4",
+        "zip": "application/zip",
+        "txt": "text/plain",
+        "anything": "application/octet-stream"
+    }
+
+    if (fs.existsSync("./test" + req.url) && !fs.statSync("./test" + req.url).isDirectory()) {
+        res.statusCode = 200
+        res.statusMessage = "Ok"
+        Object.keys(typeMappings).forEach(key => { if (req.url.endsWith("." + key)) res.setHeader("Content-Type", typeMappings[key]) })
+
+        res.end(fs.readFileSync("./test" + req.url))
+    } else {
+        if (fs.existsSync("./test" + req.url + "/index.html")) {
+            res.statusCode = 200
+            res.statusMessage = "Ok"
+            res.setHeader("Content-Type", typeMappings["html"])
+
+            res.end(fs.readFileSync("./test" + req.url + "/index.html"))
+        } else {
+            res.statusCode = 404
+            res.statusMessage = "Not found"
+            res.setHeader("Content-Type", typeMappings["html"])
+
+            res.end(fs.readFileSync("./test/404.html"))
+        }
+    }
 })
 
-server.listen(80, () => { console.log("Http server started on 80") })
+server.listen(8000, () => { console.log("Http server started on 8000") })
