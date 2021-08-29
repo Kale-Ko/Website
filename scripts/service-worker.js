@@ -21,3 +21,30 @@ self.addEventListener("fetch", event => {
         )
     }
 })
+
+/*
+self.addEventListener("push", event => {
+    var data = event.data.json()
+
+    var payload = {
+        body: data.body || "",
+        data: {
+            url: data.url || ""
+        }
+    }
+
+    event.waitUntil(self.registration.showNotification("Push", payload))
+})
+
+self.addEventListener("notificationclick", event => {
+    var notification = event.notification
+
+    if (event.action == "close") {
+        notification.close()
+    } else if (notification.data.url != "") {
+        clients.openWindow(notification.data.url)
+
+        notification.close()
+    }
+})
+*/
