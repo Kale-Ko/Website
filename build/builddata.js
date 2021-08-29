@@ -8,7 +8,8 @@ module.exports = {
     <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Github, Games, Projects">
     <meta name="author" content="Kale Ko (https://kaleko.ga)">
     <link rel="author" href="https://kaleko.ga/">
-    <link rel="license" href="/LICENSE">`,
+    <link rel="license" href="/LICENSE">
+    <link rel="manifest" href="/assets/manfiest.json">`,
 
         offlinemeta: `<link rel="icon" href="/assets/icon-grey@64.png">
     <link rel="stylesheet" href="/styles/global.css">
@@ -24,9 +25,9 @@ module.exports = {
     <script src="/scripts/global.js"></script>`
     },
     replacements: [
-        {
-            from: "<title>",
-            to: "<title>Kale Ko - "
-        }
+        { from: "<title>", to: "<title>Kale Ko - " }
+    ],
+    moves: [
+        { from: "./scripts/service-worker.js", to: "./service-worker.js" }
     ]
 }
