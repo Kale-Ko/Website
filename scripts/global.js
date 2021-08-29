@@ -8,3 +8,5 @@ const globalapp = new Vue({
     computed: {},
     methods: {}
 })
+
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/scripts/service-worker.js")
