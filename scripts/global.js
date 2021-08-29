@@ -1,12 +1,3 @@
-const globalapp = new Vue({
-    el: "#page",
-    data: {
-        title: document.title.replace("Kale Ko - ", ""),
-    },
-    computed: {},
-    methods: {}
-})
-
 // Notification.requestPermission()
 
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js")
