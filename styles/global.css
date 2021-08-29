@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Kaisei HarunoUmi");
 @import url("https://fonts.googleapis.com/css?family=Noto Serif");
 
-:root {
+html {
     --backgroundcolor: #038d7b;
 
     --font: "Kaisei HarunoUmi";
@@ -10,6 +10,10 @@
 
     --headerfont: "Noto Serif";
     --headercolor: #ffbb00;
+}
+
+html.darkmode {
+    --backgroundcolor: #444444;
 }
 
 html,
