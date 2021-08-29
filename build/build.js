@@ -1,5 +1,5 @@
 const fs = require("fs")
-const placeholders = require("./placeholders.js").placeholders
+const placeholders = require("./placeholders.js")
 
 console.log("Started building pages")
 
@@ -15,5 +15,9 @@ pages.forEach(page => {
     })
 
     if (page == "index.html" || page == "404.html") fs.writeFileSync("./" + page, content)
-    else fs.writeFileSync("./" + page.replace(".html", "") + "/index.html")
+    else {
+        if (!fs.existsSync("./" + page.replace(".html", ""))) fs.mkdirSync("./" + page.replace(".html", ""))
+
+        fs.writeFileSync("./" + page.replace(".html", "") + "/index.html", content)
+    }
 })
