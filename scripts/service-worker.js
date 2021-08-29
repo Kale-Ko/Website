@@ -20,7 +20,7 @@ self.addEventListener("fetch", event => {
                     if (event.preloadResponse) return event.preloadResponse
                     else return fetch(event.request)
                 } catch (error) {
-                    return caches.open("offline").then(cache => { return cache.match("/offline") })
+                    return caches.open("offline").then(cache => { return cache.match("/offline/") })
                 }
             })()
         )

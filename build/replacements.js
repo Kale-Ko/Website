@@ -1,5 +1,6 @@
 module.exports = {
-    meta: `<link rel="icon" href="/assets/icon@64.png">
+    placeholders: {
+        meta: `<link rel="icon" href="/assets/icon@64.png">
     <link rel="stylesheet" href="/styles/global.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,7 +10,7 @@ module.exports = {
     <link rel="author" href="https://kaleko.ga/">
     <link rel="license" href="/LICENSE">`,
 
-    offlinemeta: `<link rel="icon" href="/assets/icon-grey@64.png">
+        offlinemeta: `<link rel="icon" href="/assets/icon-grey@64.png">
     <link rel="stylesheet" href="/styles/global.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -19,6 +20,13 @@ module.exports = {
     <link rel="author" href="https://kaleko.ga/">
     <link rel="license" href="/LICENSE">`,
 
-    global: `<script src="/scripts/Vue.js"></script>
+        global: `<script src="/scripts/Vue.js"></script>
     <script src="/scripts/global.js"></script>`
+    },
+    replacements: [
+        {
+            from: "<title>",
+            to: "<title>Kale Ko - "
+        }
+    ]
 }
