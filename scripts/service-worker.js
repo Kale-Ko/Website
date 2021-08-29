@@ -1,6 +1,6 @@
 self.addEventListener("install", event => {
     event.waitUntil(caches.open("offline").then(cache => {
-        return cache.addAll(["/offline/", "/assets/icon-grey.png"])
+        return cache.addAll(["/offline/", "/assets/icon-grey@64.png"])
     }))
 
     self.skipWaiting()
