@@ -7,4 +7,4 @@ const globalapp = new Vue({
     methods: {}
 })
 
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("/scripts/service-worker.js")
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js")
