@@ -1,5 +1,5 @@
 const fs = require("fs")
-const placeholders = require("./placeholders.js")
+const replacements = require("./replacements.js")
 
 console.log("Started building pages")
 
@@ -10,9 +10,9 @@ pages.forEach(page => {
 
     var content = fs.readFileSync("./pages/" + page).toString()
 
-    Object.keys(placeholders).forEach(key => {
-        content = content.replace(new RegExp("{" + key + "}", "g"), placeholders[key])
-    })
+    Object.keys(replacements.placeholders).forEach(key => { content = content.replace(new RegExp("{" + key + "}", "g"), replacements.placeholders[key]) })
+
+    replacements.replacements.forEach(replacement => { content = content.replace(replacement.from, replacement.to) })
 
     if (page == "index.html" || page == "404.html") fs.writeFileSync("./" + page, content)
     else {
