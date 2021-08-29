@@ -19,7 +19,7 @@ html.darkmode {
 html,
 head,
 body,
-#page {
+{
     background: var(--backgroundcolor);
 
     margin: 0px;
@@ -31,11 +31,11 @@ body,
     text-align: center;
 }
 
-#page {
+body {
     margin: 1%;
 }
 
-#page h1 {
+h1 {
     font-family: var(--headerfont), Arial, sans-serif;
     color: var(--headercolor);
 
