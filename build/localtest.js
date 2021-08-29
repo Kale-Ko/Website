@@ -2,32 +2,38 @@ const fs = require("fs")
 const { exec } = require("child_process")
 const http = require("http")
 
-console.log("Cloning files")
+function build() {
+    console.log("Cloning files")
 
-if (!fs.existsSync("./test")) fs.mkdirSync("./test")
+    if (!fs.existsSync("./test")) fs.mkdirSync("./test")
 
-function scan(dir, name) {
-    var files = fs.readdirSync(dir)
+    function scan(dir, name) {
+        var files = fs.readdirSync(dir)
 
-    files.forEach(file => {
-        if (file == ".git" || file == ".gitignore" || file == "package-lock.json" || file == "node_modules" || file == "test") return
+        files.forEach(file => {
+            if (file == ".git" || file == ".gitignore" || file == "package-lock.json" || file == "node_modules" || file == "test") return
 
-        if (fs.statSync(dir + file).isDirectory()) {
-            if (!fs.existsSync("./test/" + dir.replace("./", "") + file)) fs.mkdirSync("./test/" + dir.replace("./", "") + file)
+            if (fs.statSync(dir + file).isDirectory()) {
+                if (!fs.existsSync("./test/" + dir.replace("./", "") + file)) fs.mkdirSync("./test/" + dir.replace("./", "") + file)
 
-            scan(dir + file + "/", name + "/" + file)
-        }
-        else fs.copyFileSync(dir + file, "./test" + name + "/" + file)
+                scan(dir + file + "/", name + "/" + file)
+            } else fs.copyFileSync(dir + file, "./test" + name + "/" + file)
+        })
+    }
+    scan("./", "/")
+
+    console.log("Finished cloning files")
+
+    console.log("Building pages")
+
+    exec("cd ./test/ && node build/build.js", (err, stdout, stderr) => {
+        if (stdout && stdout.toString() != "Started building pages\n") console.log(stdout)
+        if (stderr) console.log(stderr)
     })
+
+    console.log("Finished building pages")
 }
-scan("./", "/")
-
-console.log("Building pages")
-
-exec("cd ./test/ && node build/build.js", (err, stdout, stderr) => {
-    if (stdout && stdout.toString() != "Started building pages\n") console.log(stdout)
-    if (stderr) console.log(stderr)
-})
+build()
 
 console.log("Starting server")
 
@@ -77,3 +83,22 @@ const server = http.createServer((req, res) => {
 })
 
 server.listen(8000, () => { console.log("Http server started on 8000") })
+
+console.log("Watching files")
+
+function scan(dir, name) {
+    var files = fs.readdirSync(dir)
+
+    files.forEach(file => {
+        if (file == ".git" || file == ".gitignore" || file == "package-lock.json" || file == "node_modules" || file == "test") return
+
+        if (fs.statSync(dir + file).isDirectory()) {
+            scan(dir + file + "/", name + "/" + file)
+        } else fs.watchFile(dir + file, () => {
+            console.log("Changes detected, rebuilding..")
+
+            build()
+        })
+    })
+}
+scan("./", "/")
