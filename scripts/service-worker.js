@@ -13,14 +13,15 @@ self.addEventListener("activate", (event) => {
 })
 
 self.addEventListener("fetch", event => {
-    if (event.request.mode === "navigate") {
+    if (event.request.mode == "navigate") {
         event.respondWith(
             (async () => {
                 try {
-                    if (event.preloadResponse) return event.preloadResponse
-                    else return fetch(event.request)
+                    var data = await fetch(event.request).then(res => { if (res.status > 400) { throw new Error("Offline") } else return res })
+
+                    return data
                 } catch (error) {
-                    return caches.open("offline").then(cache => { return cache.match("/offline/") })
+                    return caches.open("offline").then(cache => { return cache.match(req.url) || cache.match("/offline/") })
                 }
             })()
         )
