@@ -28,7 +28,8 @@ module.exports = {
     <link rel="license" href="/LICENSE">
     <meta name="theme-color" content="#ffbb00">`,
 
-        global: `<script src="/scripts/global.js"></script>`
+        global: `<script src="/scripts/global.js"></script>
+    <script src="/scripts/marked.js"></script>`
     },
     replacements: [
         { from: "<title>", to: "<title>Kale Ko - " }
