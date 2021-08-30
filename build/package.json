@@ -1,0 +1,10 @@
+{
+    "name": "website-build",
+    "scripts": {
+        "build": "cd ../ && node build.js",
+        "test": "cd ../ && node localtest.js"
+    },
+    "dependencies": {
+        "websocket": "^1.0.34"
+    }
+}
