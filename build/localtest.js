@@ -114,7 +114,7 @@ function scan(dir, name, serverfile) {
 
         if (fs.statSync(dir + file).isDirectory()) {
             scan(dir + file + "/", name + "/" + file, file == "build")
-        } else fs.watchFile(dir + file, () => {
+        } else fs.watchFile(dir + file, { interval: 1000 }, () => {
             if (serverfile) {
                 console.log("Changes detected, restarting..")
 

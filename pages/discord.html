@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html lang="en-US">
+
+<head>
+    <title>Discord</title>
+
+    {meta}
+</head>
+
+<body>
+    <main>
+        <h1>Discord</h1>
+
+        <p>Redirecting to Discord server in <span id="countdown">5</span>..</p>
+
+        <script>
+            var countdown = 5
+            var element = document.getElementById("countdown")
+
+            setInterval(() => {
+                if (countdown == 0) return
+
+                countdown--
+
+                element.innerHTML = countdown
+
+                if (countdown == 0) window.location.replace("https://discord.com/invite/pTKcJjwJ3G")
+            }, 1000)
+        </script>
+    </main>
+</body>
+
+</html>
