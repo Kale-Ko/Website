@@ -82,8 +82,8 @@ const server = http.createServer((req, res) => {
 </body>`))
             } else res.end(fs.readFileSync("./test" + req.url + "/index.html"))
         } else {
-            res.statusCode = 404
-            res.statusMessage = "Not found"
+            res.statusCode = 200
+            res.statusMessage = "Ok"
             res.setHeader("Content-Type", typeMappings["html"])
 
             res.end(fs.readFileSync("./test/404.html"))
