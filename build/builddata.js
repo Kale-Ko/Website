@@ -9,7 +9,6 @@ module.exports = {
     <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Github, Games, Projects">
     <meta name="robots" content="all">
     <meta name="author" content="Kale Ko (https://kaleko.ga)">
-    <meta name="creator" content="Kale Ko (https://kaleko.ga)">
     <link rel="author" href="https://kaleko.ga/">
     <link rel="license" href="/LICENSE">
     <link rel="manifest" href="/assets/manfiest.json">
@@ -23,7 +22,6 @@ module.exports = {
     <meta name="keywords" content="Kale, Ko, Kale-Ko, Error, Offline">
     <meta name="robots" content="noindex">
     <meta name="author" content="Kale Ko (https://kaleko.ga)">
-    <meta name="creator" content="Kale Ko (https://kaleko.ga)">
     <link rel="author" href="https://kaleko.ga/">
     <link rel="license" href="/LICENSE">
     <meta name="theme-color" content="#ffbb00">`,

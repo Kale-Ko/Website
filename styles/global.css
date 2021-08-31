@@ -18,8 +18,7 @@ html.darkmode {
 
 html,
 head,
-body
-{
+body {
     background: var(--backgroundcolor);
 
     margin: 0px;
@@ -33,6 +32,12 @@ body
 
 body {
     margin: 1%;
+}
+
+.section {
+    transform: translate(0, 20%);
+
+    height: 80vh;
 }
 
 h1 {
