@@ -15,7 +15,7 @@ self.addEventListener("fetch", event => {
                 try {
                     return await fetch(event.request).then(res => { if (res.status > 400) { throw new Error("Offline") } else return res })
                 } catch (error) {
-                    return await caches.open("offline").then(async cache => { return await cache.match(event.request.url) || await cache.match("/offline/") })
+                    return caches.open("offline").then(async cache => { return await cache.match(event.request.url) || await cache.match("/offline/") })
                 }
             })()
         )
