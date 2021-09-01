@@ -35,7 +35,7 @@ body {
 }
 
 .section {
-    transform: translate(0, 20%);
+    transform: translate(0, 15vh);
 
     height: 80vh;
 }
