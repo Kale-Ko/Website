@@ -33,7 +33,7 @@
 
             <script>
                 fetch("https://api.github.com/users/Kale-Ko/repos?per_page=100", { headers: { Authorization: "token ghp_HVGVoRf9ET7NTuR" + "GILvZcwWTw89cuE2EErlr" } }).then(res => res.json()).then(data => {
-                    fetch("https://api.github.com/users/Kale-Bot/repos?per_page=100", { headers: { Authorization: "token ghp_HVGVoRf9ET7NTuR" + "GILvZcwWTw89cuE2EErlr" } }).then(res => res.json()).then(dataq => {
+                    fetch("https://api.github.com/users/Kale-Bot/repos?per_page=100", { headers: { Authorization: "token ghp_HVGVoRf9ET7NTuR" + "GILvZcwWTw89cuE2EErlr" } }).then(res => res.json()).then(data2 => {
                         var repos = []
 
                         data.forEach(repo => { if (repo.stargazers_count > 0) repos.push(repo) })
