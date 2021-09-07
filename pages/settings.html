@@ -9,36 +9,38 @@
 </head>
 
 <body>
-    <main id="page">
+    {nav}
+
+    <main>
         <h1>Settings</h1>
+
+        <div id="settings-list"></div>
+
+        <script>
+            settings.forEach(setting => {
+                var settingobject = document.createElement("div")
+                settingobject.id = "setting-" + setting.id
+                settingobject.innerHTML = '<label for="setting-' + setting.id + '-value">' + setting.title + ": </label>"
+
+                var valueobject = document.createElement("input")
+                settingobject.id = "setting-" + setting.id + "-value"
+                valueobject.type = setting.type
+                if (setting.type == "checkbox" && localStorage.getItem(setting.id) == "true") valueobject.checked = true
+                else if (setting.type != "checkbox") valueobject.value = localStorage.getItem(setting.id)
+                valueobject.oninput = () => {
+                    if (setting.type == "checkbox") localStorage.setItem(setting.id, valueobject.checked)
+                    else localStorage.setItem(setting.id, valueobject.value)
+
+                    updateSettings()
+                }
+
+                settingobject.appendChild(valueobject)
+                document.getElementById("settings-list").appendChild(settingobject)
+            })
+        </script>
     </main>
 
-    <div id="settings-list"></div>
-
     {global}
-
-    <script>
-        settings.forEach(setting => {
-            var settingobject = document.createElement("div")
-            settingobject.id = "setting-" + setting.id
-            settingobject.innerHTML = '<label for="setting-' + setting.id + '-value">' + setting.title + ": </label>"
-
-            var valueobject = document.createElement("input")
-            settingobject.id = "setting-" + setting.id + "-value"
-            valueobject.type = setting.type
-            if (setting.type == "checkbox" && localStorage.getItem(setting.id) == "true") valueobject.checked = true
-            else if (setting.type != "checkbox") valueobject.value = localStorage.getItem(setting.id)
-            valueobject.oninput = () => {
-                if (setting.type == "checkbox") localStorage.setItem(setting.id, valueobject.checked)
-                else localStorage.setItem(setting.id, valueobject.value)
-
-                updateSettings()
-            }
-
-            settingobject.appendChild(valueobject)
-            document.getElementById("settings-list").appendChild(settingobject)
-        })
-    </script>
 </body>
 
 </html>

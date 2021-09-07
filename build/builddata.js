@@ -26,6 +26,12 @@ module.exports = {
     <link rel="license" href="/LICENSE">
     <meta name="theme-color" content="#ffbb00">`,
 
+        nav: `<nav>
+        <a href="/">Home</a>
+        <a href="/discord">Discord</a>
+        <a href="/settings">Settings</a>
+    </nav>`,
+
         global: `<script src="/scripts/global.js"></script>
     <script src="/scripts/marked.js"></script>`
     },
