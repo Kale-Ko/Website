@@ -27,9 +27,9 @@ module.exports = {
     <meta name="theme-color" content="#ffbb00">`,
 
         nav: `<nav>
-        <a href="/">Home</a>
-        <a href="/discord">Discord</a>
-        <a href="/settings">Settings</a>
+        <div><a href="/">Home</a></div>
+        <div><a href="/discord">Discord</a></div>
+        <div><a href="/settings">Settings</a></div>
     </nav>`,
 
         global: `<script src="/scripts/global.js"></script>
