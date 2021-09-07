@@ -37,7 +37,8 @@ body {
 .section {
     transform: translate(0, 15vh);
 
-    height: 80vh;
+    margin-top: 20vh;
+    margin-bottom: 40vh;
 }
 
 h1 {
@@ -45,6 +46,26 @@ h1 {
     color: var(--headercolor);
 
     font-size: 60px;
+}
+
+p {
+    color: var(--textcolor);
+}
+
+a {
+    color: #0000ff;
+}
+
+a:visited {
+    color: #0000ff;
+}
+
+a:hover {
+    color: #000064;
+}
+
+a:active {
+    color: #0000ff;
 }
 
 .hidden {
