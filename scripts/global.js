@@ -4,6 +4,8 @@ var settings = [
     { id: "darkmode", title: "Darkmode", type: "checkbox", default: false }
 ]
 
+window.dispatchEvent(new CustomEvent("settingsready"))
+
 function updateSettings() {
     settings.forEach(setting => { if (localStorage.getItem(setting.id) == null) localStorage.setItem(setting.id, setting.default) })
 
