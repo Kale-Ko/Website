@@ -37,6 +37,8 @@ console.log("Starting server")
 const server = http.createServer((req, res) => {
     if (req.url.endsWith("/")) req.url = req.url.slice(0, req.url.length - 1)
 
+    req.url = req.url.replace(/%20/, " ")
+
     var typeMappings = {
         "html": "text/html",
         "js": "text/javascript",
@@ -55,6 +57,7 @@ const server = http.createServer((req, res) => {
         "txt": "text/plain",
         "anything": "application/octet-stream"
     }
+
 
     if (fs.existsSync("./test" + req.url) && !fs.statSync("./test" + req.url).isDirectory()) {
         res.statusCode = 200
