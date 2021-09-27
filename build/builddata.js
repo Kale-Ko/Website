@@ -2,7 +2,7 @@ module.exports = {
     placeholders: {
         meta: `<link rel="icon" href="/assets/icon@64.png">
     <link rel="apple-touch-icon" href="/assets/icon@64.png">
-    <link rel="stylesheet" href="/styles/global.css">
+    {style=global}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="description" content="My new and improved website">
@@ -16,6 +16,7 @@ module.exports = {
 
         offlinemeta: `<link rel="icon" href="/assets/icon-grey@64.png">
     <link rel="apple-touch-icon" href="/assets/icon-grey@64.png">
+    {style=offline}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="description" content="Site offline">

@@ -8,6 +8,7 @@
 html {
     --backgroundcolor: #038d7b;
     --forgroundcolor: #0b6e61;
+    --altforgroundcolor: #07473f;
 
     --font: "Kaisei HarunoUmi";
     --textcolor: #ffffff;
@@ -23,6 +24,7 @@ html {
 html.darkmode {
     --backgroundcolor: #444444;
     --forgroundcolor: #333333;
+    --altforgroundcolor: #242424;
 
     --textcolor: #dfdfdf;
     --alternatetextcolor: #000000;
@@ -71,7 +73,7 @@ nav {
 }
 
 nav div {
-    width: 8%;
+    width: 100px;
     height: 100%;
 
     float: left;
@@ -83,13 +85,18 @@ nav div a:visited,
 nav div a:hover,
 nav div a:active {
     display: block;
+    text-decoration: none;
 
     color: var(--textcolor);
 
-    padding-top: 15%;
+    padding-top: 16px;
 
     width: 100%;
-    height: 100%;
+    height: 75%;
+}
+
+nav div:hover {
+    background: var(--altforgroundcolor);
 }
 
 
