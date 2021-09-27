@@ -12,6 +12,9 @@ pages.forEach(page => {
 
     Object.keys(builddata.placeholders).forEach(key => { content = content.replace(new RegExp("{" + key + "}", "g"), builddata.placeholders[key]) })
     builddata.replacements.forEach(replacement => { content = content.replace(replacement.from, replacement.to) })
+    var start = content.indexOf("{style=")
+    var end = content.indexOf("}", content.indexOf("{style=")) + 1
+    content = content.replace(content.substring(start, end), "<style>\n    " + fs.readFileSync("./styles/" + content.substring(start + 7, end - 1) + ".css").toString().replace(/\n/, "\n    ") + "</style>")
 
     if (page == "index.html" || page == "404.html") fs.writeFileSync("./" + page, content)
     else {
