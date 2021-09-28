@@ -11,7 +11,7 @@ module.exports = {
     <meta name="author" content="Kale Ko (https://kaleko.ga)">
     <link rel="author" href="https://kaleko.ga/">
     <link rel="license" href="/LICENSE">
-    <link rel="manifest" href="/assets/manfiest.json">
+    <link rel="manifest" href="/assets/manifest.json">
     <meta name="theme-color" content="#ffbb00">`,
 
         offlinemeta: `<link rel="icon" href="/assets/icon-grey@64.png">

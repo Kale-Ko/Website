@@ -29,5 +29,8 @@ exec("npm i trash-cli -g").on("exit", code => {
 
     builddata.moves.forEach(move => { fs.renameSync(move.from, move.to) })
 
-    exec("trash pages/** LICENSE build/**")
+    exec("trash pages/** LICENSE", (err, stdout, stderr) => {
+        if (stdout) console.log(stdout)
+        if (stderr) console.log(stderr)
+    })
 })
