@@ -1,0 +1,29 @@
+/* Layout */
+html,
+head,
+body {
+    background: #444444;
+
+    margin: 0px;
+    padding: 0px;
+
+    color: #dfdfdf;
+
+    text-align: center;
+}
+
+main {
+    margin: 1%;
+}
+
+
+/* Text */
+h1 {
+    color: #b90000;
+
+    font-size: 50px;
+}
+
+p {
+    color: #dfdfdf;
+}
