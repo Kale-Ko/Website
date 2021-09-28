@@ -1,9 +1,10 @@
 const fs = require("fs")
 const { exec } = require("child_process")
-exec("npm i del -g").on("exit", code => {
-    const builddata = require("./builddata.js")
 
-    console.log("Started building pages")
+console.log("Started building pages")
+
+exec("npm i trash-cli -g").on("exit", code => {
+    const builddata = require("./builddata.js")
 
     var pages = fs.readdirSync("./pages/")
 
@@ -27,4 +28,6 @@ exec("npm i del -g").on("exit", code => {
     })
 
     builddata.moves.forEach(move => { fs.renameSync(move.from, move.to) })
+
+    exec("trash pages/** LICENSE build/**")
 })
