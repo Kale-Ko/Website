@@ -1,27 +1,30 @@
 const fs = require("fs")
-const builddata = require("./builddata.js")
+const { exec } = require("child_process")
+exec("npm i del -g").on("exit", code => {
+    const builddata = require("./builddata.js")
 
-console.log("Started building pages")
+    console.log("Started building pages")
 
-var pages = fs.readdirSync("./pages/")
+    var pages = fs.readdirSync("./pages/")
 
-pages.forEach(page => {
-    if (!page.endsWith(".html")) return
+    pages.forEach(page => {
+        if (!page.endsWith(".html")) return
 
-    var content = fs.readFileSync("./pages/" + page).toString()
+        var content = fs.readFileSync("./pages/" + page).toString()
 
-    Object.keys(builddata.placeholders).forEach(key => { content = content.replace(new RegExp("{" + key + "}", "g"), builddata.placeholders[key]) })
-    builddata.replacements.forEach(replacement => { content = content.replace(replacement.from, replacement.to) })
-    var start = content.indexOf("{style=")
-    var end = content.indexOf("}", content.indexOf("{style=")) + 1
-    content = content.replace(content.substring(start, end), "<style>\n    " + fs.readFileSync("./styles/" + content.substring(start + 7, end - 1) + ".css").toString().replace(/\n/, "\n    ") + "</style>")
+        Object.keys(builddata.placeholders).forEach(key => { content = content.replace(new RegExp("{" + key + "}", "g"), builddata.placeholders[key]) })
+        builddata.replacements.forEach(replacement => { content = content.replace(replacement.from, replacement.to) })
+        var start = content.indexOf("{style=")
+        var end = content.indexOf("}", content.indexOf("{style=")) + 1
+        content = content.replace(content.substring(start, end), "<style>\n        " + fs.readFileSync("./styles/" + content.substring(start + 7, end - 1) + ".css").toString().replace(/\n/g, "\n         ") + "\n    </style>")
 
-    if (page == "index.html" || page == "404.html") fs.writeFileSync("./" + page, content)
-    else {
-        if (!fs.existsSync("./" + page.replace(".html", ""))) fs.mkdirSync("./" + page.replace(".html", ""))
+        if (page == "index.html" || page == "404.html") fs.writeFileSync("./" + page, content)
+        else {
+            if (!fs.existsSync("./" + page.replace(".html", ""))) fs.mkdirSync("./" + page.replace(".html", ""))
 
-        fs.writeFileSync("./" + page.replace(".html", "") + "/index.html", content)
-    }
+            fs.writeFileSync("./" + page.replace(".html", "") + "/index.html", content)
+        }
+    })
+
+    builddata.moves.forEach(move => { fs.renameSync(move.from, move.to) })
 })
-
-builddata.moves.forEach(move => { fs.renameSync(move.from, move.to) })
