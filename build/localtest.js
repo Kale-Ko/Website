@@ -3,7 +3,13 @@ const { exec } = require("child_process")
 const http = require("http")
 const WebSocketServer = require('websocket').server
 
+var building = false
+
 function build() {
+    if (building) return
+
+    building = true
+
     console.log("Cloning files")
 
     if (!fs.existsSync("./test")) fs.mkdirSync("./test")
@@ -28,6 +34,10 @@ function build() {
     exec("cd ./test/ && node build/build.js", (err, stdout, stderr) => {
         if (stdout && stdout.toString() != "Started building pages\n") console.log(stdout)
         if (stderr) console.log(stderr)
+    }).on("exit", code => {
+        console.log("Finished building")
+
+        building = false
     })
 }
 build()
@@ -122,6 +132,8 @@ function scan(dir, name) {
 
                 process.exit(0)
             } else {
+                if (building) return
+
                 console.log("Changes detected, rebuilding..")
 
                 build()
