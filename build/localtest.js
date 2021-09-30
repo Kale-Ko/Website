@@ -146,8 +146,6 @@ function scan(dir, name) {
                 console.log("Changes detected, rebuilding..")
 
                 build()
-
-                connections.forEach(connection => { connection.send("reload") })
             }
         })
     })
