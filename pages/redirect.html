@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html lang="en-US">
+
+<head>
+    <title>Redirect</title>
+
+    {meta}
+</head>
+
+<body>
+    {nav}
+
+    <main>
+        <h1 id="title">Redirect</h1>
+
+        <p>Redirecting to&nbsp;<span id="url"></span>&nbsp;in&nbsp;<span id="countdown">5</span>..</p>
+
+        <script>
+            var title = new URLSearchParams(window.location.search).get("title")
+            document.title = title
+            document.getElementById("title").innerHTML = title
+
+            var url = new URLSearchParams(window.location.search).get("url")
+            document.getElementById("url").innerHTML = url
+
+            var countdown = 5
+            var element = document.getElementById("countdown")
+
+            setInterval(() => {
+                if (countdown == 0) return
+
+                countdown--
+
+                element.innerHTML = countdown
+
+                if (countdown == 0) window.location.replace(url)
+            }, 1000)
+        </script>
+    </main>
+
+    {global}
+</body>
+
+</html>

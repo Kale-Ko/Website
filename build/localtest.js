@@ -4,6 +4,7 @@ const http = require("http")
 const WebSocketServer = require('websocket').server
 
 var building = false
+var connections = []
 
 function build() {
     if (building) return
@@ -38,6 +39,8 @@ function build() {
         console.log("Finished building")
 
         building = false
+
+        connections.forEach(connection => { connection.send("reload") })
     })
 }
 build()
@@ -45,6 +48,14 @@ build()
 console.log("Starting server")
 
 const server = http.createServer((req, res) => {
+    if (building) return res.end("<html><body>Building site..</body></html>".replace("</body>", `    <script>
+    var socket = new WebSocket(window.location.protocol.replace("http", "ws") + "//" + window.location.host + "/livereload")
+    socket.onmessage = (msg) => { if (msg.data == "reload") window.location.reload() }
+</script>
+</body>`))
+
+    req.url = new URL("https://localhost" + req.url).pathname
+
     if (req.url.endsWith("/")) req.url = req.url.slice(0, req.url.length - 1)
 
     req.url = req.url.replace(/%20/, " ")
@@ -107,8 +118,6 @@ const server = http.createServer((req, res) => {
 server.listen(8000, () => { console.log("Http server started on 8000") })
 
 const wsServer = new WebSocketServer({ httpServer: server })
-
-var connections = []
 
 wsServer.on("request", request => {
     var connection = request.accept()
