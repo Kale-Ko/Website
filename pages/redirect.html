@@ -18,7 +18,7 @@
 
         <script>
             var title = new URLSearchParams(window.location.search).get("title")
-            document.title = title
+            document.title = "Redirect to " + title
             document.getElementById("title").innerHTML = title
 
             var url = new URLSearchParams(window.location.search).get("url")
