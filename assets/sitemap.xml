@@ -5,11 +5,15 @@
         <priority>10</priority>
     </url>
     <url>
+        <loc>/github</loc>
+        <priority>3</priority>
+    </url>
+    <url>
         <loc>/discord</loc>
         <priority>2</priority>
     </url>
     <url>
         <loc>/settings</loc>
-        <priority>4</priority>
+        <priority>7</priority>
     </url>
 </urlset>
