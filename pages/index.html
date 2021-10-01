@@ -36,10 +36,8 @@
             <script>
                 fetch("https://api.kaleko.ga/v1/github/projects/").then(res => res.json()).then(repos => {
                     repos.forEach(repo => {
-                        console.log(repo, repo.url)
-
                         var element = document.createElement("p")
-                        element.innerHTML = (repo.homepage != "" ? '<a href="' + repo.homepage + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.html_url + '">(Source)</a>'
+                        element.innerHTML = (repo.homepage != "" ? '<a href="' + repo.homepage + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
 
                         document.getElementById("projectslist").appendChild(element)
                     })
