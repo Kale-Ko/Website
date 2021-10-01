@@ -34,26 +34,16 @@
             <div id="projectslist"></div>
 
             <script>
-                fetch("https://api.github.com/users/Kale-Ko/repos?per_page=100", { headers: { Authorization: "token ghp_HVGVoRf9ET7NTuR" + "GILvZcwWTw89cuE2EErlr" } }).then(res => res.json()).then(data => {
-                    fetch("https://api.github.com/users/Kale-Bot/repos?per_page=100", { headers: { Authorization: "token ghp_HVGVoRf9ET7NTuR" + "GILvZcwWTw89cuE2EErlr" } }).then(res => res.json()).then(data2 => {
-                        var repos = []
+                fetch("https://api.kaleko.ga/v1/github/projects/").then(res => res.json()).then(repos => {
+                    repos.forEach(repo => {
+                        var element = document.createElement("p")
+                        element.innerHTML = (repo.homepage != "" ? '<a href="' + repo.homepage + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.html_url + '">(Source)</a>'
 
-                        data.forEach(repo => { if (repo.stargazers_count > 0) repos.push(repo) })
-                        data2.forEach(repo => { if (repo.stargazers_count > 0) repos.push(repo) })
-
-                        repos.sort((a, b) => b.stargazers_count - a.stargazers_count)
-                        repos.sort((a, b) => (a.archived == b.archived) ? 0 : (a.archived ? 1 : -1))
-
-                        repos.forEach(repo => {
-                            var element = document.createElement("p")
-                            element.innerHTML = (repo.homepage != "" ? '<a href="' + repo.homepage + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.html_url + '">(Source)</a>'
-
-                            document.getElementById("projectslist").appendChild(element)
-                        })
-
-                        document.getElementById("projectsloaded").removeAttribute("class")
-                        document.getElementById("loadingprojects").setAttribute("class", "hidden")
+                        document.getElementById("projectslist").appendChild(element)
                     })
+
+                    document.getElementById("projectsloaded").removeAttribute("class")
+                    document.getElementById("loadingprojects").setAttribute("class", "hidden")
                 })
             </script>
         </div>
