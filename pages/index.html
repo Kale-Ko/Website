@@ -26,15 +26,15 @@
         </div>
 
         <div id="projects" class="section">
-            <h2>Projects</h2>
+            <h2>Featured Projects</h2>
 
             <p id="loadingprojects">Loading projects..</p>
-            <p id="projectsloaded" class="hidden">Here are all my favorite projects</p>
+            <p id="projectsloaded" class="hidden">Here are all my best projects</p>
 
             <div id="projectslist"></div>
 
             <script>
-                fetch("https://api.kaleko.ga/v1/github/projects/").then(res => res.json()).then(repos => {
+                fetch("https://api.kaleko.ga/v1/github/showcase/").then(res => res.json()).then(repos => {
                     repos.forEach(repo => {
                         var element = document.createElement("p")
                         element.innerHTML = (repo.homepage != "" ? '<a href="' + repo.homepage + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
@@ -52,7 +52,8 @@
             <h2>Contact</h2>
 
             <p class="markdown">
-                You can contact me either by [email](mailto:contact@kaleko.ga) or on [Discord](/redirect/?title=Discord&url=https://discord.com/invite/pTKcJjwJ3G)
+                You can contact me either by [email](mailto:contact@kaleko.ga) or on
+                [Discord](/redirect/?title=Discord&url=https://discord.com/invite/pTKcJjwJ3G)
             </p>
         </div>
     </main>
