@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html lang="en-US">
+
+<head>
+    <title>Projects</title>
+
+    {meta}
+</head>
+
+<body>
+    {nav}
+
+    <main>
+        <h1>Projects</h1>
+
+        <p id="loadingprojects">Loading projects..</p>
+        <p id="projectsloaded" class="hidden">Here are all my projects</p>
+
+        <div id="projectslist"></div>
+
+        <script>
+            fetch("https://api.kaleko.ga/v1/github/projects/").then(res => res.json()).then(repos => {
+                repos.forEach(repo => {
+                    var element = document.createElement("p")
+                    element.innerHTML = (repo.homepage != "" ? '<a href="' + repo.homepage + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
+
+                    document.getElementById("projectslist").appendChild(element)
+                })
+
+                document.getElementById("projectsloaded").removeAttribute("class")
+                document.getElementById("loadingprojects").setAttribute("class", "hidden")
+            })
+        </script>
+    </main>
+
+    {global}
+</body>
+
+</html>
