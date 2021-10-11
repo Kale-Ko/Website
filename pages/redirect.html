@@ -17,12 +17,16 @@
         <p>Redirecting to&nbsp;<span id="url"></span>&nbsp;in&nbsp;<span id="countdown">5</span>..</p>
 
         <script>
-            var title = new URLSearchParams(window.location.search).get("title")
+            var params = new URLSearchParams(window.location.search)
+
+            var title = params.get("title")
             document.title = "Redirect to " + title
             document.getElementById("title").innerHTML = title
 
-            var url = new URLSearchParams(window.location.search).get("url")
+            var url = params.get("url")
             document.getElementById("url").innerHTML = url
+
+            if (localStorage.getItem("autoredirect") == "true") window.location.replace(url)
 
             var countdown = 5
             var element = document.getElementById("countdown")
