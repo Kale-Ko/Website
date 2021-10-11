@@ -16,15 +16,19 @@
 
         <div id="settings-list"></div>
 
+        <button type="button" id="import">Import settings</button>
+        <button type="button" id="export">Export settings</button>
+        <input type="file" style="display:none;" id="importfile"></input>
+
         <script>
             window.addEventListener("settingsready", () => {
                 settings.forEach(setting => {
                     var settingobject = document.createElement("div")
                     settingobject.id = "setting-" + setting.id
-                    settingobject.innerHTML = '<label for="setting-' + setting.id + '-value">' + setting.title + ": </label>"
+                    settingobject.innerHTML = '<label for="setting-' + setting.id + '-label">' + setting.title + ": </label>"
 
                     var valueobject = document.createElement("input")
-                    settingobject.id = "setting-" + setting.id + "-value"
+                    valueobject.id = "setting-" + setting.id + "-value"
                     valueobject.type = setting.type
                     if (setting.type == "checkbox" && localStorage.getItem(setting.id) == "true") valueobject.checked = true
                     else if (setting.type != "checkbox") valueobject.value = localStorage.getItem(setting.id)
@@ -38,6 +42,49 @@
                     settingobject.appendChild(valueobject)
                     document.getElementById("settings-list").appendChild(settingobject)
                 })
+
+                document.getElementById("export").onclick = () => {
+                    var data = ""
+
+                    settings.forEach(setting => {
+                        data += setting.id + "=" + localStorage.getItem(setting.id) + "\n"
+                    })
+
+                    var element = document.createElement("a")
+                    element.setAttribute("href", "data:text/plaincharset=utf-8," + encodeURIComponent(data))
+                    element.setAttribute("download", "settings.txt")
+
+                    element.style.display = "none"
+                    document.body.appendChild(element)
+
+                    element.click()
+
+                    document.body.removeChild(element)
+                }
+
+                document.getElementById("import").onclick = () => {
+                    document.getElementById("importfile").click()
+
+                    document.getElementById("importfile").onchange = () => {
+                        if (document.getElementById("importfile").files[0]) {
+                            document.getElementById("importfile").files[0].text().then(text => {
+                                var settings = text.split("\n")
+
+                                settings.forEach(setting => {
+                                    if (setting.split("=").length != 2) return
+
+                                    localStorage.setItem(setting.split("=")[0], setting.split("=")[1])
+
+                                    if (document.getElementById("setting-" + setting.split("=")[0] + "-value").type == "checkbox") {
+                                        if (setting.split("=")[1] == "true") document.getElementById("setting-" + setting.split("=")[0] + "-value").checked = true
+                                        else document.getElementById("setting-" + setting.split("=")[0] + "-value").checked = false
+                                    } else document.getElementById("setting-" + setting.split("=")[0] + "-value").value = setting.split("=")[1]
+                                })
+                                updateSettings()
+                            })
+                        }
+                    }
+                }
             })
         </script>
     </main>

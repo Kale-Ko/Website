@@ -1,7 +1,8 @@
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js")
 
 var settings = [
-    { id: "darkmode", title: "Darkmode", type: "checkbox", default: false }
+    { id: "darkmode", title: "Darkmode", type: "checkbox", default: false },
+    { id: "autoredirect", title: "Auto Redirect", type: "checkbox", default: false }
 ]
 
 window.dispatchEvent(new CustomEvent("settingsready"))
