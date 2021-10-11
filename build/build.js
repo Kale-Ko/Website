@@ -3,7 +3,20 @@ const { exec } = require("child_process")
 
 console.log("Started building pages")
 
-exec("npm i trash-cli -g").on("exit", code => {
+if (process.argv.includes("--nodepend")) next()
+else {
+    console.log("Installing dependencies")
+
+    exec("npm i trash-cli -g").on("exit", code => {
+        exec("npm i html-minifier uglify-js css-minify minify-xml").on("exit", code => {
+            console.log("Finished installing dependencies")
+
+            next()
+        })
+    })
+}
+
+function next() {
     const builddata = require("./builddata.js")
 
     var pages = fs.readdirSync("./pages/")
@@ -29,44 +42,43 @@ exec("npm i trash-cli -g").on("exit", code => {
 
     builddata.moves.forEach(move => { fs.renameSync(move.from, move.to) })
 
-    exec("npm i html-minifier uglify-js css-minify minify-xml").on("exit", code => {
-        const minify_html = require('html-minifier').minify
-        const minify_js = require("uglify-js").minify
-        const minify_css = require("css-minify")
-        const minify_xml = require("minify-xml").minify
+    const minify_html = require("html-minifier").minify
+    const minify_js = require("uglify-js").minify
+    const minify_css = require("css-minify")
+    const minify_xml = require("minify-xml").minify
 
-        function scan(dir, name) {
-            var files = fs.readdirSync(dir)
+    function scan(dir, name) {
+        var files = fs.readdirSync(dir)
 
-            files.forEach(async file => {
-                if (file == "pages" || file == "style" || file == "LICENSE" || file == "build" || file == "package-lock.json" || file == "node_modules") return
+        files.forEach(async file => {
+            if (file == "pages" || file == "style" || file == "LICENSE" || file == "build" || file == "package-lock.json" || file == "node_modules") return
 
-                if (fs.statSync(dir + file).isDirectory()) {
-                    if (file == "fonts") return
+            if (fs.statSync(dir + file).isDirectory()) {
+                if (file == "fonts") return
 
-                    scan(dir + file + "/", name + "/" + file)
+                scan(dir + file + "/", name + "/" + file)
+            }
+            else {
+                var contents = fs.readFileSync(dir + file).toString()
+
+                if (file.endsWith(".html")) {
+                    contents = minify_html(contents, {
+                        collapseBooleanAttributes: true, collapseInlineTagWhitespace: true, collapseWhitespace: true, quoteCharacter: '"', removeAttributeQuotes: true, removeComments: true,
+                        minifyJS: text => { return minify_js(text).code }, minifyCSS: true
+                    });
                 }
-                else {
-                    var contents = fs.readFileSync(dir + file).toString()
+                else if (file.endsWith(".js")) contents = minify_js(contents).code
+                else if (file.endsWith(".css")) contents = await minify_css(contents)
+                else if (file.endsWith(".xml")) contents = minify_xml(contents)
+                else if (file.endsWith(".json")) contents = JSON.stringify(JSON.parse(contents))
+                else return
 
-                    if (file.endsWith(".html")) {
-                        contents = minify_html(contents, {
-                            collapseBooleanAttributes: true, collapseInlineTagWhitespace: true, collapseWhitespace: true, quoteCharacter: '"', removeAttributeQuotes: true, removeComments: true,
-                            minifyJS: text => { return minify_js(text).code }, minifyCSS: true
-                        });
-                    }
-                    else if (file.endsWith(".js")) contents = minify_js(contents).code
-                    else if (file.endsWith(".css")) contents = await minify_css(contents)
-                    else if (file.endsWith(".xml")) contents = minify_xml(contents)
-                    else if (file.endsWith(".json")) contents = JSON.stringify(JSON.parse(contents))
-                    else return
+                fs.writeFileSync(dir + file, contents)
+            }
+        })
+    }
+    scan("./", "/")
 
-                    fs.writeFileSync(dir + file, contents)
-                }
-            })
-        }
-        scan("./", "/")
-
-        exec("trash pages/** style/** LICENSE package.json package-lock.json node_modules/** build/**")
-    })
-})
+    if (!process.argv.includes("--nodepend")) exec("trash pages/** style/** LICENSE package.json package-lock.json node_modules/** build/**")
+    else exec("trash pages/** style/** LICENSE")
+}
