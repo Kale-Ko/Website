@@ -80,5 +80,5 @@ function next() {
     scan("./", "/")
 
     if (!process.argv.includes("--nodepend")) exec("trash pages/** style/** LICENSE package.json package-lock.json node_modules/** build/**")
-    else exec("trash pages/** style/** LICENSE")
+    else exec("trash pages/** style/** LICENSE package.json")
 }

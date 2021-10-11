@@ -17,6 +17,8 @@
         <p>Redirecting to main page in&nbsp;<span id="countdown">5</span>..</p>
 
         <script>
+            if (localStorage.getItem("autoredirect") == "true") window.location.replace("/")
+
             var countdown = 5
             var element = document.getElementById("countdown")
 
