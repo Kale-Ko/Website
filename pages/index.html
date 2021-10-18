@@ -34,7 +34,7 @@
             <div id="projectslist"></div>
 
             <script>
-                fetch("https://api.kaleko.ga/v1/github/showcase/").then(res => res.json()).then(repos => {
+                fetch("https://api.kaleko.ga/v2/github/showcase/json/").then(res => res.json()).then(repos => {
                     repos.forEach(repo => {
                         var element = document.createElement("p")
                         element.innerHTML = (repo.homepage != "" ? '<a href="' + repo.homepage + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
