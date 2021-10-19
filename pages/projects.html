@@ -15,9 +15,7 @@
         <h1>Projects</h1>
 
         <p id="loadingprojects">Loading projects..</p>
-        <p id="projectsloaded" class="hidden">Here are all my projects</p>
-
-        <div id="projectslist"></div>
+        <div id="projectslist" class="hidden"></div>
 
         <script>
             fetch("https://api.kaleko.ga/v2/github/projects/json/").then(res => res.json()).then(repos => {
@@ -28,8 +26,8 @@
                     document.getElementById("projectslist").appendChild(element)
                 })
 
-                document.getElementById("projectsloaded").removeAttribute("class")
                 document.getElementById("loadingprojects").setAttribute("class", "hidden")
+                document.getElementById("projectslist").removeAttribute("class")
             })
         </script>
     </main>
