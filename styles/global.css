@@ -120,6 +120,23 @@ nav div a:active {
     height: 75%;
 }
 
+nav div a.image {
+    padding-top: 0px;
+
+    position: relative;
+
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+nav div a.image p {
+    position: relative;
+
+    transform: translate(10px, -25%);
+
+    float: right;
+}
+
 nav div:hover {
     background: var(--altforgroundcolor);
 }
