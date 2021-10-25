@@ -56,11 +56,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
         console.log("Starting server")
 
         const server = http.createServer((req, res) => {
-            if (building) return res.end("<html><body>Building site..</body></html>".replace("</body>", `    <script>
-    var socket = new WebSocket(window.location.protocol.replace("http", "ws") + "//" + window.location.host + "/livereload")
-    socket.onmessage = (msg) => { if (msg.data == "reload") window.location.reload() }
-</script>
-</body>`))
+            if (building) return res.end("<html><body>Building site..</body></html>".replace("</body>", '<script>varsocket=new WebSocket(window.location.protocol.replace("http", "ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
 
             req.url = new URL("https://localhost" + req.url).pathname
 
@@ -94,11 +90,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
                 Object.keys(typeMappings).forEach(key => { if (req.url.endsWith("." + key)) res.setHeader("Content-Type", typeMappings[key]) })
 
                 if (res.getHeader("Content-Type") == typeMappings["html"]) {
-                    res.end(fs.readFileSync("./test" + req.url).toString().replace("</body>", `    <script>
-		var socket = new WebSocket(window.location.protocol.replace("http", "ws") + "//" + window.location.host + "/livereload")
-		socket.onmessage = (msg) => { if (msg.data == "reload") window.location.reload() }
-    </script>
-</body>`))
+                    res.end(fs.readFileSync("./test" + req.url).toString().replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http","ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
                 } else res.end(fs.readFileSync("./test" + req.url))
             } else {
                 if (fs.existsSync("./test" + req.url + "/index.html")) {
@@ -107,11 +99,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
                     res.setHeader("Content-Type", typeMappings["html"])
 
                     if (res.getHeader("Content-Type") == typeMappings["html"]) {
-                        res.end(fs.readFileSync("./test" + req.url + "/index.html").toString().replace("</body>", `    <script>
-        var socket = new WebSocket(window.location.protocol.replace("http", "ws") + "//" + window.location.host + "/livereload")
-        socket.onmessage = (msg) => { if (msg.data == "reload") window.location.reload() }
-    </script>
-</body>`))
+                        res.end(fs.readFileSync("./test" + req.url + "/index.html").toString().replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http","ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
                     } else res.end(fs.readFileSync("./test" + req.url + "/index.html"))
                 } else {
                     res.statusCode = 200

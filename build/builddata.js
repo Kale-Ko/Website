@@ -28,7 +28,7 @@ module.exports = {
     <meta name="theme-color" content="#ffbb00">`,
 
         nav: `<nav>
-        <div><a href="/">Home</a></div>
+        <div><a href="/" class="image"><img src="/assets/icon@48.png"><p> Home</p></a></div>
         <div><a href="/projects">Projects</a></div>
         <div><a href="/redirect?title=Github&url=https://github.com/Kale-Ko">Github</a></div>
         <div><a href="/redirect?title=Discord&url=https://discord.com/invite/pTKcJjwJ3G">Discord</a></div>
