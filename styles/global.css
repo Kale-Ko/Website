@@ -28,10 +28,13 @@ html.darkmode {
     --forgroundcolor: #333333;
     --altforgroundcolor: #242424;
 
-    --textcolor: #dfdfdf;
+    --textcolor: #cecece;
     --alternatetextcolor: #000000;
 
-    --headercolor: #ffbb00;
+    --headercolor: #d49c00;
+
+    --linkcolor: #0000be;
+    --linkhovercolor: #000064;
 }
 
 
