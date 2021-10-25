@@ -6,7 +6,7 @@
 
 /* Variables */
 html {
-    --backgroundcolor: #038d7b;
+    --background: #038d7b;
     --forgroundcolor: #0b6e61;
     --altforgroundcolor: #07473f;
 
@@ -24,7 +24,7 @@ html {
 }
 
 html.darkmode {
-    --backgroundcolor: #444444;
+    --background: #444444;
     --forgroundcolor: #333333;
     --altforgroundcolor: #242424;
 
@@ -43,7 +43,7 @@ html.darkmode {
 html,
 head,
 body {
-    background: var(--backgroundcolor);
+    background: var(--background);
 
     margin: 0px;
     padding: 0px;
@@ -66,6 +66,7 @@ html.fade-in>body {
 
 main {
     margin: 1%;
+    padding-top: 40px;
 }
 
 .section {
@@ -82,13 +83,22 @@ main {
 /* Navigation bar */
 nav {
     background: var(--forgroundcolor);
+    border-radius: 12px;
 
-    width: 100%;
+    position: relative;
+    top: 2vh;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    padding-left: 12px;
+
+    width: 96%;
     height: 60px;
 }
 
 nav div {
-    width: 100px;
+    padding: 0px 30px;
+
     height: 100%;
 
     float: left;
