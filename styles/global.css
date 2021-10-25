@@ -19,6 +19,8 @@ html {
 
     --linkcolor: #0000ff;
     --linkhovercolor: #000064;
+
+    --fade-length: 0.25s;
 }
 
 html.darkmode {
@@ -47,6 +49,16 @@ body {
     color: var(--textcolor);
 
     text-align: center;
+}
+
+html.fade-in>head,
+html.fade-in>body {
+    opacity: 0;
+
+    animation-name: fade-in;
+    animation-duration: var(--fade-length);
+    animation-timing-function: ease-in;
+    animation-fill-mode: both;
 }
 
 main {
@@ -121,4 +133,17 @@ a:active {
 
 a:hover {
     color: var(--linkhovercolor);
+}
+
+
+
+/* Animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
