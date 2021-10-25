@@ -5,6 +5,8 @@ const WebSocketServer = require('websocket').server
 
 console.log("Installing dependencies")
 
+if (!fs.existsSync("./test")) fs.mkdirSync("./test")
+
 exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
     exec("cd ./test/ && npm i html-minifier uglify-js css-minify minify-xml").on("exit", code => {
         console.log("Finished installing dependencies")
