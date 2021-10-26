@@ -14,7 +14,7 @@ self.addEventListener("fetch", event => {
     if (event.request.mode == "navigate") {
         (async () => {
             try {
-                return await fetch("https://api.kaleko.ga/v2/online/").then(res => { if (res.status != 200) { throw new Error("Offline") } })
+                await fetch("https://api.kaleko.ga/v2/online/").then(res => { if (res.status != 200) { throw new Error("Offline") } })
             } catch (error) {
                 event.respondWith(caches.open("offline").then(async cache => { return await cache.match(event.request.url) || await cache.match("/offline/") }))
             }
