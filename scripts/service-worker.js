@@ -1,22 +1,24 @@
 self.addEventListener("install", event => { self.skipWaiting() })
-self.addEventListener("activate", event => { self.clients.claim() })
+self.addEventListener("activate", event => {
+    event.waitUntil(caches.open("offline").then(cache => {
+        return cache.addAll([
+            "/offline/",
+            "/assets/icon-grey@64.png"
+        ])
+    }))
+
+    self.clients.claim()
+})
 
 self.addEventListener("fetch", event => {
     if (event.request.mode == "navigate") {
-        event.waitUntil(caches.open("offline").then(cache => {
-            return cache.addAll([
-                "/offline/",
-                "/assets/icon-grey@64.png"
-            ])
-        }))
-
-            (async () => {
-                try {
-                    return await fetch("https://api.kaleko.ga/v2/online/").then(res => { if (res.status != 200) { throw new Error("Offline") } })
-                } catch (error) {
-                    event.respondWith(caches.open("offline").then(async cache => { return await cache.match(event.request.url) || await cache.match("/offline/") }))
-                }
-            })()
+        (async () => {
+            try {
+                return await fetch("https://api.kaleko.ga/v2/online/").then(res => { if (res.status != 200) { throw new Error("Offline") } })
+            } catch (error) {
+                event.respondWith(caches.open("offline").then(async cache => { return await cache.match(event.request.url) || await cache.match("/offline/") }))
+            }
+        })()
     } else {
         if (event.request.url.endsWith(".woff") || event.request.url.endsWith(".woff2")) {
             event.respondWith(
