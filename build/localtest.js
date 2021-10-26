@@ -56,7 +56,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
         console.log("Starting server")
 
         const server = http.createServer((req, res) => {
-            if (building) return res.end("<html><body>Building site..</body></html>".replace("</body>", '<script>varsocket=new WebSocket(window.location.protocol.replace("http", "ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
+            if (building) return res.end("<html><body>Building site..</body></html>".replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http", "ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
 
             req.url = new URL("https://localhost" + req.url).pathname
 
