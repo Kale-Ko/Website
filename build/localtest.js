@@ -8,7 +8,7 @@ console.log("Installing dependencies")
 if (!fs.existsSync("./test")) fs.mkdirSync("./test")
 
 exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
-    exec("cd ./test/ && npm i html-minifier uglify-js css-minify minify-xml").on("exit", code => {
+    exec("cd ./test/ && npm i html-minifier uglify-js clean-css minify-xml").on("exit", code => {
         console.log("Finished installing dependencies")
 
         var building = false

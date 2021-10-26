@@ -7,24 +7,25 @@ body {
     margin: 0px;
     padding: 0px;
 
-    color: #dfdfdf;
+    color: #cecece;
 
     text-align: center;
 }
 
 main {
     margin: 1%;
+    padding-top: 40px;
 }
 
 
 
 /* Text */
 h1 {
-    color: #b90000;
+    color: #d40000;
 
-    font-size: 50px;
+    font-size: 60px;
 }
 
 p {
-    color: #dfdfdf;
+    color: #cecece;
 }

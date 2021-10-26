@@ -35,7 +35,7 @@ module.exports = {
         <div><a href="/settings">Settings</a></div>
     </nav>`,
 
-        global: `<script src="/scripts/global.js"></script>`
+        global: `{script=global}`
     },
     replacements: [
         { from: "<title>", to: "<title>Kale Ko - " }
