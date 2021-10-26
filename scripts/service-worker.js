@@ -1,18 +1,15 @@
-self.addEventListener("install", event => {
-    event.waitUntil(caches.open("offline").then(cache => {
-        return cache.addAll([
-            "/offline/",
-            "/assets/icon-grey@64.png"
-        ])
-    }))
-
-    self.skipWaiting()
-})
-
+self.addEventListener("install", event => { self.skipWaiting() })
 self.addEventListener("activate", event => { self.clients.claim() })
 
 self.addEventListener("fetch", event => {
     if (event.request.mode == "navigate") {
+        event.waitUntil(caches.open("offline").then(cache => {
+            return cache.addAll([
+                "/offline/",
+                "/assets/icon-grey@64.png"
+            ])
+        }))
+
         event.respondWith(
             (async () => {
                 try {
@@ -22,5 +19,22 @@ self.addEventListener("fetch", event => {
                 }
             })()
         )
+    } else {
+        if (event.request.url.endsWith(".woff") || event.request.url.endsWith(".woff2")) {
+            event.respondWith(
+                (async () => {
+                    var cache = await caches.open("font")
+
+                    var cacheres = await cache.match(event.request)
+
+                    if (cacheres == undefined) {
+                        await cache.add(event.request)
+
+                        return await cache.match(event.request)
+                    }
+                    else return cacheres
+                })()
+            )
+        }
     }
 })
