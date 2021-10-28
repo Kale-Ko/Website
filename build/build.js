@@ -33,6 +33,11 @@ function next() {
             var end = content.indexOf("}", content.indexOf("{script=")) + 1
             content = content.replace(content.substring(start, end), "<script>\n        " + fs.readFileSync("./scripts/" + content.substring(start + 8, end - 1) + ".js").toString().replace(/\n/g, "\n         ") + "\n    </script>")
         }
+        while (content.includes("{module=")) {
+            var start = content.indexOf("{module=")
+            var end = content.indexOf("}", content.indexOf("{module=")) + 1
+            content = content.replace(content.substring(start, end), '<script type="module">\n        ' + fs.readFileSync("./scripts/" + content.substring(start + 8, end - 1) + ".js").toString().replace(/\n/g, "\n         ") + "\n    </script>")
+        }
         while (content.includes("{style=")) {
             var start = content.indexOf("{style=")
             var end = content.indexOf("}", content.indexOf("{style=")) + 1
