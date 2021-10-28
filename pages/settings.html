@@ -21,8 +21,10 @@
         <input type="file" class="hidden" id="importfile"></input>
 
         <script>
-            window.addEventListener("settingsready", () => {
+            window.addEventListener("settingsloaded", () => {
                 settings.forEach(setting => {
+                    if (!setting.handler.display()) return
+
                     var settingobject = document.createElement("div")
                     settingobject.id = "setting-" + setting.id
                     settingobject.innerHTML = '<label for="setting-' + setting.id + '-label">' + setting.title + ": </label>"
@@ -30,13 +32,11 @@
                     var valueobject = document.createElement("input")
                     valueobject.id = "setting-" + setting.id + "-value"
                     valueobject.type = setting.type
-                    if (setting.type == "checkbox" && localStorage.getItem(setting.id) == "true") valueobject.checked = true
-                    else if (setting.type != "checkbox") valueobject.value = localStorage.getItem(setting.id)
+                    setting.handler.updateElement(valueobject)
                     valueobject.oninput = () => {
-                        if (setting.type == "checkbox") localStorage.setItem(setting.id, valueobject.checked)
-                        else localStorage.setItem(setting.id, valueobject.value)
+                        setting.handler.set(valueobject)
 
-                        updateSettings()
+                        setting.handler.update()
                     }
 
                     settingobject.appendChild(valueobject)
@@ -80,6 +80,7 @@
                                         else document.getElementById("setting-" + setting.split("=")[0] + "-value").checked = false
                                     } else document.getElementById("setting-" + setting.split("=")[0] + "-value").value = setting.split("=")[1]
                                 })
+
                                 updateSettings()
                             })
                         }

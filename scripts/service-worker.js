@@ -53,3 +53,24 @@ self.addEventListener("fetch", event => {
         }
     }
 })
+
+function displayNotification(title, body, { url, actions } = {}) {
+    if (Notification.permission != "granted") return
+
+    self.registration.showNotification(title, {
+        body: body,
+        data: {
+            url
+        },
+        actions,
+        icon: "/assets/icon@64.png",
+        badge: "/assets/icon@64.png",
+        tag: "kaleko.notification.enable",
+        lang: "en-US",
+        dir: "ltr"
+    })
+}
+
+self.addEventListener("notificationclick", event => {
+    if (event.action == "open" || event.action == "") clients.openWindow(event.notification.data.url)
+})
