@@ -1,12 +1,4 @@
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js").then(reg => {
-    reg.pushManager.getSubscription().then(sub => {
-        console.log("Sub", sub)
-
-        if (sub != null) {
-            console.log("Have sub", sub)
-        }
-    })
-})
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js")
 
 var settings = [
     {
@@ -60,26 +52,34 @@ var settings = [
                                 element.disabled = true
 
                                 navigator.serviceWorker.getRegistration().then(reg => {
-                                    reg.showNotification("Notifications Enabled!", {
-                                        body: "This is what notifications will look like",
-                                        data: {
-                                            url: "/notifications"
-                                        },
-                                        actions: [
-                                            {
-                                                "action": "dismiss",
-                                                "title": "Ok"
-                                            },
-                                            {
-                                                "action": "open",
-                                                "title": "More"
-                                            }
-                                        ],
-                                        icon: "/assets/icon@64.png",
-                                        badge: "/assets/icon@64.png",
-                                        tag: "kaleko.notification.enable",
-                                        lang: "en-US",
-                                        dir: "ltr"
+                                    reg.pushManager.subscribe({
+                                        userVisibleOnly: true,
+                                        applicationServerKey: "BLw7BNeS9HemIsAQakA5Z--wXft5nOXrXb-aXqhK47TWudngDcS7epJoNvLecSgTgxQnBK5uJklkXhZuMqKkuks"
+                                    }).then(sub => {
+                                        fetch("http://pushapi.kaleko.ga/send", {
+                                            method: "POST",
+                                            body: JSON.stringify({
+                                                subscription: sub.toJSON(),
+                                                data: JSON.stringify({
+                                                    title: "Notifications Enabled!",
+                                                    body: "This is what notifications will look like",
+                                                    data: {
+                                                        url: "/notifications"
+                                                    },
+                                                    actions: [
+                                                        {
+                                                            "action": "dismiss",
+                                                            "title": "Ok"
+                                                        },
+                                                        {
+                                                            "action": "open",
+                                                            "title": "More"
+                                                        }
+                                                    ],
+                                                    tag: "kaleko.notification.enable"
+                                                })
+                                            })
+                                        })
                                     })
                                 })
                             } else if (permission == "denied") element.parentElement.remove()
