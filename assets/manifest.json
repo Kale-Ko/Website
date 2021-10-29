@@ -59,5 +59,6 @@
     "background_color": "#038d7b",
     "dir": "ltr",
     "start_url": "/",
-    "scope": "/"
+    "scope": "/",
+    "gcm_sender_id": "35831727694"
 }
