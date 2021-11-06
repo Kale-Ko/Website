@@ -47,7 +47,7 @@
                     var data = ""
 
                     settings.forEach(setting => {
-                        data += setting.id + "=" + localStorage.getItem(setting.id) + "\n"
+                        if (setting.export) data += setting.id + "=" + localStorage.getItem(setting.id) + "\n"
                     })
 
                     var element = document.createElement("a")
