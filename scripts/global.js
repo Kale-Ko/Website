@@ -2,7 +2,7 @@ if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-wor
 
 var settings = [
     {
-        id: "darkmode", title: "Darkmode", type: "checkbox", default: false,
+        id: "darkmode", title: "Darkmode", type: "checkbox", default: false, export: true,
         handler: {
             display: () => true,
             updateElement: (element) => { element.checked = (localStorage.getItem("darkmode") == "true" ? true : false) },
@@ -14,7 +14,7 @@ var settings = [
         }
     },
     {
-        id: "fade-in", title: "Fade In", type: "checkbox", default: true,
+        id: "fade-in", title: "Fade In", type: "checkbox", default: true, export: true,
         handler: {
             display: () => true,
             updateElement: (element) => { element.checked = (localStorage.getItem("fade-in") == "true" ? true : false) },
@@ -26,7 +26,7 @@ var settings = [
         }
     },
     {
-        id: "autoredirect", title: "Auto Redirect", type: "checkbox", default: false,
+        id: "autoredirect", title: "Auto Redirect", type: "checkbox", default: false, export: true,
         handler: {
             display: () => true,
             updateElement: (element) => { element.checked = (localStorage.getItem("autoredirect") == "true" ? true : false) },
@@ -35,7 +35,7 @@ var settings = [
         }
     },
     {
-        id: "notifications", title: "Notifications", type: "checkbox", default: false,
+        id: "notifications", title: "Notifications", type: "checkbox", default: false, export: false,
         handler: {
             display: () => { return Notification.permission != "denied" },
             updateElement: (element) => {
