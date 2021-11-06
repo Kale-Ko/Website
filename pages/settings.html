@@ -47,7 +47,7 @@
                     var data = ""
 
                     settings.forEach(setting => {
-                        if (setting.export) data += setting.id + "=" + localStorage.getItem(setting.id) + "\n"
+                        if (setting.export && localStorage.getItem(setting.id).toLowerCase() != "undefined" && localStorage.getItem(setting.id).toLowerCase().toLowerCase() != "null") data += setting.id + "=" + localStorage.getItem(setting.id) + "\n"
                     })
 
                     var element = document.createElement("a")
@@ -72,6 +72,8 @@
 
                                 settings.forEach(setting => {
                                     if (setting.split("=").length != 2) return
+
+                                    if (setting.split("=")[1].toLowerCase() == "undefined" || setting.split("=")[1].toLowerCase() == "null") return
 
                                     localStorage.setItem(setting.split("=")[0], setting.split("=")[1])
 
