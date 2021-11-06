@@ -43,6 +43,7 @@ module.exports = {
     moves: [
         { from: "./scripts/service-worker.js", to: "./service-worker.js" },
         { from: "./assets/robots.txt", to: "./robots.txt" },
-        { from: "./assets/sitemap.xml", to: "./sitemap.xml" }
+        { from: "./assets/sitemap.xml", to: "./sitemap.xml" },
+        { from: "./LICENSE", to: "./license.txt" }
     ]
 }
