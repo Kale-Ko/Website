@@ -87,9 +87,9 @@ function next() {
                         minifyCSS: text => new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(text).styles
                     });
                 }
-                else if (file.endsWith(".js")) contents = "/**\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n**/\n" + minify_js(contents).code
+                else if (file.endsWith(".js")) contents = "/**\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n**/\n" + minify_js(contents, { output: { beautify: false } }).code
                 else if (file.endsWith(".css")) contents = "/**\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n**/\n" + new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(contents).styles
-                else if (file.endsWith(".xml")) contents = minify_xml(contents)
+                else if (file.endsWith(".xml")) contents = (file.includes("sitemap.xml") ? minify_xml(contents) : minify_xml(contents).replace("?>", "?>\n<!--\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n-->\n"))
                 else if (file.endsWith(".json")) contents = JSON.stringify(JSON.parse(contents))
                 else return
 
