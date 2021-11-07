@@ -57,38 +57,6 @@ var settings = [
                         Notification.requestPermission().then(permission => {
                             if (permission == "granted") {
                                 element.disabled = true
-
-                                navigator.serviceWorker.getRegistration().then(reg => {
-                                    reg.pushManager.subscribe({
-                                        userVisibleOnly: true,
-                                        applicationServerKey: "BLw7BNeS9HemIsAQakA5Z--wXft5nOXrXb-aXqhK47TWudngDcS7epJoNvLecSgTgxQnBK5uJklkXhZuMqKkuks"
-                                    }).then(sub => {
-                                        fetch("http://pushapi.kaleko.ga/send", {
-                                            method: "POST",
-                                            body: JSON.stringify({
-                                                subscription: sub.toJSON(),
-                                                data: JSON.stringify({
-                                                    title: "Notifications Enabled!",
-                                                    body: "This is what notifications will look like",
-                                                    data: {
-                                                        url: "/notifications"
-                                                    },
-                                                    actions: [
-                                                        {
-                                                            "action": "dismiss",
-                                                            "title": "Ok"
-                                                        },
-                                                        {
-                                                            "action": "open",
-                                                            "title": "More"
-                                                        }
-                                                    ],
-                                                    tag: "kaleko.notification.enable"
-                                                })
-                                            })
-                                        })
-                                    })
-                                })
                             } else if (permission == "denied") element.parentElement.remove()
                             else element.checked = false
                         })
