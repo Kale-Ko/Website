@@ -1,3 +1,10 @@
+/**
+    @license
+    MIT License
+    Copyright (c) 2021 Kale Ko
+    See https://kaleko.ga/license.txt
+*/
+
 module.exports = {
     placeholders: {
         meta: `<link rel="icon" href="/assets/icon@64.png">
