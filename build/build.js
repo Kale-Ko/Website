@@ -81,14 +81,14 @@ function next() {
                 var contents = fs.readFileSync(dir + file).toString()
 
                 if (file.endsWith(".html")) {
-                    contents = minify_html(contents, {
+                    contents = "<!--\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n-->\n" + minify_html(contents, {
                         collapseBooleanAttributes: true, collapseInlineTagWhitespace: true, collapseWhitespace: true, quoteCharacter: '"', removeAttributeQuotes: true, removeComments: true,
                         minifyJS: text => minify_js(text).code,
                         minifyCSS: text => new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(text).styles
                     });
                 }
-                else if (file.endsWith(".js")) contents = minify_js(contents).code
-                else if (file.endsWith(".css")) contents = new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(contents).styles
+                else if (file.endsWith(".js")) contents = "/**\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n**/\n" + minify_js(contents).code
+                else if (file.endsWith(".css")) contents = "/**\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n**/\n" + new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(contents).styles
                 else if (file.endsWith(".xml")) contents = minify_xml(contents)
                 else if (file.endsWith(".json")) contents = JSON.stringify(JSON.parse(contents))
                 else return
