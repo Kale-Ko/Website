@@ -37,8 +37,8 @@ module.exports = {
         nav: `<nav>
         <div><a href="/" class="image"><img src="/assets/icon@48.png"><p> Home</p></a></div>
         <div><a href="/projects">Projects</a></div>
-        <div><a href="/redirect?title=Github&url=https://github.com/Kale-Ko">Github</a></div>
-        <div><a href="/redirect?title=Discord&url=https://discord.com/invite/pTKcJjwJ3G">Discord</a></div>
+        <div><a href="/github">Github</a></div>
+        <div><a href="/discord">Discord</a></div>
         <div><a href="/settings">Settings</a></div>
     </nav>`,
 
@@ -48,6 +48,7 @@ module.exports = {
         { from: "<title>", to: "<title>Kale Ko - " }
     ],
     moves: [
+        { from: "./assets/redirects", to: "./_redirects" },
         { from: "./scripts/service-worker.js", to: "./service-worker.js" },
         { from: "./assets/robots.txt", to: "./robots.txt" },
         { from: "./assets/sitemap.xml", to: "./sitemap.xml" },
