@@ -99,6 +99,6 @@ function next() {
     }
     scan("./", "/")
 
-    if (!process.argv.includes("--nodepend")) exec("trash pages/** styles/** package.json package-lock.json node_modules/** build/**")
-    else exec("trash pages/** styles/** package.json build/**")
+    if (!process.argv.includes("--nodepend")) exec("trash pages/** scripts/** styles/** package.json package-lock.json node_modules/** build/**")
+    else exec("trash pages/** scripts/** styles/** package.json build/**")
 }
