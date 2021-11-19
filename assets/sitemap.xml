@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    MIT License
-    Copyright (c) 2021 Kale Ko
-    See https://kaleko.ga/license.txt
--->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
         <loc>https://kaleko.ga/</loc>
@@ -12,14 +7,6 @@
     <url>
         <loc>https://kaleko.ga/projects/</loc>
         <priority>0.80</priority>
-    </url>
-    <url>
-        <loc>https://kaleko.ga/redirect/?title=Github&amp;url=https://github.com/Kale-Ko</loc>
-        <priority>0.60</priority>
-    </url>
-    <url>
-        <loc>https://kaleko.ga/redirect/?title=Discord&amp;url=https://discord.com/invite/pTKcJjwJ3G</loc>
-        <priority>0.60</priority>
     </url>
     <url>
         <loc>https://kaleko.ga/settings/</loc>
