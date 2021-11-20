@@ -5,6 +5,7 @@
         "test": "cd ../ && node localtest.js"
     },
     "dependencies": {
+        "sharp": "^0.29.3",
         "websocket": "^1.0.34"
     }
 }

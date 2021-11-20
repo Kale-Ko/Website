@@ -15,7 +15,7 @@ console.log("Installing dependencies")
 if (!fs.existsSync("./test")) fs.mkdirSync("./test")
 
 exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
-    exec("cd ./test/ && npm i html-minifier uglify-js clean-css minify-xml").on("exit", code => {
+    exec("cd ./test/ && npm i sharp html-minifier uglify-js clean-css minify-xml").on("exit", code => {
         console.log("Finished installing dependencies")
 
         var building = false
@@ -26,37 +26,60 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
 
             building = true
 
-            console.log("Cloning files")
+            if (fs.existsSync("./test")) {
+                console.log("Removing old files")
 
-            if (!fs.existsSync("./test")) fs.mkdirSync("./test")
+                var files = fs.readdirSync("./test")
 
-            function scan(dir, name) {
-                var files = fs.readdirSync(dir)
+                var todo = files.length
 
                 files.forEach(file => {
-                    if (file == ".git" || file == ".gitignore" || file == "package-lock.json" || file == "node_modules" || file == "test") return
+                    if (file == "package-lock.json" || file == "node_modules") todo--
+                    else {
+                        exec("trash ./test/" + file).on("exit", () => {
+                            todo--
 
-                    if (fs.statSync(dir + file).isDirectory()) {
-                        if (!fs.existsSync("./test/" + dir.replace("./", "") + file)) fs.mkdirSync("./test/" + dir.replace("./", "") + file)
+                            if (todo == 0) next()
+                        })
+                    }
+                })
+            } else {
+                fs.mkdirSync("./test")
 
-                        scan(dir + file + "/", name + "/" + file)
-                    } else fs.copyFileSync(dir + file, "./test" + name + "/" + file)
+                next()
+            }
+
+            function next() {
+                console.log("Cloning files")
+
+                function scan(dir, name) {
+                    var files = fs.readdirSync(dir)
+
+                    files.forEach(file => {
+                        if (file == ".git" || file == ".gitignore" || file == "package-lock.json" || file == "node_modules" || file == "test") return
+
+                        if (fs.statSync(dir + file).isDirectory()) {
+                            if (!fs.existsSync("./test/" + dir.replace("./", "") + file)) fs.mkdirSync("./test/" + dir.replace("./", "") + file)
+
+                            scan(dir + file + "/", name + "/" + file)
+                        } else fs.copyFileSync(dir + file, "./test" + name + "/" + file)
+                    })
+                }
+                scan("./", "/")
+
+                console.log("Building pages")
+
+                exec("cd ./test/ && node build/build.js --nodepend", (err, stdout, stderr) => {
+                    if (stdout && stdout != "Started building pages\n") console.log(stdout)
+                    if (stderr) console.log(stderr)
+                }).on("exit", code => {
+                    console.log("Finished building")
+
+                    building = false
+
+                    connections.forEach(connection => { connection.send("reload") })
                 })
             }
-            scan("./", "/")
-
-            console.log("Building pages")
-
-            exec("cd ./test/ && node build/build.js --nodepend", (err, stdout, stderr) => {
-                if (stdout && stdout != "Started building pages\n") console.log(stdout)
-                if (stderr) console.log(stderr)
-            }).on("exit", code => {
-                console.log("Finished building")
-
-                building = false
-
-                connections.forEach(connection => { connection.send("reload") })
-            })
         }
         build()
 
@@ -79,7 +102,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
                 "css": "text/css",
                 "png": "image/png",
                 "jpg": "image/jpeg",
-                "ico": "image/vnd.microsoft.icon",
+                "ico": "image/icon",
                 "svg": "image/svg+xml",
                 "pdf": "application/pdf",
                 "gif": "image/gif",
@@ -89,7 +112,6 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
                 "txt": "text/plain",
                 "anything": "application/octet-stream"
             }
-
 
             if (fs.existsSync("./test" + req.url) && !fs.statSync("./test" + req.url).isDirectory()) {
                 res.statusCode = 200

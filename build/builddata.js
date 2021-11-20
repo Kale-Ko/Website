@@ -54,5 +54,15 @@ module.exports = {
         { from: "./assets/robots.txt", to: "./robots.txt" },
         { from: "./assets/sitemap.xml", to: "./sitemap.xml" },
         { from: "./LICENSE", to: "./license.txt" }
+    ],
+    imageSizes: [
+        16,
+        32,
+        48,
+        64,
+        96,
+        128,
+        256,
+        512
     ]
 }
