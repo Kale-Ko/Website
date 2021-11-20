@@ -31,7 +31,7 @@ html {
 }
 
 html.darkmode {
-    --background: #444444;
+    --background: radial-gradient(#444444 15%, #555555 85%);
     --forgroundcolor: #333333;
     --altforgroundcolor: #242424;
 
