@@ -42,7 +42,8 @@ module.exports = {
         <div><a href="/settings">Settings</a></div>
     </nav>`,
 
-        global: `{script=global}`
+        global: `{script=global}
+        {script=backgroundfixer}`
     },
     replacements: [
         { from: "<title>", to: "<title>Kale Ko - " }
