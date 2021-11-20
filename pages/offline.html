@@ -21,14 +21,14 @@
 
         <script>
             var countdown = 5
-            var element = document.getElementById("countdown")
+            var timer = document.getElementById("countdown")
 
             setInterval(() => {
                 if (countdown == 0) return
 
                 countdown--
 
-                element.innerHTML = countdown
+                timer.innerHTML = countdown
 
                 if (countdown == 0) window.location.reload()
             }, 1000)
