@@ -15,7 +15,7 @@ else {
     console.log("Installing dependencies")
 
     exec("npm i trash-cli -g").on("exit", code => {
-        exec("npm i html-minifier uglify-js clean-css minify-xml").on("exit", code => {
+        exec("npm i sharp html-minifier uglify-js clean-css minify-xml").on("exit", code => {
             console.log("Finished installing dependencies")
 
             next()
@@ -61,6 +61,8 @@ function next() {
 
     builddata.moves.forEach(move => { fs.renameSync(move.from, move.to) })
 
+    const sharp = require("sharp")
+
     const minify_html = require("html-minifier").minify
     const minify_js = require("uglify-js").minify
     const minify_css = require("clean-css")
@@ -91,7 +93,34 @@ function next() {
                 else if (file.endsWith(".css")) contents = "/**\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n**/\n" + new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(contents).styles
                 else if (file.endsWith(".xml")) contents = (file.includes("sitemap.xml") ? minify_xml(contents) : minify_xml(contents).replace("?>", "?>\n<!--\n    MIT License\n    Copyright (c) 2021 Kale Ko\n    See https://kaleko.ga/license.txt\n-->\n"))
                 else if (file.endsWith(".json")) contents = JSON.stringify(JSON.parse(contents))
-                else return
+                else if (file.endsWith(".png")) {
+                    var image = fs.readFileSync(dir + file)
+
+                    builddata.imageSizes.forEach(size => {
+                        sharp(image)
+                            .png()
+                            .resize(size, size)
+                            .toFile(dir + file.replace(".png", "@" + size + ".png"))
+                    })
+                } else if (file.endsWith(".jpg")) {
+                    var image = fs.readFileSync(dir + file)
+
+                    builddata.imageSizes.forEach(size => {
+                        sharp(image)
+                            .jpeg()
+                            .resize(size, size)
+                            .toFile(dir + file.replace(".jpg", "@" + size + ".jpg"))
+                    })
+                } else if (file.endsWith(".jpeg")) {
+                    var image = fs.readFileSync(dir + file)
+
+                    builddata.imageSizes.forEach(size => {
+                        sharp(image)
+                            .jpeg()
+                            .resize(size, size)
+                            .toFile(dir + file.replace(".jpeg", "@" + size + ".jpeg"))
+                    })
+                } else return
 
                 fs.writeFileSync(dir + file, contents)
             }
