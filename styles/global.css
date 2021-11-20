@@ -13,7 +13,7 @@
 
 /* Variables */
 html {
-    --background: #038d7b;
+    --background: radial-gradient(#038d7b 15%, #026b5d 85%);
     --forgroundcolor: #0b6e61;
     --altforgroundcolor: #07473f;
 
@@ -50,8 +50,6 @@ html.darkmode {
 html,
 head,
 body {
-    background: var(--background);
-
     margin: 0px;
     padding: 0px;
 
@@ -59,6 +57,10 @@ body {
     color: var(--textcolor);
 
     text-align: center;
+}
+
+body {
+    background: var(--background);
 }
 
 html.fade-in>head,
