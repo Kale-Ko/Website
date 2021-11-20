@@ -59,7 +59,7 @@ body {
     text-align: center;
 }
 
-body {
+html {
     background: var(--background);
 }
 
