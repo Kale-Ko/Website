@@ -50,6 +50,7 @@ module.exports = {
     ],
     moves: [
         { from: "./assets/redirects", to: "./_redirects" },
+        { from: "./assets/icon.ico", to: "./favicon.ico" },
         { from: "./scripts/service-worker.js", to: "./service-worker.js" },
         { from: "./assets/robots.txt", to: "./robots.txt" },
         { from: "./assets/sitemap.xml", to: "./sitemap.xml" },
