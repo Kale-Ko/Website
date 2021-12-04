@@ -19,7 +19,7 @@
     <main>
         <h1 id="title">Redirect</h1>
 
-        <p>Redirecting to&nbsp;<span id="url"></span>&nbsp;in&nbsp;<span id="countdown">5</span>..</p>
+        <p>Redirecting to&nbsp;<a id="url"></a>&nbsp;in&nbsp;<span id="countdown">5</span>..</p>
 
         <script>
             var params = new URLSearchParams(window.location.search)
@@ -30,6 +30,7 @@
 
             var url = params.get("url")
             document.getElementById("url").innerHTML = url
+            document.getElementById("url").href = url
 
             if (localStorage.getItem("autoredirect") == "true") window.location.replace(url)
 
