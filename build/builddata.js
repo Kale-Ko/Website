@@ -35,7 +35,7 @@ module.exports = {
     <meta name="theme-color" content="#ffbb00">`,
 
         nav: `<nav>
-        <div class="dropdown"><img src="/assets/menu@64.png" alt="menu"></img></div>
+        <div class="dropdown"><img src="/assets/menu@64.png" alt="menu"></img><div class="dropdown-content"></div></div>
         <div><a href="/" class="image"><img src="/assets/icon@48.png" width=48 height=48><p> Home</p></a></div>
         <div><a href="/projects">Projects</a></div>
         <div><a href="/github">Github</a></div>
