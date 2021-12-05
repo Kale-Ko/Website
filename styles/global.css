@@ -116,7 +116,31 @@ nav div {
 nav div.dropdown {
     display: none;
 
+    background: var(--forgroundcolor);
+
     padding: 0px 0px;
+}
+
+nav div.dropdown div.dropdown-content {
+    display: none;
+
+    float: none;
+
+    position: absolute;
+    min-width: 200px;
+    z-index: 1;
+
+    background: var(--forgroundcolor);
+}
+
+nav div.dropdown.visible div.dropdown-content {
+    display: block;
+}
+
+nav div.dropdown div.dropdown-content div {
+    display: block;
+
+    padding: 0px 10px;
 }
 
 @media only screen and (max-width: 800px) {
