@@ -31,7 +31,7 @@ html {
 }
 
 html.darkmode {
-    --background: radial-gradient(#444444 15%, #555555 85%);
+    --background: radial-gradient(#555555 15%, #444444 85%);
     --forgroundcolor: #333333;
     --altforgroundcolor: #242424;
 
@@ -111,6 +111,21 @@ nav div {
     height: 100%;
 
     float: left;
+}
+
+nav div.dropdown {
+    display: none;
+}
+
+@media only screen and (max-width: 800px) {
+    nav div {
+        display: none;
+    }
+
+    nav div.visible,
+    nav div.dropdown {
+        display: block;
+    }
 }
 
 nav div a,

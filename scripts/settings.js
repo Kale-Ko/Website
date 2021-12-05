@@ -5,10 +5,6 @@
     See https://kaleko.ga/license.txt
 */
 
-if (document.querySelector("html").offsetHeight < window.innerHeight) document.querySelector("html").style.height = "100vh"
-
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js")
-
 var settings = [
     {
         id: "darkmode", title: "Darkmode", type: "checkbox", default: false, export: true,
