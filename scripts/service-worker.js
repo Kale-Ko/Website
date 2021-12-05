@@ -60,20 +60,3 @@ self.addEventListener("fetch", event => {
         }
     }
 })
-
-self.addEventListener("push", event => {
-    var data = event.data.json()
-
-    self.registration.showNotification(data.title, {
-        body: data.body,
-        tag: data.tag,
-        actions: data.actions,
-        data: data.data,
-        icon: "/assets/icon@64.png",
-        lang: "en-US"
-    })
-})
-
-self.addEventListener("notificationclick", event => {
-    if (event.action == "open" || event.action == "") clients.openWindow(event.notification.data.url)
-})
