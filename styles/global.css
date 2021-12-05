@@ -116,6 +116,8 @@ nav div {
 nav div.dropdown {
     display: none;
 
+    position: relative;
+
     background: var(--forgroundcolor);
 
     padding: 0px 0px;
@@ -127,7 +129,7 @@ nav div.dropdown div.dropdown-content {
     float: none;
 
     position: absolute;
-    min-width: 200px;
+    min-width: 150px;
     z-index: 1;
 
     background: var(--forgroundcolor);
@@ -135,12 +137,17 @@ nav div.dropdown div.dropdown-content {
 
 nav div.dropdown.visible div.dropdown-content {
     display: block;
+
+    padding: 0px 0px;
 }
 
 nav div.dropdown div.dropdown-content div {
     display: block;
 
-    padding: 0px 10px;
+    background: var(--forgroundcolor);
+
+    padding: 0px 0px;
+    width: 230px;
 }
 
 @media only screen and (max-width: 800px) {
@@ -148,9 +155,20 @@ nav div.dropdown div.dropdown-content div {
         display: none;
     }
 
-    nav div.visible,
-    nav div.dropdown {
+    nav div.visible {
         display: block;
+    }
+
+    nav div.dropdown {
+        display: inline-block;
+    }
+
+    nav div.dropdown div.dropdown-content div a p {
+        float: none;
+    }
+
+    nav div.dropdown div.dropdown-content div a img {
+        display: none;
     }
 }
 
