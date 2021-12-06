@@ -15,11 +15,11 @@ console.log("Installing dependencies")
 if (!fs.existsSync("./test")) fs.mkdirSync("./test")
 
 exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
-    exec("cd ./test/ && npm i sharp html-minifier uglify-js clean-css minify-xml").on("exit", code => {
+    exec("cd ./test/ && npm i sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", code => {
         console.log("Finished installing dependencies")
 
         var building = false
-        var connections = []
+        var wsServer
 
         function build() {
             if (building) return
@@ -70,14 +70,14 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
                 console.log("Building pages")
 
                 exec("cd ./test/ && node build/build.js --nodepend", (err, stdout, stderr) => {
-                    if (stdout && stdout != "Started building pages\n") console.log(stdout)
+                    if (stdout) console.log(stdout)
                     if (stderr) console.log(stderr)
                 }).on("exit", code => {
                     console.log("Finished building")
 
                     building = false
 
-                    connections.forEach(connection => { connection.send("reload") })
+                    wsServer.broadcast("reload")
                 })
             }
         }
@@ -142,14 +142,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
 
         server.listen(8000, () => { console.log("Http server started on 8000") })
 
-        const wsServer = new WebSocketServer({ httpServer: server })
-
-        wsServer.on("request", request => {
-            var connection = request.accept()
-
-            connections.push(connection)
-            connection.on("close", () => { connections.splice(connections.indexOf(connection), 1) })
-        })
+        wsServer = new WebSocketServer({ httpServer: server, autoAcceptConnections: true })
 
         console.log("Watching files")
 
