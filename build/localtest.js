@@ -19,7 +19,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
         console.log("Finished installing dependencies")
 
         var building = false
-        var wsServer
+        var connections = []
 
         function build() {
             if (building) return
@@ -77,7 +77,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
 
                     building = false
 
-                    wsServer.broadcast("reload")
+                    connections.forEach(connection => { connection.send("reload") })
                 })
             }
         }
@@ -142,7 +142,14 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
 
         server.listen(8000, () => { console.log("Http server started on 8000") })
 
-        wsServer = new WebSocketServer({ httpServer: server, autoAcceptConnections: true })
+        const wsServer = new WebSocketServer({ httpServer: server })
+
+        wsServer.on("request", request => {
+            var connection = request.accept()
+
+            connections.push(connection)
+            connection.on("close", () => { connections.splice(connections.indexOf(connection), 1) })
+        })
 
         console.log("Watching files")
 
