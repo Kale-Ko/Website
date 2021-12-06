@@ -5,49 +5,49 @@
     "description": "My new and improved website",
     "icons": [
         {
-            "src": "/assets/icon@16.png",
+            "src": "{file=image/png;/assets/icon@16.png}",
             "sizes": "16x16",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/assets/icon@32.png",
+            "src": "{file=image/png;/assets/icon@32.png}",
             "sizes": "32x32",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/assets/icon@48.png",
+            "src": "{file=image/png;/assets/icon@48.png}",
             "sizes": "48x48",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/assets/icon@64.png",
+            "src": "{file=image/png;/assets/icon@64.png}",
             "sizes": "64x64",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/assets/icon@96.png",
+            "src": "{file=image/png;/assets/icon@96.png}",
             "sizes": "96x96",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/assets/icon@256.png",
+            "src": "{file=image/png;/assets/icon@256.png}",
             "sizes": "256x256",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/assets/icon@460.png",
+            "src": "{file=image/png;/assets/icon@460.png}",
             "sizes": "460x460",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/assets/icon@512.png",
+            "src": "{file=image/png;/assets/icon@512.png}",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
