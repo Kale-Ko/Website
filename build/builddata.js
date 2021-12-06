@@ -7,8 +7,8 @@
 
 module.exports = {
     placeholders: {
-        meta: `<link rel="icon" href="/assets/icon@64.png">
-    <link rel="apple-touch-icon" href="/assets/icon@64.png">
+        meta: `<link rel="icon" href="{file=image/png;/assets/icon@64.png}">
+    <link rel="apple-touch-icon" href="{file=image/png;/assets/icon@64.png}">
     {style=global}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -17,12 +17,12 @@ module.exports = {
     <meta name="robots" content="all">
     <meta name="author" content="Kale Ko (https://kaleko.ga)">
     <link rel="author" href="https://kaleko.ga/">
-    <link rel="license" href="/LICENSE">
+    <link rel="license" href="/license.txt">
     <link rel="manifest" href="/assets/manifest.json">
     <meta name="theme-color" content="#ffbb00">`,
 
-        offlinemeta: `<link rel="icon" href="/assets/icon-grey@64.png">
-    <link rel="apple-touch-icon" href="/assets/icon-grey@64.png">
+        offlinemeta: `<link rel="icon" href="{file=image/png;/assets/icon-grey@64.png}">
+    <link rel="apple-touch-icon" href="{file=image/png;/assets/icon-grey@64.png}">
     {style=offline}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -31,12 +31,12 @@ module.exports = {
     <meta name="robots" content="noindex">
     <meta name="author" content="Kale Ko (https://kaleko.ga)">
     <link rel="author" href="https://kaleko.ga/">
-    <link rel="license" href="/LICENSE">
+    <link rel="license" href="/license.txt">
     <meta name="theme-color" content="#ffbb00">`,
 
         nav: `<nav>
-        <div class="dropdown"><img src="/assets/menu@64.png" alt="menu"></img><div class="dropdown-content"></div></div>
-        <div><a href="/" class="image"><img src="/assets/icon@48.png" width=48 height=48><p> Home</p></a></div>
+        <div class="dropdown"><img src="{file=image/png;/assets/menu@64.png}" alt="menu"></img><div class="dropdown-content"></div></div>
+        <div><a href="/" class="image"><img src="{file=image/png;/assets/icon@48.png}" width=48 height=48><p> Home</p></a></div>
         <div><a href="/projects">Projects</a></div>
         <div><a href="/github">Github</a></div>
         <div><a href="/discord">Discord</a></div>
