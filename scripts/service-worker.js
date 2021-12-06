@@ -9,7 +9,8 @@ self.addEventListener("install", event => { self.skipWaiting() })
 self.addEventListener("activate", event => {
     event.waitUntil(caches.open("offline").then(cache => {
         return cache.addAll([
-            "/offline/"
+            "/offline/",
+            "/assets/icon-grey@64.png"
         ])
     }))
 
@@ -26,13 +27,13 @@ self.addEventListener("fetch", event => {
             }
         })()
     } else {
-        var cachedFiles = "manifest.json"
+        var cachedFiles = ["manifest.json"]
         var cachedFormats = ["woff", "woff2", "png", "jpg", "jpeg", "ico"]
 
         var url = event.request.url
         if (url.endsWith("/")) url = url.slice(0, url.length - 1)
 
-        if (cachedFiles.includes(url.split("/")[url.split("/").length - 1]) || cachedFormats.includes(url.split(".")[url.split(".").length - 1])) {
+        if ((cachedFiles.includes(url.split("/")[url.split("/").length - 1]) || cachedFormats.includes(url.split(".")[url.split(".").length - 1])) && new URL(url).hostname != "api.kaleko.ga") {
             event.respondWith(
                 (async () => {
                     var cache = await caches.open("cacheddata")
