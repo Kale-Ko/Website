@@ -9,8 +9,7 @@ self.addEventListener("install", event => { self.skipWaiting() })
 self.addEventListener("activate", event => {
     event.waitUntil(caches.open("offline").then(cache => {
         return cache.addAll([
-            "/offline/",
-            "/assets/icon-grey@64.png"
+            "/offline/"
         ])
     }))
 
@@ -27,34 +26,19 @@ self.addEventListener("fetch", event => {
             }
         })()
     } else {
-        if (event.request.url.endsWith(".woff") || event.request.url.endsWith(".woff2")) {
+        var cachedFormats = ["woff", "woff2", "png", "jpg", "jpeg", "ico"]
+
+        if (cachedFormats.includes(event.request.url.split(".")[event.request.url.split(".").length - 1])) {
             event.respondWith(
                 (async () => {
-                    var cache = await caches.open("fonts")
+                    var cache = await caches.open("cacheddata")
+                    var cachered = await cache.match(event.request)
 
-                    var cacheres = await cache.match(event.request)
-
-                    if (cacheres == undefined) {
+                    if (cachered == undefined) {
                         await cache.add(event.request)
 
                         return await cache.match(event.request)
-                    }
-                    else return cacheres
-                })()
-            )
-        } else if (event.request.url.endsWith(".png") || event.request.url.endsWith(".jpg") || event.request.url.endsWith(".jpeg") || event.request.url.endsWith(".ico")) {
-            event.respondWith(
-                (async () => {
-                    var cache = await caches.open("images")
-
-                    var cacheres = await cache.match(event.request)
-
-                    if (cacheres == undefined) {
-                        await cache.add(event.request)
-
-                        return await cache.match(event.request)
-                    }
-                    else return cacheres
+                    } else return cachered
                 })()
             )
         }
