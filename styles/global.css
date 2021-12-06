@@ -44,6 +44,14 @@ html.darkmode {
     --linkhovercolor: #000064;
 }
 
+html.no-fade {
+    --background: #038d7b;
+}
+
+html.darkmode.no-fade {
+    --background: #555555;
+}
+
 
 
 /* Layout */
