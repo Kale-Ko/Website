@@ -40,6 +40,18 @@ var settings = [
         }
     },
     {
+        id: "no-fade", title: "No Background Fade", type: "checkbox", default: false, export: true,
+        handler: {
+            display: () => true,
+            updateElement: (element) => { element.checked = (localStorage.getItem("no-fade") == "true" ? true : false) },
+            update: () => {
+                if (localStorage.getItem("no-fade") == "true") document.querySelector("html").classList.add("no-fade")
+                else document.querySelector("html").classList.remove("no-fade")
+            },
+            set: (element) => { localStorage.setItem("no-fade", element.checked) }
+        }
+    },
+    {
         id: "notifications", title: "Notifications", type: "checkbox", default: false, export: false,
         handler: {
             display: () => { return Notification.permission != "denied" },
