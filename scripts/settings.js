@@ -7,7 +7,7 @@
 
 var settings = [
     {
-        id: "darkmode", title: "Darkmode", type: "checkbox", default: false, export: true,
+        id: "darkmode", title: "Darkmode", type: "checkbox", default: true, export: true,
         handler: {
             display: () => true,
             updateElement: (element) => { element.checked = (localStorage.getItem("darkmode") == "true" ? true : false) },
@@ -19,7 +19,7 @@ var settings = [
         }
     },
     {
-        id: "fade-in", title: "Fade In", type: "checkbox", default: true, export: true,
+        id: "fade-in", title: "Fade In", type: "checkbox", default: false, export: true,
         handler: {
             display: () => true,
             updateElement: (element) => { element.checked = (localStorage.getItem("fade-in") == "true" ? true : false) },
