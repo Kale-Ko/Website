@@ -26,9 +26,13 @@ self.addEventListener("fetch", event => {
             }
         })()
     } else {
+        var cachedFiles = "manifest.json"
         var cachedFormats = ["woff", "woff2", "png", "jpg", "jpeg", "ico"]
 
-        if (cachedFormats.includes(event.request.url.split(".")[event.request.url.split(".").length - 1])) {
+        var url = event.request.url
+        if (url.endsWith("/")) url = url.slice(0, url.length - 1)
+
+        if (cachedFiles.includes(url.split("/")[url.split("/").length - 1]) || cachedFormats.includes(url.split(".")[url.split(".").length - 1])) {
             event.respondWith(
                 (async () => {
                     var cache = await caches.open("cacheddata")
