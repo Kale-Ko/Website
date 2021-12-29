@@ -37,7 +37,6 @@ module.exports = {
         nav: `<nav>
         <div class="dropdown"><img src="{file=image/png;/assets/menu@64.png}" alt="menu"></img><div class="dropdown-content"></div></div>
         <div><a href="/" class="image"><img src="{file=image/png;/assets/icon@48.png}" width=48 height=48><p> Home</p></a></div>
-        <div><a href="/about">About</a></div>
         <div><a href="/projects">Projects</a></div>
         <div><a href="/github">Github</a></div>
         <div><a href="/discord">Discord</a></div>
