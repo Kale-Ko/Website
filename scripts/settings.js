@@ -51,30 +51,30 @@ var settings = [
             set: (element) => { localStorage.setItem("no-fade", element.checked) }
         }
     },
-    {
-        id: "notifications", title: "Notifications", type: "checkbox", default: false, export: false,
-        handler: {
-            display: () => { return Notification.permission != "denied" },
-            updateElement: (element) => {
-                element.checked = Notification.permission == "granted"
+    // {
+    //     id: "notifications", title: "Notifications", type: "checkbox", default: false, export: false,
+    //     handler: {
+    //         display: () => { return Notification.permission != "denied" },
+    //         updateElement: (element) => {
+    //             element.checked = Notification.permission == "granted"
 
-                element.disabled = Notification.permission != "default"
-            },
-            update: () => { },
-            set: (element) => {
-                if (element.checked == true) {
-                    if (Notification.permission == "default") {
-                        Notification.requestPermission().then(permission => {
-                            if (permission == "granted") {
-                                element.disabled = true
-                            } else if (permission == "denied") element.parentElement.remove()
-                            else element.checked = false
-                        })
-                    }
-                }
-            }
-        }
-    }
+    //             element.disabled = Notification.permission != "default"
+    //         },
+    //         update: () => { },
+    //         set: (element) => {
+    //             if (element.checked == true) {
+    //                 if (Notification.permission == "default") {
+    //                     Notification.requestPermission().then(permission => {
+    //                         if (permission == "granted") {
+    //                             element.disabled = true
+    //                         } else if (permission == "denied") element.parentElement.remove()
+    //                         else element.checked = false
+    //                     })
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 ]
 
 function updateSettings() {
