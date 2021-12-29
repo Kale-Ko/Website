@@ -5,6 +5,10 @@
         <priority>1.00</priority>
     </url>
     <url>
+        <loc>https://kaleko.ga/about/</loc>
+        <priority>0.80</priority>
+    </url>
+    <url>
         <loc>https://kaleko.ga/projects/</loc>
         <priority>0.80</priority>
     </url>
