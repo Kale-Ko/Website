@@ -39,7 +39,6 @@ module.exports = {
         <div><a href="/" class="image"><img src="{file=image/png;/assets/icon@48.png}" width=48 height=48 alt="logo"><p> Home</p></a></div>
         <div><a href="/projects">Projects</a></div>
         <div><a href="/github">Github</a></div>
-        <div><a href="/discord">Discord</a></div>
         <div><a href="/settings">Settings</a></div>
     </nav>`,
 
