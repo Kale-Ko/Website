@@ -1,10 +1,3 @@
-/**
-    @license
-    MIT License
-    Copyright (c) 2021 Kale Ko
-    See https://kaleko.ga/license.txt
-*/
-
 var settings = [
     {
         id: "darkmode", title: "Darkmode", type: "checkbox", default: true, export: true,
