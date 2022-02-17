@@ -1,10 +1,3 @@
-/**
-    @license
-    MIT License
-    Copyright (c) 2021 Kale Ko
-    See https://kaleko.ga/license.txt
-*/
-
 self.addEventListener("install", event => { self.skipWaiting() })
 self.addEventListener("activate", event => {
     event.waitUntil(caches.open("offline").then(cache => {
