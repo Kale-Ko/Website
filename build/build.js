@@ -140,6 +140,8 @@ function next() {
                 }
 
                 if (file.endsWith(".html")) {
+                    contents = contents.replace("{title}", contents.substring(contents.indexOf("<title>") + 7, contents.indexOf("</title>")))
+
                     contents = minify_html(contents, {
                         collapseBooleanAttributes: true, collapseInlineTagWhitespace: true, collapseWhitespace: true, quoteCharacter: '"', removeAttributeQuotes: true, removeComments: true,
                         minifyJS: text => minify_js(text).code,
