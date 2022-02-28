@@ -5,6 +5,16 @@ module.exports = {
     {style=global}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta property="og:title" content="{title}">
+    <meta property="og:description" content="My new and improved website">
+    <meta property="og:image" content="{file=image/png;/assets/icon@64.png}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="./">
+    <meta property="og:locale" content="en-US">
+    <meta property="og:profile:first_name" content="Kale">
+    <meta property="og:profile:last_name " content="Ko">
+    <meta property="og:profile:username" content="Kale-Ko">
+
     <meta name="description" content="My new and improved website">
     <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Github, Games, Projects">
     <meta name="robots" content="all">
@@ -41,6 +51,7 @@ module.exports = {
         {script=settings}`
     },
     replacements: [
+        { from: "<html lang=\"en-US\">", to: "<html lang=\"en-US\" prefix=\"og: https://ogp.me/ns#\">" },
         { from: "<title>", to: "<title>Kale Ko - " }
     ],
     moves: [
