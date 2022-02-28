@@ -11,9 +11,6 @@ module.exports = {
     <meta property="og:type" content="website">
     <meta property="og:url" content="./">
     <meta property="og:locale" content="en-US">
-    <meta property="og:profile:first_name" content="Kale">
-    <meta property="og:profile:last_name " content="Ko">
-    <meta property="og:profile:username" content="Kale-Ko">
 
     <meta name="description" content="My new and improved website">
     <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Github, Games, Projects">
