@@ -9,6 +9,10 @@
         <priority>0.80</priority>
     </url>
     <url>
+        <loc>https://kaleko.ga/snake/</loc>
+        <priority>0.70</priority>
+    </url>
+    <url>
         <loc>https://kaleko.ga/settings/</loc>
         <priority>0.50</priority>
     </url>

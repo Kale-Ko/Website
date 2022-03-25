@@ -2,5 +2,6 @@ User-agent: *
 Disallow: /assets
 Disallow: /fonts
 Disallow: /license.txt
+Disallow: /publickey.gpg
 
 Sitemap: https://kaleko.ga/sitemap.xml

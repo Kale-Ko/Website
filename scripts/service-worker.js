@@ -2,7 +2,7 @@ self.addEventListener("install", event => { self.skipWaiting() })
 self.addEventListener("activate", event => {
     event.waitUntil(caches.open("offline").then(cache => {
         return cache.addAll([
-            "/offline/",
+            "/offline",
             "/assets/icon-grey@64.png"
         ])
     }))
@@ -16,11 +16,10 @@ self.addEventListener("fetch", event => {
             try {
                 await fetch("https://api.kaleko.ga/v4/online/").then(res => { if (res.status != 200) { throw new Error("Offline") } })
             } catch (error) {
-                event.respondWith(caches.open("offline").then(async cache => { return await cache.match(event.request) || await cache.match("/offline/") }))
+                event.respondWith(caches.open("offline").then(async cache => { return await cache.match(event.request) || await cache.match("/offline") }))
             }
         })()
     } else {
-        var cachedFiles = ["manifest.json"]
         var cachedFormats = ["woff", "woff2", "png", "jpg", "jpeg", "ico"]
 
         var url = event.request.url
