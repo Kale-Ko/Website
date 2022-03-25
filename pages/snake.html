@@ -161,10 +161,63 @@
                 context.fillRect(0, canvas.height - scale, canvas.width, scale)
 
                 context.fillStyle = "#44cc44"
-                context.fillRect(this.snake.head.position.x * scale, this.snake.head.position.y * scale, scale, scale)
-                this.snake.tail.forEach(tail => {
-                    context.fillRect(tail.position.x * scale, tail.position.y * scale, scale, scale)
-                })
+                if (this.snake.head.dirrection == SnakeDirrection.LEFT) {
+                    context.fillRect(this.snake.head.position.x * scale, (this.snake.head.position.y + 0.1) * scale, scale, scale * 0.8)
+                } else if (this.snake.head.dirrection == SnakeDirrection.RIGHT) {
+                    context.fillRect(this.snake.head.position.x * scale, (this.snake.head.position.y + 0.1) * scale, scale, scale * 0.8)
+                } else if (this.snake.head.dirrection == SnakeDirrection.UP) {
+                    context.fillRect((this.snake.head.position.x + 0.1) * scale, this.snake.head.position.y * scale, scale * 0.8, scale)
+                } else if (this.snake.head.dirrection == SnakeDirrection.DOWN) {
+                    context.fillRect((this.snake.head.position.x + 0.1) * scale, this.snake.head.position.y * scale, scale * 0.8, scale)
+                }
+
+                for (var i = 1; i < this.snake.tail.length; i++) {
+                    var tail = this.snake.tail[i]
+                    var dirrection = new Vector2(this.snake.tail[i - 1].position.x - tail.position.x, this.snake.tail[i - 1].position.y - tail.position.y)
+                    var dirrection2 = this.snake.tail[i + 1] != null ? new Vector2(tail.position.x - this.snake.tail[i + 1].position.x, tail.position.y - this.snake.tail[i + 1].position.y) : null
+
+                    if (dirrection.equals(SnakeDirrection.RIGHT)) {
+                        if (dirrection2 == null || (dirrection2 != null && dirrection2.equals(SnakeDirrection.RIGHT))) {
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                        } else if (dirrection2 != null && dirrection2.equals(SnakeDirrection.UP)) {
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                        } else if (dirrection2 != null && dirrection2.equals(SnakeDirrection.DOWN)) {
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                        }
+                    } else if (dirrection.equals(SnakeDirrection.LEFT)) {
+                        if (dirrection2 == null || (dirrection2 != null && dirrection2.equals(SnakeDirrection.LEFT))) {
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                        } else if (dirrection2 != null && dirrection2.equals(SnakeDirrection.UP)) {
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                        } else if (dirrection2 != null && dirrection2.equals(SnakeDirrection.DOWN)) {
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                        }
+                    } else if (dirrection.equals(SnakeDirrection.UP)) {
+                        if (dirrection2 == null || (dirrection2 != null && dirrection2.equals(SnakeDirrection.UP))) {
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                        } else if (dirrection2 != null && dirrection2.equals(SnakeDirrection.LEFT)) {
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                        } else if (dirrection2 != null && dirrection2.equals(SnakeDirrection.RIGHT)) {
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                        }
+                    } else if (dirrection.equals(SnakeDirrection.DOWN)) {
+                        if (dirrection2 == null || (dirrection2 != null && dirrection2.equals(SnakeDirrection.DOWN))) {
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                        } else if (dirrection2 != null && dirrection2.equals(SnakeDirrection.LEFT)) {
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                        } else if (dirrection2 != null && dirrection2.equals(SnakeDirrection.RIGHT)) {
+                            context.fillRect((tail.position.x + 0.1) * scale, tail.position.y * scale, scale * 0.8, scale)
+                            context.fillRect(tail.position.x * scale, (tail.position.y + 0.1) * scale, scale, scale * 0.8)
+                        }
+                    }
+                }
 
                 context.fillStyle = "#cc0000"
                 context.fillRect(this.apple.position.x * scale, this.apple.position.y * scale, scale, scale)
@@ -201,6 +254,24 @@
                         this.snake.tail.reverse().push(new SnakeTail(this.snake.head.position.copy()))
                         this.snake.tail = this.snake.tail.reverse()
                         this.snake.tail.pop()
+                    }
+
+                    for (var i = 1; i < this.snake.tail.length; i++) {
+                        var tail = this.snake.tail[i]
+
+                        if (this.snake.head.position.equals(tail.position)) {
+                            this.snake.head.position.x -= this.snake.head.dirrection.x
+                            this.snake.head.position.y -= this.snake.head.dirrection.y
+
+                            if (this.snake.tail.length > 0) {
+                                this.snake.tail.push(new SnakeTail(this.snake.head.position.copy()))
+                                this.snake.tail.pop()
+                            }
+
+                            this.gameover = true
+
+                            return
+                        }
                     }
                 }
 
