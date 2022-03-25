@@ -57,6 +57,7 @@ module.exports = {
         { from: "./scripts/service-worker.js", to: "./service-worker.js" },
         { from: "./assets/robots.txt", to: "./robots.txt" },
         { from: "./assets/sitemap.xml", to: "./sitemap.xml" },
+        { from: "./assets/public/publickey.gpg", to: "./publickey.gpg" },
         { from: "./LICENSE", to: "./license.txt" }
     ],
     imageSizes: [
