@@ -1,31 +1,57 @@
+/* Variables */
+html {
+    --background: #555555;
+    --forgroundcolor: #333333;
+    --altforgroundcolor: #242424;
+
+    --textcolor: #cecece;
+    --alternatetextcolor: #000000;
+
+    --headercolor: #d40000;
+
+    --linkcolor: #0000be;
+    --linkhovercolor: #000064;
+}
+
+
+
 /* Layout */
 html,
 head,
 body {
-    background: #444444;
-
     margin: 0px;
     padding: 0px;
 
-    color: #cecece;
+    font-family: var(--font), Arial, sans-serif;
+    color: var(--textcolor);
 
     text-align: center;
 }
 
-main {
-    margin: 1%;
-    padding-top: 40px;
+html {
+    background: var(--background);
 }
 
 
 
 /* Text */
 h1 {
-    color: #d40000;
+    font-family: var(--headerfont), Arial, sans-serif;
+    color: var(--headercolor);
 
     font-size: 60px;
 }
 
 p {
-    color: #cecece;
+    color: var(--textcolor);
+}
+
+a,
+a:visited,
+a:active {
+    color: var(--linkcolor);
+}
+
+a:hover {
+    color: var(--linkhovercolor);
 }

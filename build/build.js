@@ -3,8 +3,8 @@ const { exec } = require("child_process")
 
 if (process.argv.includes("--nodepend")) next()
 else {
-    exec("npm i trash-cli -g").on("exit", code => {
-        exec("npm i sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", code => {
+    exec("npm i trash-cli -g").on("exit", () => {
+        exec("npm i sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
             next()
         })
     })

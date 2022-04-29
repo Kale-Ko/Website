@@ -13,34 +13,25 @@ module.exports = {
     <meta property="og:locale" content="en">
 
     <meta name="description" content="My new and improved website">
-    <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Github, Games, Projects">
+    <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Website, Github, Games, Snake, Projects">
     <meta name="robots" content="all">
-    <meta name="author" content="Kale Ko (https://kaleko.ga)">
-    <link rel="author" href="https://kaleko.ga/">
-    <link rel="license" href="/license.txt">`,
+    <meta name="author" content="Kale Ko (https://github.com/Kale-Ko/)">
+    <link rel="author" href="https://github.com/Kale-Ko/">
+    <link rel="license" href="https://kaleko.ga/license.txt">`,
 
         offlinemeta: `<link rel="icon" href="{file=image/png;/assets/icon-grey@64.png}">
     <link rel="apple-touch-icon" href="{file=image/png;/assets/icon-grey@64.png}">
     {style=offline}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta property="og:title" content="{title}">
-    <meta property="og:description" content="Error">
-    <meta property="og:image" content="{file=image/png;/assets/icon-grey@64.png}">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="./">
-    <meta property="og:locale" content="en">
-
-    <meta name="description" content="Site offline">
-    <meta name="keywords" content="Kale, Ko, Kale-Ko, Error, Offline">
     <meta name="robots" content="noindex">
-    <meta name="author" content="Kale Ko (https://kaleko.ga)">
-    <link rel="author" href="https://kaleko.ga/">
-    <link rel="license" href="/license.txt">`,
+    <meta name="author" content="Kale Ko (https://github.com/Kale-Ko/)">
+    <link rel="author" href="https://github.com/Kale-Ko/">
+    <link rel="license" href="https://kaleko.ga/license.txt">`,
 
         nav: `<nav>
         <div class="dropdown"><img src="{file=image/png;/assets/menu@64.png}" alt="menu"></img><div class="dropdown-content"></div></div>
-        <div><a href="/" class="image"><img src="{file=image/png;/assets/icon@48.png}" width=48 height=48 alt="logo"><p> Home</p></a></div>
+        <div><a href="/" class="image"><img src="{file=image/png;/assets/icon@48.png}" width="48" height="48" alt="logo"><p> Home</p></a></div>
         <div><a href="/projects">Projects</a></div>
         <div><a href="/snake">Snake</a></div>
         <div><a href="/github">Github</a></div>

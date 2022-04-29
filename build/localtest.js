@@ -7,8 +7,8 @@ console.log("Installing dependencies")
 
 if (!fs.existsSync("./test")) fs.mkdirSync("./test")
 
-exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
-    exec("cd ./test/ && npm i sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", code => {
+exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
+    exec("cd ./test/ && npm i sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
         console.log("Finished installing dependencies")
 
         var building = false
@@ -65,7 +65,7 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", code => {
                 exec("cd ./test/ && node build/build.js --nodepend", (err, stdout, stderr) => {
                     if (stdout) console.log(stdout)
                     if (stderr) console.log(stderr)
-                }).on("exit", code => {
+                }).on("exit", () => {
                     console.log("Finished building")
 
                     building = false
