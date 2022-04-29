@@ -1,4 +1,4 @@
-var settings = [
+const settings = [
     {
         id: "darkmode", title: "Darkmode", type: "checkbox", default: true, export: true,
         handler: {
