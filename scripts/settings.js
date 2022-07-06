@@ -3,51 +3,59 @@ const settings = [
         id: "darkmode", title: "Darkmode", type: "checkbox", default: true, export: true,
         handler: {
             display: () => true,
-            updateElement: (element) => { element.checked = (localStorage.getItem("darkmode") == "true" ? true : false) },
-            update: () => {
-                if (localStorage.getItem("darkmode") == "true") document.querySelector("html").classList.add("darkmode")
-                else document.querySelector("html").classList.remove("darkmode")
+            updateElement: (element) => {
+                element.checked = (localStorage.getItem("darkmode") == "true" ? true : false)
             },
-            set: (element) => { localStorage.setItem("darkmode", element.checked) }
-        }
-    },
-    {
-        id: "fade-in", title: "Fade In", type: "checkbox", default: false, export: true,
-        handler: {
-            display: () => true,
-            updateElement: (element) => { element.checked = (localStorage.getItem("fade-in") == "true" ? true : false) },
             update: () => {
-                if (localStorage.getItem("fade-in") == "true") document.querySelector("html").classList.add("fade-in")
-                else document.querySelector("html").classList.remove("fade-in")
+                if (localStorage.getItem("darkmode") == "true") {
+                    document.querySelector("html").classList.add("darkmode")
+                } else {
+                    document.querySelector("html").classList.remove("darkmode")
+                }
             },
-            set: (element) => { localStorage.setItem("fade-in", element.checked) }
+            set: (element) => {
+                localStorage.setItem("darkmode", element.checked)
+            }
         }
     },
     {
         id: "autoredirect", title: "Auto Redirect", type: "checkbox", default: false, export: true,
         handler: {
             display: () => true,
-            updateElement: (element) => { element.checked = (localStorage.getItem("autoredirect") == "true" ? true : false) },
+            updateElement: (element) => {
+                element.checked = (localStorage.getItem("autoredirect") == "true" ? true : false)
+            },
             update: () => { },
-            set: (element) => { localStorage.setItem("autoredirect", element.checked) }
+            set: (element) => {
+                localStorage.setItem("autoredirect", element.checked)
+            }
         }
     },
     {
         id: "no-fade", title: "No Background Fade", type: "checkbox", default: false, export: true,
         handler: {
             display: () => true,
-            updateElement: (element) => { element.checked = (localStorage.getItem("no-fade") == "true" ? true : false) },
-            update: () => {
-                if (localStorage.getItem("no-fade") == "true") document.querySelector("html").classList.add("no-fade")
-                else document.querySelector("html").classList.remove("no-fade")
+            updateElement: (element) => {
+                element.checked = (localStorage.getItem("no-fade") == "true" ? true : false)
             },
-            set: (element) => { localStorage.setItem("no-fade", element.checked) }
+            update: () => {
+                if (localStorage.getItem("no-fade") == "true") {
+                    document.querySelector("html").classList.add("no-fade")
+                } else {
+                    document.querySelector("html").classList.remove("no-fade")
+                }
+            },
+            set: (element) => {
+                localStorage.setItem("no-fade", element.checked)
+            }
         }
     },
     // {
     //     id: "notifications", title: "Notifications", type: "checkbox", default: false, export: false,
     //     handler: {
-    //         display: () => { return Notification.permission != "denied" },
+    //         display: () => {
+    //             return Notification.permission != "denied"
+    //         },
     //         updateElement: (element) => {
     //             element.checked = Notification.permission == "granted"
 
@@ -60,8 +68,11 @@ const settings = [
     //                     Notification.requestPermission().then(permission => {
     //                         if (permission == "granted") {
     //                             element.disabled = true
-    //                         } else if (permission == "denied") element.parentElement.remove()
-    //                         else element.checked = false
+    //                         } else if (permission == "denied") {
+    //                             element.parentElement.remove()
+    //                         } else {
+    //                             element.checked = false
+    //                         }
     //                     })
     //                 }
     //             }

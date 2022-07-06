@@ -1,19 +1,19 @@
 module.exports = {
     placeholders: {
-        meta: `<link rel="icon" href="{file=image/png;/assets/icon@64.png}">
-    <link rel="apple-touch-icon" href="{file=image/png;/assets/icon@64.png}">
+        meta: `<link rel="icon" href="{file=/assets/icon@64.png}">
+    <link rel="apple-touch-icon" href="{file=/assets/icon@64.png}">
     {style=global}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:title" content="{title}">
-    <meta property="og:description" content="My new and improved website">
-    <meta property="og:image" content="{file=image/png;/assets/icon@64.png}">
+    <meta property="og:description" content="My website where I put all my projects">
+    <meta property="og:image" content="{file=/assets/icon@64.png}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="./">
     <meta property="og:locale" content="en">
 
-    <meta name="description" content="My new and improved website">
-    <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Website, Github, Games, Snake, Projects">
+    <meta name="description" content="My website where I put all my projects">
+    <meta name="keywords" content="Kale, Ko, Kale-Ko, Coding, Development, Website, Github, Games, Snake, Projects">
     <meta name="robots" content="all">
     <meta name="author" content="Kale Ko (https://github.com/Kale-Ko/)">
     <link rel="author" href="https://github.com/Kale-Ko/">
@@ -30,21 +30,20 @@ module.exports = {
     <link rel="license" href="https://kaleko.ga/license.txt">`,
 
         nav: `<nav>
-        <div class="dropdown"><img src="{file=image/png;/assets/menu@64.png}" alt="menu"></img><div class="dropdown-content"></div></div>
-        <div><a href="/" class="image"><img src="{file=image/png;/assets/icon@48.png}" width="48" height="48" alt="logo"><p> Home</p></a></div>
-        <div><a href="/projects">Projects</a></div>
+        <div class="dropdown"><img src="{file=/assets/menu@64.png}" alt="menu"></img><div class="dropdown-content"></div></div>
+        <div><a href="/" class="image"><img src="{file=/assets/icon@48.png}" width="48" height="48" alt="logo"><p> Home</p></a></div>
         <div><a href="/snake">Snake</a></div>
         <div><a href="/github">Github</a></div>
         <div><a href="/settings">Settings</a></div>
     </nav>`,
 
         global: `{script=service-worker-register}
+        {script=settings}
         {script=navbar}
-        {script=backgroundfixer}
-        {script=settings}`
+        {script=backgroundfixer}`
     },
     replacements: [
-        { from: "<html lang=\"en\">", to: "<html lang=\"en\" prefix=\"og: https://ogp.me/ns#\">" },
+        { from: "<html>", to: "<html lang=\"en\" prefix=\"og: https://ogp.me/ns#\">" },
         { from: "<title>", to: "<title>Kale Ko - " }
     ],
     moves: [

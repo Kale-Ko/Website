@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
-<html lang="en">
+<html>
 
 <head>
     <title>Error 404</title>
@@ -14,24 +14,9 @@
     <main>
         <h1>Error 404</h1>
 
-        <p>Redirecting to main page in&nbsp;<span id="countdown">5</span>..</p>
+        <p>That page could not be found (Typo?)</p>
 
-        <script>
-            if (localStorage.getItem("autoredirect") == "true") window.location.replace("/")
-
-            var countdown = 5
-            var element = document.getElementById("countdown")
-
-            setInterval(() => {
-                if (countdown == 0) return
-
-                countdown--
-
-                element.innerHTML = countdown
-
-                if (countdown == 0) window.location.replace("/")
-            }, 1000)
-        </script>
+        <a href="/">Back to home</a>
     </main>
 
     {global}

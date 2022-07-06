@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
-<html lang="en">
+<html>
 
 <head>
     <title>Home</title>
@@ -32,7 +32,7 @@
             <div id="projectslist" class="hidden"></div>
 
             <script>
-                fetch("https://api.kaleko.ga/v4/github/pins/json/").then(res => res.json()).then(repos => {
+                fetch("https://api.kaleko.ga/v5/github/pins").then(res => res.json()).then(repos => {
                     repos.forEach(repo => {
                         var element = document.createElement("p")
                         element.innerHTML = (repo.homepageUrl != "" && repo.homepageUrl != null ? '<a href="' + repo.homepageUrl + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
@@ -49,7 +49,7 @@
         <div id="contact" class="section">
             <h2>Contact</h2>
 
-            <p>You can contact me by&nbsp;<a href="mailto:contact@kaleko.ga">email</a>&nbsp; or on &nbsp;<a href="/twitter">Twitter</a></p>
+            <p>You can contact me by&nbsp;<a href="mailto:contact@kaleko.ga">email</a>&nbsp;or on&nbsp;<a href="/twitter">Twitter</a></p>
         </div>
     </main>
 

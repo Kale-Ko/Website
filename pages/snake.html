@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
-<html lang="en">
+<html>
 
 <head>
     <title>Snake</title>
@@ -241,7 +241,7 @@
                         this.snake.tail.push(new SnakeTail(this.snake.head.position.copy()))
                     }
 
-                    if (this.snake.head.position.x <= 0 || this.snake.head.position.y <= 0 || this.snake.head.position.x >= ((canvas.width / scale) - 1) || this.snake.head.position.y >= ((canvas.height / scale) - 1)) {
+                    if (this.snake.head.position.x <= 0 || this.snake.head.position.y <= 0 || this.snake.head.position.x >= (Math.round(canvas.width / scale) - 1) || this.snake.head.position.y >= (Math.round(canvas.height / scale) - 1)) {
                         this.snake.head.position.x -= this.snake.head.dirrection.x
                         this.snake.head.position.y -= this.snake.head.dirrection.y
 
@@ -279,12 +279,12 @@
             }
 
             spawnSnake(speed) {
-                this.snake = new Snake(new Vector2(((canvas.width / scale) / 2) - 1, ((canvas.height / scale) / 2) - 1), speed)
+                this.snake = new Snake(new Vector2(Math.round((canvas.width / scale) / 2) - 1, Math.round((canvas.height / scale) / 2) - 1), speed)
             }
 
             spawnApple() {
                 function getNewApplePos(snake) {
-                    var pos = new Vector2(1 + Math.floor(Math.random() * ((canvas.width / scale) - 2)), 1 + Math.floor(Math.random() * ((canvas.height / scale) - 2)))
+                    var pos = new Vector2(1 + Math.floor(Math.random() * (Math.round(canvas.width / scale) - 2)), 1 + Math.floor(Math.random() * (Math.round(canvas.height / scale) - 2)))
 
                     if (pos != snake.head.position) {
                         return pos
