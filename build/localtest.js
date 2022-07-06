@@ -1,7 +1,7 @@
 const fs = require("fs")
 const { exec } = require("child_process")
 const http = require("http")
-const WebSocketServer = require('websocket').server
+const WebSocketServer = require("websocket").server
 
 console.log("Installing dependencies")
 

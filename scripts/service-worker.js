@@ -14,7 +14,7 @@ self.addEventListener("fetch", event => {
     if (event.request.mode == "navigate") {
         (async () => {
             try {
-                await fetch("https://api.kaleko.ga/v4/online/").then(res => { if (res.status != 200) { throw new Error("Offline") } })
+                await fetch("https://api.kaleko.ga/v5/online").then(res => { if (res.status != 200) { throw new Error("Offline") } })
             } catch (error) {
                 event.respondWith(caches.open("offline").then(async cache => { return await cache.match(event.request) || await cache.match("/offline") }))
             }
@@ -24,19 +24,23 @@ self.addEventListener("fetch", event => {
         var cachedFormats = ["png", "jpg", "jpeg", "ico", "woff", "woff2"]
 
         var url = event.request.url
-        if (url.endsWith("/")) url = url.slice(0, url.length - 1)
+        if (url.endsWith("/")) {
+            url = url.slice(0, url.length - 1)
+        }
 
         if ((cachedFiles.includes(url.split("/")[url.split("/").length - 1]) || cachedFormats.includes(url.split(".")[url.split(".").length - 1])) && new URL(url).hostname != "api.kaleko.ga") {
             event.respondWith(
                 (async () => {
                     var cache = await caches.open("cacheddata")
-                    var cachered = await cache.match(event.request)
+                    var cached = await cache.match(event.request)
 
-                    if (cachered == undefined) {
+                    if (cached == undefined) {
                         await cache.add(event.request)
 
-                        return event.request
-                    } else return cachered
+                        return await cache.match(event.request)
+                    } else {
+                        return cached
+                    }
                 })()
             )
         }

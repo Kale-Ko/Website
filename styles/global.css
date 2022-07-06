@@ -64,16 +64,6 @@ html {
     background: var(--background);
 }
 
-html.fade-in>head,
-html.fade-in>body {
-    opacity: 0;
-
-    animation-name: fade-in;
-    animation-duration: var(--fade-length);
-    animation-timing-function: ease-in;
-    animation-fill-mode: both;
-}
-
 main {
     margin: 1%;
     padding-top: 40px;
@@ -234,17 +224,4 @@ a:active {
 
 a:hover {
     color: var(--linkhovercolor);
-}
-
-
-
-/* Animations */
-@keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
 }
