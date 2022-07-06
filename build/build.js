@@ -134,9 +134,12 @@ function next() {
                 while (contents.includes("{file=")) {
                     var start = contents.indexOf("{file=")
                     var end = contents.indexOf("}", contents.indexOf("{file=")) + 1
-                    // if (fs.existsSync("." + contents.substring(start + 6, end - 1).split(";")[1])) contents = contents.replace(contents.substring(start, end), "data:" + contents.substring(start + 6, end - 1).split(";")[0] + ";base64," + fs.readFileSync("." + contents.substring(start + 6, end - 1).split(";")[1]).toString("base64"))
-                    // else contents = contents.replace(contents.substring(start, end), "data:text/plain,base64;" + "404 File Not Found".toString("base64"))
-                    contents = contents.replace(contents.substring(start, end), contents.substring(start + 6, end - 1).split(";")[1])
+                    if (contents.substring(start + 6, end - 1).includes(";")) {
+                        if (fs.existsSync("." + contents.substring(start + 6, end - 1).split(";")[1])) contents = contents.replace(contents.substring(start, end), "data:" + contents.substring(start + 6, end - 1).split(";")[0] + ";base64," + fs.readFileSync("." + contents.substring(start + 6, end - 1).split(";")[1]).toString("base64"))
+                        else contents = contents.replace(contents.substring(start, end), "data:text/plain,base64;" + "404 File Not Found".toString("base64"))
+                    } else {
+                        contents = contents.replace(contents.substring(start, end), contents.substring(start + 6, end - 1))
+                    }
                 }
 
                 if (file.endsWith(".html")) {
