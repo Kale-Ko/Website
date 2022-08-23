@@ -1133,7 +1133,7 @@ export async function onRequest(context) {
             return new Response("/online\n/github", { status: 200, statusText: "Ok", headers: TextHeaders })
         }
     } else if (version == undefined || version == "") {
-        return new Response("Welcome to the api, try sending a request (eg GET https://api.kaleko.ga/v5/github/profile)", { status: 200, statusText: "Ok", headers: TextHeaders })
+        return new Response("Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/v5/github/profile)", { status: 200, statusText: "Ok", headers: TextHeaders })
     } else {
         return new Response("/v5 (Current)\n/v4", { status: 200, statusText: "Ok", headers: TextHeaders })
     }
