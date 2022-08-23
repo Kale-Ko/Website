@@ -26,6 +26,10 @@ function next() {
         if (move.copy == true) {
             fs.copyFileSync(move.from, move.to)
         } else {
+            if (move.to.includes("/") && move.to.split("/").length > 2) {
+                fs.mkdirSync(move.to.split("/").slice(0, move.to.split("/").length - 1).join("/"), { recursive: true })
+            }
+
             fs.renameSync(move.from, move.to)
         }
     })
