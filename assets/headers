@@ -8,7 +8,7 @@
   Cross-Origin-Resource-Policy: same-origin
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
-  !report-to
+  ! report-to
 
 https://kaleko.ga/*
   Access-Control-Allow-Origin: kaleko.ga

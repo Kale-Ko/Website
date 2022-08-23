@@ -18,7 +18,7 @@ export async function onRequest(context) {
 
     var req = context.request
 
-    var url = new URL(req.url)
+    var url = new URL(req.url.replace("/api", ""))
     var version = url.pathname.split("/")[1]
     var endpoint = url.pathname.split("/").slice(2)
     var returnType = url.searchParams.get("type") || "json"
