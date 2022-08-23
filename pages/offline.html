@@ -3,9 +3,9 @@
 <html>
 
 <head>
-    <title>Error Offline</title>
+    <title>Offline</title>
 
-    {offlinemeta}
+    {offlineMeta}
 </head>
 
 <body>
@@ -19,13 +19,17 @@
             var timer = document.getElementById("countdown")
 
             setInterval(() => {
-                if (countdown == 0) return
+                if (countdown == 0) {
+                    return
+                }
 
                 countdown--
 
                 timer.innerHTML = countdown
 
-                if (countdown == 0) window.location.reload()
+                if (countdown == 0) {
+                    window.location.reload()
+                }
             }, 1000)
         </script>
     </main>

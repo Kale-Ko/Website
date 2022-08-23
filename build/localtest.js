@@ -5,17 +5,21 @@ const WebSocketServer = require("websocket").server
 
 console.log("Installing dependencies")
 
-if (!fs.existsSync("./test")) fs.mkdirSync("./test")
+if (!fs.existsSync("./test")) {
+    fs.mkdirSync("./test")
+}
 
-exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
-    exec("cd ./test/ && npm i sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
+exec("cd ./test && npm install trash-cli --location=global").on("exit", () => {
+    exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
         console.log("Finished installing dependencies")
 
         var building = false
         var wsServer
 
         function build() {
-            if (building) return
+            if (building) {
+                return
+            }
 
             building = true
 
@@ -26,36 +30,61 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
 
                 var todo = files.length
 
-                files.forEach(file => {
-                    if (file == "package-lock.json" || file == "node_modules") todo--
-                    else {
-                        exec("trash ./test/" + file).on("exit", () => {
+                if (todo == 0) {
+                    next()
+                } else {
+                    var i = 0
+                    function next() {
+                        var file = files[i]
+
+                        if (file == ".git" || file == ".gitignore" || file == ".deepsource.toml" || file == "package.json" || file == "package-lock.json" || file == "node_modules") {
                             todo--
 
-                            if (todo == 0) next()
-                        })
+                            if (todo == 0) {
+                                finish()
+                            } else {
+                                next()
+                            }
+                        } else {
+                            exec("trash ./test/" + file).on("exit", () => {
+                                todo--
+
+                                if (todo == 0) {
+                                    finish()
+                                } else {
+                                    next()
+                                }
+                            })
+                        }
+
+                        i++
                     }
-                })
+                    next()
+                }
             } else {
                 fs.mkdirSync("./test")
 
-                next()
+                finish()
             }
 
-            function next() {
+            function finish() {
                 console.log("Cloning files")
 
                 function scan(dir, name) {
                     var files = fs.readdirSync(dir)
 
                     files.forEach(file => {
-                        if (file == ".git" || file == ".gitignore" || file == "package-lock.json" || file == "node_modules" || file == "test") return
+                        if (file != ".git" && file != ".gitignore" && file != ".deepsource.toml" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != "test") {
+                            if (fs.statSync(dir + file).isDirectory()) {
+                                if (!fs.existsSync("./test/" + dir.replace("./", "") + file)) {
+                                    fs.mkdirSync("./test/" + dir.replace("./", "") + file)
+                                }
 
-                        if (fs.statSync(dir + file).isDirectory()) {
-                            if (!fs.existsSync("./test/" + dir.replace("./", "") + file)) fs.mkdirSync("./test/" + dir.replace("./", "") + file)
-
-                            scan(dir + file + "/", name + "/" + file)
-                        } else fs.copyFileSync(dir + file, "./test" + name + "/" + file)
+                                scan(dir + file + "/", name + "/" + file)
+                            } else {
+                                fs.copyFileSync(dir + file, "./test" + name + "/" + file)
+                            }
+                        }
                     })
                 }
                 scan("./", "/")
@@ -63,8 +92,17 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
                 console.log("Building pages")
 
                 exec("cd ./test/ && node build/build.js --nodepend", (err, stdout, stderr) => {
-                    if (stdout) console.log(stdout)
-                    if (stderr) console.log(stderr)
+                    if (stdout) {
+                        console.log(stdout)
+                    }
+
+                    if (stderr) {
+                        console.error(stderr)
+                    }
+
+                    if (err) {
+                        console.error(err)
+                    }
                 }).on("exit", () => {
                     console.log("Finished building")
 
@@ -79,11 +117,15 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
         console.log("Starting server")
 
         const server = http.createServer((req, res) => {
-            if (building) return res.end("<html><body>Building site..</body></html>".replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http", "ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
+            if (building) {
+                return res.end("<html><head><title>Building site..</title></head><body>Building site..</body></html>".replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http", "ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
+            }
 
             req.url = new URL("https://localhost" + req.url).pathname
 
-            if (req.url.endsWith("/")) req.url = req.url.slice(0, req.url.length - 1)
+            if (req.url.endsWith("/")) {
+                req.url = req.url.slice(0, req.url.length - 1)
+            }
 
             req.url = req.url.replace(/%20/, " ")
 
@@ -109,11 +151,17 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
             if (fs.existsSync("./test" + req.url) && !fs.statSync("./test" + req.url).isDirectory()) {
                 res.statusCode = 200
                 res.statusMessage = "Ok"
-                Object.keys(typeMappings).forEach(key => { if (req.url.endsWith("." + key)) res.setHeader("Content-Type", typeMappings[key]) })
+                Object.keys(typeMappings).forEach(key => {
+                    if (req.url.endsWith("." + key)) {
+                        res.setHeader("Content-Type", typeMappings[key])
+                    }
+                })
 
                 if (res.getHeader("Content-Type") == typeMappings["html"]) {
                     res.end(fs.readFileSync("./test" + req.url).toString().replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http","ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
-                } else res.end(fs.readFileSync("./test" + req.url))
+                } else {
+                    res.end(fs.readFileSync("./test" + req.url))
+                }
             } else {
                 if (fs.existsSync("./test" + req.url + "/index.html")) {
                     res.statusCode = 200
@@ -122,7 +170,9 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
 
                     if (res.getHeader("Content-Type") == typeMappings["html"]) {
                         res.end(fs.readFileSync("./test" + req.url + "/index.html").toString().replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http","ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
-                    } else res.end(fs.readFileSync("./test" + req.url + "/index.html"))
+                    } else {
+                        res.end(fs.readFileSync("./test" + req.url + "/index.html"))
+                    }
                 } else {
                     res.statusCode = 200
                     res.statusMessage = "Ok"
@@ -133,7 +183,9 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
             }
         })
 
-        server.listen(8000, () => { console.log("Http server started on 8000") })
+        server.listen(8000, () => {
+            console.log("Http server started on 8000")
+        })
 
         wsServer = new WebSocketServer({ httpServer: server, autoAcceptConnections: true })
 
@@ -143,22 +195,25 @@ exec("cd ./test/ && npm i trash-cli -g").on("exit", () => {
             var files = fs.readdirSync(dir)
 
             files.forEach(file => {
-                if (file == ".git" || file == ".gitignore" || file == "package-lock.json" || file == "node_modules" || file == "test") return
-
-                if (fs.statSync(dir + file).isDirectory()) scan(dir + file + "/", name + "/" + file)
-                else fs.watchFile(dir + file, { interval: 1000 }, () => {
-                    if (file == "localtest.js") {
-                        console.log("Changes detected, restarting..")
-
-                        process.exit(0)
+                if (file != ".git" && file != ".gitignore" && file != ".deepsource.toml" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != "test") {
+                    if (fs.statSync(dir + file).isDirectory()) {
+                        scan(dir + file + "/", name + "/" + file)
                     } else {
-                        if (building) return
+                        fs.watchFile(dir + file, { interval: 1000 }, () => {
+                            if (file == "localtest.js") {
+                                console.log("Changes detected, restarting..")
 
-                        console.log("Changes detected, rebuilding..")
+                                process.exit(0)
+                            } else {
+                                if (building) return
 
-                        build()
+                                console.log("Changes detected, rebuilding..")
+
+                                build()
+                            }
+                        })
                     }
-                })
+                }
             })
         }
         scan("./", "/")
