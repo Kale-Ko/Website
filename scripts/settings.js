@@ -1,6 +1,6 @@
 const settings = [
     {
-        id: "darkmode", title: "Darkmode", type: "checkbox", default: true, export: true,
+        id: "darkmode", title: "Darkmode", type: "checkbox", default: ("matchMedia" in window ? window.matchMedia("(prefers-color-scheme: dark)").matches : false), export: true,
         handler: {
             display: () => true,
             updateElement: (element) => {
@@ -19,34 +19,34 @@ const settings = [
         }
     },
     {
-        id: "autoredirect", title: "Auto Redirect", type: "checkbox", default: false, export: true,
+        id: "quickRedirect", title: "Quick Redirect", type: "checkbox", default: false, export: true,
         handler: {
             display: () => true,
             updateElement: (element) => {
-                element.checked = (localStorage.getItem("autoredirect") == "true" ? true : false)
+                element.checked = (localStorage.getItem("quickRedirect") == "true" ? true : false)
             },
             update: () => { },
             set: (element) => {
-                localStorage.setItem("autoredirect", element.checked)
+                localStorage.setItem("quickRedirect", element.checked)
             }
         }
     },
     {
-        id: "no-fade", title: "No Background Fade", type: "checkbox", default: false, export: true,
+        id: "no-gradient", title: "No Background Gradient", type: "checkbox", default: false, export: true,
         handler: {
             display: () => true,
             updateElement: (element) => {
-                element.checked = (localStorage.getItem("no-fade") == "true" ? true : false)
+                element.checked = (localStorage.getItem("no-gradient") == "true" ? true : false)
             },
             update: () => {
-                if (localStorage.getItem("no-fade") == "true") {
-                    document.querySelector("html").classList.add("no-fade")
+                if (localStorage.getItem("no-gradient") == "true") {
+                    document.querySelector("html").classList.add("no-gradient")
                 } else {
-                    document.querySelector("html").classList.remove("no-fade")
+                    document.querySelector("html").classList.remove("no-gradient")
                 }
             },
             set: (element) => {
-                localStorage.setItem("no-fade", element.checked)
+                localStorage.setItem("no-gradient", element.checked)
             }
         }
     },
@@ -80,12 +80,19 @@ const settings = [
     //     }
     // }
 ]
+window.settings = settings
 
 function updateSettings() {
-    settings.forEach(setting => { if (localStorage.getItem(setting.id) == null) setting.handler.set({ value: setting.default, checked: setting.default }) })
+    settings.forEach(setting => {
+        if (localStorage.getItem(setting.id) == null) {
+            setting.handler.set({ value: setting.default, checked: setting.default })
+        }
+    })
 
-    settings.forEach(setting => { setting.handler.update() })
+    settings.forEach(setting => {
+        setting.handler.update()
+    })
 }
 updateSettings()
 
-window.dispatchEvent(new CustomEvent("settingsloaded"))
+window.dispatchEvent(new CustomEvent("settingsLoaded"))

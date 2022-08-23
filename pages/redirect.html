@@ -27,19 +27,25 @@
             document.getElementById("url").innerHTML = url
             document.getElementById("url").href = url
 
-            if (localStorage.getItem("autoredirect") == "true") window.location.replace(url)
+            if (localStorage.getItem("quickRedirect") == "true") {
+                window.location.replace(url)
+            }
 
             var countdown = 5
             var element = document.getElementById("countdown")
 
             setInterval(() => {
-                if (countdown == 0) return
+                if (countdown == 0) {
+                    return
+                }
 
                 countdown--
 
                 element.innerHTML = countdown
 
-                if (countdown == 0) window.location.replace(url)
+                if (countdown == 0) {
+                    window.location.replace(url)
+                }
             }, 1000)
         </script>
     </main>

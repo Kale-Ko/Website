@@ -28,8 +28,8 @@
         <div id="projects" class="section">
             <h2>Featured Projects</h2>
 
-            <p id="loadingprojects">Loading projects..</p>
-            <div id="projectslist" class="hidden"></div>
+            <p id="loadingProjects">Loading projects..</p>
+            <div id="projectsList" class="hidden"></div>
 
             <script>
                 fetch("https://api.kaleko.ga/v5/github/pins").then(res => res.json()).then(repos => {
@@ -37,11 +37,11 @@
                         var element = document.createElement("p")
                         element.innerHTML = (repo.homepageUrl != "" && repo.homepageUrl != null ? '<a href="' + repo.homepageUrl + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
 
-                        document.getElementById("projectslist").appendChild(element)
+                        document.getElementById("projectsList").appendChild(element)
                     })
 
-                    document.getElementById("loadingprojects").setAttribute("class", "hidden")
-                    document.getElementById("projectslist").removeAttribute("class")
+                    document.getElementById("loadingProjects").setAttribute("class", "hidden")
+                    document.getElementById("projectsList").removeAttribute("class")
                 })
             </script>
         </div>
@@ -49,7 +49,13 @@
         <div id="contact" class="section">
             <h2>Contact</h2>
 
-            <p>You can contact me by&nbsp;<a href="mailto:contact@kaleko.ga">email</a>&nbsp;or on&nbsp;<a href="/twitter">Twitter</a></p>
+            <p>You can contact me by&nbsp;<a href="javascript:openEmail()">email</a>&nbsp;or on&nbsp;<a href="/twitter">Twitter</a></p>
+
+            <script>
+                function openEmail() {
+                    window.open("mailto:" + atob("Y29udGFjdEBrYWxla28uZ2E="))
+                }
+            </script>
         </div>
     </main>
 
