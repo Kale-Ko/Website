@@ -1150,6 +1150,8 @@ export async function onRequest(context) {
                 } else {
                     return new Response("Invalid data type for this endpoint", { status: 200, statusText: "Ok", headers: TextHeaders })
                 }
+            } else if (endpoint[0] == "error") {
+                throw new Error("Errors are fun :)")
             } else {
                 return new Response("/online\n/github", { status: 200, statusText: "Ok", headers: TextHeaders })
             }
