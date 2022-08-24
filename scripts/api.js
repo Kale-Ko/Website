@@ -1162,11 +1162,11 @@ export async function onRequest(context) {
         }
     } catch (e) {
         try {
-            if (req.headers["CF-Connecting-IP"] == CONFIG.ADMIN_IP) {
-                return new Response(e, { status: 500, statusText: "Internal server error", headers: TextHeaders })
-            } else {
-                return new Response("500 Internal server error " + req.headers["CF-Connecting-IP"], { status: 500, statusText: "Internal server error", headers: TextHeaders })
-            }
+            // if (req.headers["CF-Connecting-IP"] == CONFIG.ADMIN_IP) {
+                // return new Response(e, { status: 500, statusText: "Internal server error", headers: TextHeaders })
+            // } else {
+                return new Response("500 Internal server error " + req.headers, { status: 500, statusText: "Internal server error", headers: TextHeaders })
+            // }
         } catch (e) {
             return new Response("500 Internal server error", { status: 500, statusText: "Internal server error", headers: TextHeaders })
         }
