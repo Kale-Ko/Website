@@ -1161,10 +1161,14 @@ export async function onRequest(context) {
             return new Response("/v5 (Current)\n/v4", { status: 200, statusText: "Ok", headers: TextHeaders })
         }
     } catch (e) {
-        if (req.headers["CF-Connecting-IP"] == CONFIG.ADMIN_IP) {
-            return new Response(e, { status: 500, statusText: "Internal server error", headers: TextHeaders })
-        } else {
-            return new Response("500 Internal server error " + req.headers["CF-Connecting-IP"], { status: 500, statusText: "Internal server error", headers: TextHeaders })
+        try {
+            if (req.headers["CF-Connecting-IP"] == CONFIG.ADMIN_IP) {
+                return new Response(e, { status: 500, statusText: "Internal server error", headers: TextHeaders })
+            } else {
+                return new Response("500 Internal server error " + req.headers["CF-Connecting-IP"], { status: 500, statusText: "Internal server error", headers: TextHeaders })
+            }
+        } catch (e) {
+            return new Response("500 Internal server error", { status: 500, statusText: "Internal server error", headers: TextHeaders })
         }
     }
 }
