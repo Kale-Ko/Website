@@ -14,7 +14,7 @@ JsonHeaders.set("Content-Type", "application/json")
 var HtmlHeaders = new Headers(TextHeaders)
 HtmlHeaders.set("Content-Type", "text/html")
 
-async function onRequestGet({ req, env }) {
+async function onRequestGet({ request: req, env }) {
     const CONFIG = { GITHUB_USERNAME: env.GITHUB_USERNAME, GITHUB_API_TOKEN: env.GITHUB_API_TOKEN }
 
     var fetchHeaders = {
@@ -717,7 +717,7 @@ async function onRequestGet({ req, env }) {
     }
 }
 
-async function onRequestPost({ req }) {
+async function onRequestPost({ request: req }) {
     var url = new URL(req.url.replace("/api", ""))
     var version = url.pathname.split("/")[1]
     var endpoint = url.pathname.split("/").slice(2)
