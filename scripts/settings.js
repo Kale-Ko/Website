@@ -4,7 +4,7 @@ const settings = [
         handler: {
             display: () => true,
             updateElement: (element) => {
-                element.checked = (localStorage.getItem("darkmode") == "true" ? true : false)
+                element.checked = (localStorage.getItem("darkmode") == "true")
             },
             update: () => {
                 if (localStorage.getItem("darkmode") == "true") {
@@ -23,7 +23,7 @@ const settings = [
         handler: {
             display: () => true,
             updateElement: (element) => {
-                element.checked = (localStorage.getItem("quickRedirect") == "true" ? true : false)
+                element.checked = (localStorage.getItem("quickRedirect") == "true")
             },
             update: () => { },
             set: (element) => {
@@ -32,21 +32,36 @@ const settings = [
         }
     },
     {
-        id: "no-gradient", title: "No Background Gradient", type: "checkbox", default: false, export: true,
+        id: "noGradient", title: "No Background Gradient", type: "checkbox", default: false, export: true,
         handler: {
             display: () => true,
             updateElement: (element) => {
-                element.checked = (localStorage.getItem("no-gradient") == "true" ? true : false)
+                element.checked = (localStorage.getItem("noGradient") == "true")
             },
             update: () => {
-                if (localStorage.getItem("no-gradient") == "true") {
-                    document.querySelector("html").classList.add("no-gradient")
+                if (localStorage.getItem("noGradient") == "true") {
+                    document.querySelector("html").classList.add("noGradient")
                 } else {
-                    document.querySelector("html").classList.remove("no-gradient")
+                    document.querySelector("html").classList.remove("noGradient")
                 }
             },
             set: (element) => {
-                localStorage.setItem("no-gradient", element.checked)
+                localStorage.setItem("noGradient", element.checked)
+            }
+        }
+    },
+    {
+        id: "allowAnalytics", title: "Allow Anonymous Analytics", type: "checkbox", default: ("doNotTrack" in navigator ? (navigator.doNotTrack != "1") : true), export: true,
+        handler: {
+            display: () => true,
+            updateElement: (element) => {
+                element.checked = (localStorage.getItem("allowAnalytics") == "true")
+            },
+            update: () => { },
+            set: (element) => {
+                localStorage.setItem("allowAnalytics", element.checked)
+
+                window.location.reload()
             }
         }
     },
@@ -58,7 +73,7 @@ const settings = [
     //         },
     //         updateElement: (element) => {
     //             element.checked = Notification.permission == "granted"
-
+    // 
     //             element.disabled = Notification.permission != "default"
     //         },
     //         update: () => { },

@@ -15,6 +15,8 @@
         <h1>Settings</h1>
 
         <div id="settings-list"></div>
+        <button type="button" id="viewAnalytics">View current analytics data</button>
+        <br id="viewAnalyticsLine">
         <br>
         <button type="button" id="import">Import settings</button>
         <button type="button" id="export">Export settings</button>
@@ -44,6 +46,15 @@
                     settingObject.appendChild(valueObject)
                     document.getElementById("settings-list").appendChild(settingObject)
                 })
+
+                if (localStorage.getItem("allowAnalytics") == "true") {
+                    document.getElementById("viewAnalytics").onclick = () => {
+                        alert(JSON.stringify(analyticsData))
+                    }
+                } else {
+                    document.getElementById("viewAnalytics").remove()
+                    document.getElementById("viewAnalyticsLine").remove()
+                }
 
                 document.getElementById("export").onclick = () => {
                     var data = ""

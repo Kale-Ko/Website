@@ -2,13 +2,12 @@
   Access-Control-Allow-Origin: kaleko.ga
   Access-Control-Allow-Methods: OPTIONS, HEAD, GET
   Allow: OPTIONS, HEAD, GET
-  Content-Language: en-US
+  Content-Language: en
   Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
-  ! report-to
 
 https://kaleko.ga/*
   Access-Control-Allow-Origin: kaleko.ga
