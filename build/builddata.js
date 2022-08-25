@@ -11,7 +11,7 @@ module.exports = {
     <meta property="og:image" content="{file=/assets/icon@256.png}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="./">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content="en">
 
     <meta name="description" content="My website where I put all my projects">
     <meta name="keywords" content="Kale, Ko, Kale Ko, Kale-Ko, Kale_Ko, Coding, Development, Website, Github, Games, Snake, Projects">
@@ -32,7 +32,7 @@ module.exports = {
 
         nav: `<nav>
         <div class="dropdown"><img src="{file=/assets/menu@64.png}" alt="Menu Button" width="64" height="64"></img><div class="dropdown-content"></div></div>
-        <div><a href="/" class="image"><img src="{file=/assets/icon@48.png}" width="48" height="48" alt="logo"><p> Home</p></a></div>
+        <div><a href="/" class="image"><img src="{file=/assets/icon@48.png}" width="44" height="44" alt="logo"><p> Home</p></a></div>
         <div><a href="/snake">Snake</a></div>
         <div><a href="/github">Github</a></div>
         <div><a href="/settings">Settings</a></div>
@@ -40,17 +40,19 @@ module.exports = {
 
         global: `{script=service-worker-register}
         {script=settings}
+        {script=analytics}
         {script=navbar}
         {script=backgroundfixer}`
     },
     replacements: [
-        { from: "<html>", to: "<html lang=\"en-US\" prefix=\"og: https://ogp.me/ns#\">" },
+        { from: "<html>", to: "<html lang=\"en\" prefix=\"og: https://ogp.me/ns#\">" },
         { from: "<title>", to: "<title>Kale Ko - " }
     ],
     moves: [
         { from: "./assets/redirects", to: "./_redirects" },
         { from: "./assets/headers", to: "./_headers" },
         { from: "./scripts/api.js", to: "./functions/api/[[path]].js" },
+        { from: "./assets/.well-known", to: "./.well-known" },
         { from: "./assets/icon.ico", to: "./favicon.ico", copy: true },
         { from: "./scripts/service-worker.js", to: "./service-worker.js" },
         { from: "./assets/robots.txt", to: "./robots.txt" },

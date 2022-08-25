@@ -19,8 +19,6 @@ html {
 
     --linkcolor: #0000ff;
     --linkhovercolor: #000064;
-
-    --fade-length: 0.25s;
 }
 
 html.darkmode {
@@ -37,11 +35,11 @@ html.darkmode {
     --linkhovercolor: #000064;
 }
 
-html.no-fade {
+html.noGradient {
     --background: #038d7b;
 }
 
-html.darkmode.no-fade {
+html.darkmode.noGradient {
     --background: #555555;
 }
 
@@ -70,7 +68,7 @@ main {
 }
 
 .section {
-    margin-top: 30vh;
+    margin-top: 25vh;
     margin-bottom: 40vh;
 }
 
@@ -209,7 +207,7 @@ h1 {
     font-family: var(--headerfont), Arial, sans-serif;
     color: var(--headercolor);
 
-    font-size: 60px;
+    font-size: 56px;
 }
 
 p {
