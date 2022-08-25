@@ -68,8 +68,6 @@ if (localStorage.getItem("allowAnalytics") == "true") {
     crypto.subtle.digest("SHA-512", new TextEncoder().encode(analyticsData.id)).then(hashBuffer => {
         analyticsData.id = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("")
 
-        fetch("/api/analytics", { method: "POST", body: JSON.stringify(analyticsData) }).then(res => res.json()).then(data => {
-            console.log(data)
-        })
+        fetch("/api/analytics", { method: "POST", body: JSON.stringify(analyticsData) })
     })
 }
