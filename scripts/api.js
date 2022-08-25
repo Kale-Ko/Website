@@ -14,15 +14,13 @@ JsonHeaders.set("Content-Type", "application/json")
 var HtmlHeaders = new Headers(TextHeaders)
 HtmlHeaders.set("Content-Type", "text/html")
 
-async function onRequestGet(context) {
-    const CONFIG = { GITHUB_USERNAME: context.env.GITHUB_USERNAME, GITHUB_API_TOKEN: context.env.GITHUB_API_TOKEN }
+async function onRequestGet({ req, env }) {
+    const CONFIG = { GITHUB_USERNAME: env.GITHUB_USERNAME, GITHUB_API_TOKEN: env.GITHUB_API_TOKEN }
 
     var fetchHeaders = {
         "User-Agent": "Mozilla/5.0 Cloudflare/Workers",
         "Authorization": "Bearer " + CONFIG.GITHUB_API_TOKEN
     }
-
-    var req = context.request
 
     var url = new URL(req.url.replace("/api", ""))
     var version = url.pathname.split("/")[1]
@@ -719,9 +717,7 @@ async function onRequestGet(context) {
     }
 }
 
-async function onRequestPost(context) {
-    var req = context.request
-
+async function onRequestPost({ req }) {
     var url = new URL(req.url.replace("/api", ""))
     var version = url.pathname.split("/")[1]
     var endpoint = url.pathname.split("/").slice(2)
@@ -739,7 +735,7 @@ async function onRequestPost(context) {
         if (endpoint[0] == "analytics") {
             var data
             try {
-                data = JSON.parse(req.body)
+                data = req.json()
             } catch {
                 if (returnType == "text") {
                     return new Response("Invalid payload sent for this endpoint", { status: 200, statusText: "Ok", headers: TextHeaders })
