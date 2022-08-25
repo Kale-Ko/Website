@@ -733,9 +733,9 @@ async function onRequestPost({ req }) {
         }
     } else if (version == "v5") {
         if (endpoint[0] == "analytics") {
-            var data
+            var data = null
             try {
-                data = req.json()
+                data = JSON.parse(await req.text())
             } catch {
                 if (returnType == "text") {
                     return new Response("Invalid payload sent for this endpoint", { status: 200, statusText: "Ok", headers: TextHeaders })
