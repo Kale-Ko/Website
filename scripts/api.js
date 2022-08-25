@@ -737,19 +737,10 @@ async function onRequestPost(context) {
         }
     } else if (version == "v5") {
         if (endpoint[0] == "analytics") {
-            if (req.body != undefined && JSON.parse(req.body)) {
-                var data = JSON.parse(req.body)
-
-                console.log(data)
-
-                if (returnType == "text") {
-                    return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify({ "code": "accepted", "message": "Accepted" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else {
+            var data
+            try {
+                data = JSON.parse(req.body)
+            } catch {
                 if (returnType == "text") {
                     return new Response("Invalid payload sent for this endpoint", { status: 200, statusText: "Ok", headers: TextHeaders })
                 } else if (returnType == "json") {
@@ -757,6 +748,16 @@ async function onRequestPost(context) {
                 } else {
                     return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
                 }
+            }
+
+            console.log(data)
+
+            if (returnType == "text") {
+                return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify({ "code": "accepted", "message": "Accepted" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             }
         } else {
             if (returnType == "json") {
