@@ -23,27 +23,25 @@ async function onRequestGet({ request: req, env }) {
     }
 
     var url = new URL(req.url.replace("/api", ""))
-    var version = url.pathname.split("/")[1]
-    var endpoint = url.pathname.split("/").slice(2)
+    var endpoint = url.pathname.split("/").slice(1)
     var returnType = url.searchParams.get("type") || "json"
 
-    if (version == "v1" || version == "v2" || version == "v3" || version == "v4") {
+    if (endpoint[0] == "") {
         if (returnType == "json") {
-            return new Response(JSON.stringify({ "error": { "code": "depreciated", "message": version + " has been depreciated, please use a different one" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            return new Response("Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/github/profile)", { status: 200, statusText: "Ok", headers: TextHeaders })
         } else if (returnType == "text") {
-            return new Response(version + " has been depreciated, please use a different one", { status: 400, statusText: "Bad Request", headers: TextHeaders })
+            return new Response(JSON.stringify({ "code": "welcome", "message": "Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/github/profile)" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
         } else {
             return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         }
-    } else if (version == "v5") {
-        if (endpoint[0] == "github") {
-            if (endpoint[1] == "profile") {
-                var response = {}
+    } else if (endpoint[0] == "github") {
+        if (endpoint[1] == "profile") {
+            var response = {}
 
-                await fetch("https://api.github.com/graphql", {
-                    method: "POST", body: JSON.stringify({
-                        query:
-                            `query {
+            await fetch("https://api.github.com/graphql", {
+                method: "POST", body: JSON.stringify({
+                    query:
+                        `query {
                                 user(login: "${CONFIG.GITHUB_USERNAME}") {
                                     databaseId
                                     login
@@ -104,55 +102,55 @@ async function onRequestGet({ request: req, env }) {
                                     }
                                 }
                             }` }), headers: fetchHeaders
-                }).then(res => res.json()).then(data => {
-                    data = data.data.user
+            }).then(res => res.json()).then(data => {
+                data = data.data.user
 
-                    data.followers = data.followers.nodes
-                    data.following = data.following.nodes
-                    data.organizations = data.organizations.nodes
-                    data.publicKeys = data.publicKeys.nodes
+                data.followers = data.followers.nodes
+                data.following = data.following.nodes
+                data.organizations = data.organizations.nodes
+                data.publicKeys = data.publicKeys.nodes
 
+                response = data
+            })
+
+            if (returnType == "text") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            }
+        } else if (endpoint[1] == "readme") {
+            var returnType = url.searchParams.get("type") || "text"
+
+            var response = ""
+
+            await fetch("https://raw.githubusercontent.com/" + CONFIG.GITHUB_USERNAME + "/" + CONFIG.GITHUB_USERNAME + "/master/README.md", { headers: fetchHeaders }).then(res => res.text()).then(data => {
+                if (returnType == "text") {
                     response = data
-                })
-
-                if (returnType == "text") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
                 } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else if (endpoint[1] == "readme") {
-                var returnType = url.searchParams.get("type") || "text"
-
-                var response = ""
-
-                await fetch("https://raw.githubusercontent.com/" + CONFIG.GITHUB_USERNAME + "/" + CONFIG.GITHUB_USERNAME + "/master/README.md", { headers: fetchHeaders }).then(res => res.text()).then(data => {
-                    if (returnType == "text") {
-                        response = data
-                    } else if (returnType == "json") {
-                        response = markedIt.parse(data)
-                    } else if (returnType == "html") {
-                        response = markedIt.render(data)
-                    }
-                })
-
-                if (returnType == "text") {
-                    return new Response(response, { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+                    response = markedIt.parse(data)
                 } else if (returnType == "html") {
-                    return new Response(response, { status: 200, statusText: "Ok", headers: HtmlHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+                    response = markedIt.render(data)
                 }
-            } else if (endpoint[1] == "repositories") {
-                var response = []
+            })
 
-                await fetch("https://api.github.com/graphql", {
-                    method: "POST", body: JSON.stringify({
-                        query:
-                            `query {
+            if (returnType == "text") {
+                return new Response(response, { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else if (returnType == "html") {
+                return new Response(response, { status: 200, statusText: "Ok", headers: HtmlHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            }
+        } else if (endpoint[1] == "repositories") {
+            var response = []
+
+            await fetch("https://api.github.com/graphql", {
+                method: "POST", body: JSON.stringify({
+                    query:
+                        `query {
                                 user(login: "${CONFIG.GITHUB_USERNAME}") {
                                     repositories(first: 100) {
                                         nodes {
@@ -240,43 +238,43 @@ async function onRequestGet({ request: req, env }) {
                                     }
                                 }
                             }`
-                    }), headers: fetchHeaders
-                }).then(res => res.json()).then(data => {
-                    data = data.data.user.repositories.nodes
+                }), headers: fetchHeaders
+            }).then(res => res.json()).then(data => {
+                data = data.data.user.repositories.nodes
 
-                    data.forEach(repo => {
-                        if (repo.visibility != "PUBLIC") {
-                            return data.splice(data.indexOf(repo), 1)
-                        }
+                data.forEach(repo => {
+                    if (repo.visibility != "PUBLIC") {
+                        return data.splice(data.indexOf(repo), 1)
+                    }
 
-                        if (data[data.indexOf(repo)].collaborators != null) data[data.indexOf(repo)].collaborators = repo.collaborators.nodes
-                        data[data.indexOf(repo)].languages = repo.languages.nodes
-                        data[data.indexOf(repo)].releases = repo.releases.nodes
-                        data[data.indexOf(repo)].issues = repo.issues.nodes
-                        data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
-
-                    data.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-                    data.sort((a, b) => b.stargazerCount - a.stargazerCount)
-                    data.sort((a, b) => (a.isArchived == b.isArchived) ? 0 : (a.isArchived ? 1 : -1))
-
-                    response = data
+                    if (data[data.indexOf(repo)].collaborators != null) data[data.indexOf(repo)].collaborators = repo.collaborators.nodes
+                    data[data.indexOf(repo)].languages = repo.languages.nodes
+                    data[data.indexOf(repo)].releases = repo.releases.nodes
+                    data[data.indexOf(repo)].issues = repo.issues.nodes
+                    data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
                 })
 
-                if (returnType == "text") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else if (endpoint[1] == "pins") {
-                var response = []
+                data.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+                data.sort((a, b) => b.stargazerCount - a.stargazerCount)
+                data.sort((a, b) => (a.isArchived == b.isArchived) ? 0 : (a.isArchived ? 1 : -1))
 
-                await fetch("https://api.github.com/graphql", {
-                    method: "POST", body: JSON.stringify({
-                        query:
-                            `query {
+                response = data
+            })
+
+            if (returnType == "text") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            }
+        } else if (endpoint[1] == "pins") {
+            var response = []
+
+            await fetch("https://api.github.com/graphql", {
+                method: "POST", body: JSON.stringify({
+                    query:
+                        `query {
                                 user(login: "${CONFIG.GITHUB_USERNAME}") {
                                     pinnedItems(first: 100) {
                                         nodes {
@@ -361,39 +359,39 @@ async function onRequestGet({ request: req, env }) {
                                     }
                                 }
                             }`
-                    }), headers: fetchHeaders
-                }).then(res => res.json()).then(data => {
-                    data = data.data.user.pinnedItems.nodes
+                }), headers: fetchHeaders
+            }).then(res => res.json()).then(data => {
+                data = data.data.user.pinnedItems.nodes
 
-                    data.forEach(repo => {
-                        if (repo.visibility != "PUBLIC") {
-                            return data.splice(data.indexOf(repo), 1)
-                        }
+                data.forEach(repo => {
+                    if (repo.visibility != "PUBLIC") {
+                        return data.splice(data.indexOf(repo), 1)
+                    }
 
-                        if (data[data.indexOf(repo)].collaborators != null) data[data.indexOf(repo)].collaborators = repo.collaborators.nodes
-                        data[data.indexOf(repo)].languages = repo.languages.nodes
-                        data[data.indexOf(repo)].releases = repo.releases.nodes
-                        data[data.indexOf(repo)].issues = repo.issues.nodes
-                        data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
-
-                    response = data
+                    if (data[data.indexOf(repo)].collaborators != null) data[data.indexOf(repo)].collaborators = repo.collaborators.nodes
+                    data[data.indexOf(repo)].languages = repo.languages.nodes
+                    data[data.indexOf(repo)].releases = repo.releases.nodes
+                    data[data.indexOf(repo)].issues = repo.issues.nodes
+                    data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
                 })
 
-                if (returnType == "text") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else if (endpoint[1] == "stars") {
-                var response = []
+                response = data
+            })
 
-                await fetch("https://api.github.com/graphql", {
-                    method: "POST", body: JSON.stringify({
-                        query:
-                            `query {
+            if (returnType == "text") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            }
+        } else if (endpoint[1] == "stars") {
+            var response = []
+
+            await fetch("https://api.github.com/graphql", {
+                method: "POST", body: JSON.stringify({
+                    query:
+                        `query {
                                 user(login:"${CONFIG.GITHUB_USERNAME}") {
                                     starredRepositories(first: 100) {
                                         nodes {
@@ -481,42 +479,42 @@ async function onRequestGet({ request: req, env }) {
                                     }
                                 }
                             }`
-                    }), headers: fetchHeaders
-                }).then(res => res.json()).then(data => {
-                    data = data.data.user.starredRepositories.nodes
+                }), headers: fetchHeaders
+            }).then(res => res.json()).then(data => {
+                data = data.data.user.starredRepositories.nodes
 
-                    data.forEach(repo => {
-                        if (repo.visibility != "PUBLIC") {
-                            return data.splice(data.indexOf(repo), 1)
-                        }
+                data.forEach(repo => {
+                    if (repo.visibility != "PUBLIC") {
+                        return data.splice(data.indexOf(repo), 1)
+                    }
 
-                        if (data[data.indexOf(repo)].collaborators != null) data[data.indexOf(repo)].collaborators = repo.collaborators.nodes
-                        data[data.indexOf(repo)].languages = repo.languages.nodes
-                        data[data.indexOf(repo)].releases = repo.releases.nodes
-                        data[data.indexOf(repo)].issues = repo.issues.nodes
-                        data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
-
-                    data.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-                    data.sort((a, b) => b.stargazerCount - a.stargazerCount)
-
-                    response = data
+                    if (data[data.indexOf(repo)].collaborators != null) data[data.indexOf(repo)].collaborators = repo.collaborators.nodes
+                    data[data.indexOf(repo)].languages = repo.languages.nodes
+                    data[data.indexOf(repo)].releases = repo.releases.nodes
+                    data[data.indexOf(repo)].issues = repo.issues.nodes
+                    data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
                 })
 
-                if (returnType == "text") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else if (endpoint[1] == "gists") {
-                var response = {}
+                data.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+                data.sort((a, b) => b.stargazerCount - a.stargazerCount)
 
-                await fetch("https://api.github.com/graphql", {
-                    method: "POST", body: JSON.stringify({
-                        query:
-                            `query {
+                response = data
+            })
+
+            if (returnType == "text") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            }
+        } else if (endpoint[1] == "gists") {
+            var response = {}
+
+            await fetch("https://api.github.com/graphql", {
+                method: "POST", body: JSON.stringify({
+                    query:
+                        `query {
                                 user(login: "${CONFIG.GITHUB_USERNAME}") {
                                     gists(first: 100) {
                                         nodes {
@@ -547,32 +545,32 @@ async function onRequestGet({ request: req, env }) {
                                     }
                                 }
                             }` }), headers: fetchHeaders
-                }).then(res => res.json()).then(data => {
-                    data = data.data.user.gists.nodes
+            }).then(res => res.json()).then(data => {
+                data = data.data.user.gists.nodes
 
-                    data.forEach(gist => {
-                        if (!gist.isPublic) {
-                            return data.splice(data.indexOf(gist), 1)
-                        }
-                    })
-
-                    response = data
+                data.forEach(gist => {
+                    if (!gist.isPublic) {
+                        return data.splice(data.indexOf(gist), 1)
+                    }
                 })
 
-                if (returnType == "text") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else if (endpoint[1] == "packages") {
-                var response = {}
+                response = data
+            })
 
-                await fetch("https://api.github.com/graphql", {
-                    method: "POST", body: JSON.stringify({
-                        query:
-                            `query {
+            if (returnType == "text") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            }
+        } else if (endpoint[1] == "packages") {
+            var response = {}
+
+            await fetch("https://api.github.com/graphql", {
+                method: "POST", body: JSON.stringify({
+                    query:
+                        `query {
                                 user(login: "${CONFIG.GITHUB_USERNAME}") {
                                     packages(first: 100) {
                                         nodes {
@@ -600,36 +598,36 @@ async function onRequestGet({ request: req, env }) {
                                     }
                                 }
                             }` }), headers: fetchHeaders
-                }).then(res => res.json()).then(data => {
-                    console.log(data)
+            }).then(res => res.json()).then(data => {
+                console.log(data)
 
-                    data = data.data.user.packages.nodes
+                data = data.data.user.packages.nodes
 
-                    data.forEach(gitPackage => {
-                        if (gitPackage.name.startsWith("deleted_")) {
-                            return data.splice(data.indexOf(gitPackage), 1)
-                        }
+                data.forEach(gitPackage => {
+                    if (gitPackage.name.startsWith("deleted_")) {
+                        return data.splice(data.indexOf(gitPackage), 1)
+                    }
 
-                        data[data.indexOf(gitPackage)].versions = gitPackage.versions.nodes
-                    })
-
-                    response = data
+                    data[data.indexOf(gitPackage)].versions = gitPackage.versions.nodes
                 })
 
-                if (returnType == "text") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else if (endpoint[1] == "projects") {
-                var response = {}
+                response = data
+            })
 
-                await fetch("https://api.github.com/graphql", {
-                    method: "POST", body: JSON.stringify({
-                        query:
-                            `query {
+            if (returnType == "text") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            }
+        } else if (endpoint[1] == "projects") {
+            var response = {}
+
+            await fetch("https://api.github.com/graphql", {
+                method: "POST", body: JSON.stringify({
+                    query:
+                        `query {
                                 user(login: "${CONFIG.GITHUB_USERNAME}") {
                                     projectsV2(first: 100) {
                                         nodes {
@@ -651,66 +649,47 @@ async function onRequestGet({ request: req, env }) {
                                     }
                                 }
                             }` }), headers: fetchHeaders
-                }).then(res => res.json()).then(data => {
-                    data = data.data.user.projectsV2.nodes
+            }).then(res => res.json()).then(data => {
+                data = data.data.user.projectsV2.nodes
 
-                    data.forEach(project => {
-                        if (!project.public) {
-                            return data.splice(data.indexOf(project), 1)
-                        }
-                    })
-
-                    response = data
+                data.forEach(project => {
+                    if (!project.public) {
+                        return data.splice(data.indexOf(project), 1)
+                    }
                 })
 
-                if (returnType == "text") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else {
-                if (returnType == "json") {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/profile", "/readme", "/repositories", "/pins", "/stars", "/gists", "/packages", "/projects"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                } else if (returnType == "text") {
-                    return new Response("The specified endpoint you are trying to access does not exist\n\n/profile\n/readme\n/repositories\n/pins\n/stars\n/gists\n/packages\n/projects", { status: 400, statusText: "Bad Request", headers: TextHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            }
-        } else if (endpoint[0] == "online") {
+                response = data
+            })
+
             if (returnType == "text") {
-                return new Response("Online", { status: 200, statusText: "Ok", headers: TextHeaders })
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
             } else if (returnType == "json") {
-                return new Response(JSON.stringify({ "status": "Online" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
             } else {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             }
-        } else if (endpoint[0] == "analytics") {
-            return new Response("Under construction", { status: 200, statusText: "Ok", headers: TextHeaders })
         } else {
             if (returnType == "json") {
-                return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/online", "/github"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+                return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/profile", "/readme", "/repositories", "/pins", "/stars", "/gists", "/packages", "/projects"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             } else if (returnType == "text") {
-                return new Response("The specified endpoint you are trying to access does not exist\n\n/online\n/github", { status: 400, statusText: "Bad Request", headers: TextHeaders })
+                return new Response("The specified endpoint you are trying to access does not exist\n\n/profile\n/readme\n/repositories\n/pins\n/stars\n/gists\n/packages\n/projects", { status: 400, statusText: "Bad Request", headers: TextHeaders })
             } else {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             }
         }
-    } else if (version == undefined || version == "") {
-        if (returnType == "json") {
-            return new Response("Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/v5/github/profile)", { status: 200, statusText: "Ok", headers: TextHeaders })
-        } else if (returnType == "text") {
-            return new Response(JSON.stringify({ "code": "welcome", "message": "Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/v5/github/profile)", "version": "v5" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+    } else if (endpoint[0] == "online") {
+        if (returnType == "text") {
+            return new Response("Online", { status: 200, statusText: "Ok", headers: TextHeaders })
+        } else if (returnType == "json") {
+            return new Response(JSON.stringify({ "status": "Online" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
         } else {
             return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         }
     } else {
         if (returnType == "json") {
-            return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/v5"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/online", "/github"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         } else if (returnType == "text") {
-            return new Response("The specified endpoint you are trying to access does not exist\n\n/v5", { status: 400, statusText: "Bad Request", headers: TextHeaders })
+            return new Response("The specified endpoint you are trying to access does not exist\n\n/online\n/github", { status: 400, statusText: "Bad Request", headers: TextHeaders })
         } else {
             return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         }
@@ -719,64 +698,45 @@ async function onRequestGet({ request: req, env }) {
 
 async function onRequestPost({ request: req }) {
     var url = new URL(req.url.replace("/api", ""))
-    var version = url.pathname.split("/")[1]
-    var endpoint = url.pathname.split("/").slice(2)
+    var endpoint = url.pathname.split("/").slice(1)
     var returnType = url.searchParams.get("type") || "json"
 
-    if (version == "v1" || version == "v2" || version == "v3" || version == "v4") {
+    if (endpoint[0] == "") {
         if (returnType == "json") {
-            return new Response(JSON.stringify({ "error": { "code": "depreciated", "message": version + " has been depreciated, please use a different one" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            return new Response("Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/github/profile)", { status: 200, statusText: "Ok", headers: TextHeaders })
         } else if (returnType == "text") {
-            return new Response(version + " has been depreciated, please use a different one", { status: 400, statusText: "Bad Request", headers: TextHeaders })
+            return new Response(JSON.stringify({ "code": "welcome", "message": "Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/github/profile)" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
         } else {
             return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         }
-    } else if (version == "v5") {
-        if (endpoint[0] == "analytics") {
-            var data = null
-            try {
-                data = JSON.parse(await req.text())
-            } catch {
-                if (returnType == "text") {
-                    return new Response("Invalid payload sent for this endpoint", { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_payload", "message": "Invalid payload sent for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            }
-
-            console.log(data)
-
+    } else if (endpoint[0] == "analytics") {
+        var data = null
+        try {
+            data = JSON.parse(await req.text())
+        } catch {
             if (returnType == "text") {
-                return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
+                return new Response("Invalid payload sent for this endpoint", { status: 200, statusText: "Ok", headers: TextHeaders })
             } else if (returnType == "json") {
-                return new Response(JSON.stringify({ "code": "accepted", "message": "Accepted" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-            } else {
-                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-            }
-        } else {
-            if (returnType == "json") {
-                return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/online", "/github", "/analytics"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-            } else if (returnType == "text") {
-                return new Response("The specified endpoint you are trying to access does not exist\n\n/online\n/github\n/analytics", { status: 400, statusText: "Bad Request", headers: TextHeaders })
+                return new Response(JSON.stringify({ "error": { "code": "invalid_payload", "message": "Invalid payload sent for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             } else {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             }
         }
-    } else if (version == undefined || version == "") {
-        if (returnType == "json") {
-            return new Response("Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/v5/github/profile)", { status: 200, statusText: "Ok", headers: TextHeaders })
-        } else if (returnType == "text") {
-            return new Response(JSON.stringify({ "code": "welcome", "message": "Welcome to the api, try sending a request (eg GET https://kaleko.ga/api/v5/github/profile)", "version": "v5" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+
+        console.log(data)
+
+        if (returnType == "text") {
+            return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
+        } else if (returnType == "json") {
+            return new Response(JSON.stringify({ "code": "accepted", "message": "Accepted" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
         } else {
             return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         }
     } else {
         if (returnType == "json") {
-            return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/v5"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/online", "/github", "/analytics"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         } else if (returnType == "text") {
-            return new Response("The specified endpoint you are trying to access does not exist\n\n/v5", { status: 400, statusText: "Bad Request", headers: TextHeaders })
+            return new Response("The specified endpoint you are trying to access does not exist\n\n/online\n/github\n/analytics", { status: 400, statusText: "Bad Request", headers: TextHeaders })
         } else {
             return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         }

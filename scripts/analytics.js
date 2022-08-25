@@ -1,5 +1,5 @@
 if (localStorage.getItem("allowAnalytics") == "true") {
-    var analyticsData = { os: "unknown", browser: "unknown", language: "unknown", usesDarkmode: null, usesQuickRedirects: null, usesNoBackgroundGradient: null, usedSecureConnection: "unknown", visited: null }
+    var analyticsData = { id: "", os: "unknown", browser: "unknown", language: "unknown", usesDarkmode: null, usesQuickRedirects: null, usesNoBackgroundGradient: null, usedSecureConnection: "unknown", visited: null }
 
     if ("platform" in navigator) {
         analyticsData.os = (navigator.platform.toLowerCase().includes("win") ? "windows" : (navigator.platform.toLowerCase().includes("mac") ? "mac" : (navigator.platform.toLowerCase().includes("linux") ? "linux" : ((navigator.platform.toLowerCase().includes("iphone") || navigator.platform.toLowerCase().includes("ipad")) ? "ios" : (navigator.platform.toLowerCase().includes("android") ? "android" : "unknown")))))
@@ -48,9 +48,28 @@ if (localStorage.getItem("allowAnalytics") == "true") {
     analyticsData.usedSecureConnection = window.location.protocol == "https:"
     analyticsData.visited = window.location.pathname
 
-    console.log(analyticsData)
+    if ("userAgent" in navigator) {
+        analyticsData.id += navigator.userAgent
+    }
 
-    fetch("/api/v5/analytics", { method: "POST", body: JSON.stringify(analyticsData) }).then(res => res.json()).then(data => {
-        console.log(data)
+    if ("platform" in navigator) {
+        analyticsData.id += navigator.platform
+    }
+    if ("oscpu" in navigator) {
+        analyticsData.id += navigator.oscpu
+    }
+
+    if ("languages" in navigator) {
+        analyticsData.id += navigator.languages.join(",")
+    } else if ("language" in navigator) {
+        analyticsData.id += navigator.language
+    }
+
+    crypto.subtle.digest("SHA-512", new TextEncoder().encode(analyticsData.id)).then(hashBuffer => {
+        analyticsData.id = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("")
+
+        fetch("/api/analytics", { method: "POST", body: JSON.stringify(analyticsData) }).then(res => res.json()).then(data => {
+            console.log(data)
+        })
     })
 }
