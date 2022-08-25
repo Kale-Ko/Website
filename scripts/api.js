@@ -14,7 +14,7 @@ JsonHeaders.set("Content-Type", "application/json")
 var HtmlHeaders = new Headers(TextHeaders)
 HtmlHeaders.set("Content-Type", "text/html")
 
-async function onRequest(context) {
+async function onRequestGet(context) {
     const CONFIG = { GITHUB_USERNAME: context.env.GITHUB_USERNAME, GITHUB_API_TOKEN: context.env.GITHUB_API_TOKEN }
 
     var fetchHeaders = {
@@ -787,4 +787,4 @@ async function onRequestPost(context) {
     }
 }
 
-export { onRequest, onRequestPost }
+export { onRequestGet, onRequestPost }
