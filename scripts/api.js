@@ -1,5 +1,5 @@
 var TextHeaders = new Headers()
-TextHeaders.set("Content-Type", "text/plain")
+TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
 TextHeaders.set("Access-Control-Allow-Origin", "kaleko.ga")
 TextHeaders.set("Access-Control-Allow-Methods", "OPTIONS, HEAD, GET, POST")
 TextHeaders.set("Allow", "OPTIONS, HEAD, GET, POST")
@@ -10,9 +10,9 @@ TextHeaders.set("Cross-Origin-Resource-Policy", "same-origin")
 TextHeaders.set("X-Frame-Options", "SAMEORIGIN")
 TextHeaders.set("X-Content-Type-Options", "nosniff")
 var JsonHeaders = new Headers(TextHeaders)
-JsonHeaders.set("Content-Type", "application/json")
+JsonHeaders.set("Content-Type", "application/json; charset=utf-8")
 var HtmlHeaders = new Headers(TextHeaders)
-HtmlHeaders.set("Content-Type", "text/html")
+HtmlHeaders.set("Content-Type", "text/html; charset=utf-8")
 
 async function onRequestGet({ request: req, env }) {
     const CONFIG = { GITHUB_USERNAME: env.GITHUB_USERNAME, GITHUB_API_TOKEN: env.GITHUB_API_TOKEN }

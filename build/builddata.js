@@ -2,8 +2,8 @@ module.exports = {
     placeholders: {
         meta: `<link rel="icon" href="{file=/assets/icon@64.png}">
     <link rel="apple-touch-icon" href="{file=/assets/icon@64.png}">
-    {style=global}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=4.0">
+    <link rel="stylesheet" href="{file=/styles/global.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:title" content="{title}">
     <meta property="og:description" content="My website where I put all my projects">
@@ -22,8 +22,8 @@ module.exports = {
 
         offlineMeta: `<link rel="icon" href="{file=image/png;/assets/icon-grey@64.png}">
         <link rel="apple-touch-icon" href="{file=image/png;/assets/icon-grey@64.png}">
-        {style=offline}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=4.0">
+        <link rel="stylesheet" href="{file=/styles/style=offline.css}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <meta name="robots" content="noindex">
         <meta name="author" content="Kale Ko (https://github.com/Kale-Ko/)">
@@ -38,11 +38,11 @@ module.exports = {
         <div><a href="/settings">Settings</a></div>
     </nav>`,
 
-        global: `{script=service-worker-register}
-        {script=settings}
-        {script=analytics}
-        {script=navbar}
-        {script=backgroundfixer}`
+        global: `<script src="{file=/scripts/service-worker-register.js}"></script>
+        <script src="{file=/scripts/settings.js}"></script>
+        <script src="{file=/scripts/analytics.js}"></script>
+        <script src="{file=/scripts/navbar.js}"></script>
+        <script src="{file=/scripts/backgroundfixer.js}"></script>`
     },
     replacements: [
         { from: "<html>", to: "<html lang=\"en\" prefix=\"og: https://ogp.me/ns#\">" },
