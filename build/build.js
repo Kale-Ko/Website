@@ -116,18 +116,6 @@ function next() {
                         contents = contents.replace(replacement.from, replacement.to)
                     })
 
-                    while (contents.includes("{script=")) {
-                        var start = contents.indexOf("{script=")
-                        var end = contents.indexOf("}", contents.indexOf("{script=")) + 1
-                        contents = contents.replace(contents.substring(start, end), "<script>\n        " + fs.readFileSync("./scripts/" + contents.substring(start + 8, end - 1) + ".js").toString().replace(/\n/g, "\n         ") + "\n    </script>")
-                    }
-
-                    while (contents.includes("{style=")) {
-                        var start = contents.indexOf("{style=")
-                        var end = contents.indexOf("}", contents.indexOf("{style=")) + 1
-                        contents = contents.replace(contents.substring(start, end), "<style>\n        " + fs.readFileSync("./styles/" + contents.substring(start + 7, end - 1) + ".css").toString().replace(/\n/g, "\n         ") + "\n    </style>")
-                    }
-
                     while (contents.includes("{file=")) {
                         var start = contents.indexOf("{file=")
                         var end = contents.indexOf("}", contents.indexOf("{file=")) + 1
@@ -170,8 +158,8 @@ function next() {
     scan("./", "/")
 
     if (!process.argv.includes("--nodepend")) {
-        exec("trash pages/** scripts/** styles/** package.json package-lock.json node_modules/** build/**")
+        exec("trash pages/** package.json package-lock.json node_modules/** build/**")
     } else {
-        exec("trash pages/** scripts/** styles/** build/**")
+        exec("trash pages/** build/**")
     }
 }

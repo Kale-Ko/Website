@@ -129,22 +129,25 @@ exec("cd ./test && npm install trash-cli --location=global").on("exit", () => {
 
             req.url = req.url.replace(/%20/, " ")
 
+            var charset = "; charset=utf-8"
             var typeMappings = {
-                "html": "text/html",
-                "js": "text/javascript",
-                "json": "application/json",
-                "xml": "application/xml",
-                "css": "text/css",
+                "html": "text/html" + charset,
+                "js": "text/javascript" + charset,
+                "json": "application/json" + charset,
+                "xml": "application/xml" + charset,
+                "css": "text/css" + charset,
+                "woff": "font/woff",
+                "woff2": "font/woff2",
                 "png": "image/png",
                 "jpg": "image/jpeg",
                 "ico": "image/icon",
-                "svg": "image/svg+xml",
+                "svg": "image/svg+xml" + charset,
                 "pdf": "application/pdf",
                 "gif": "image/gif",
                 "mp3": "audio/mpeg",
                 "mp4": "video/mp4",
                 "zip": "application/zip",
-                "txt": "text/plain",
+                "txt": "text/plain" + charset,
                 "anything": "application/octet-stream"
             }
 
@@ -167,12 +170,7 @@ exec("cd ./test && npm install trash-cli --location=global").on("exit", () => {
                     res.statusCode = 200
                     res.statusMessage = "Ok"
                     res.setHeader("Content-Type", typeMappings["html"])
-
-                    if (res.getHeader("Content-Type") == typeMappings["html"]) {
-                        res.end(fs.readFileSync("./test" + req.url + "/index.html").toString().replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http","ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
-                    } else {
-                        res.end(fs.readFileSync("./test" + req.url + "/index.html"))
-                    }
+                    res.end(fs.readFileSync("./test" + req.url + "/index.html").toString().replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http","ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
                 } else {
                     res.statusCode = 200
                     res.statusMessage = "Ok"
