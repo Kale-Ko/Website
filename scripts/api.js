@@ -726,6 +726,16 @@ async function onRequestPost({ request: req, env }) {
         }
 
         if (env.ANALYTICS != undefined) {
+            var visits = env.ANALYTICS.get("visits", { type: "json" })
+            if (visits[data["visited"]] != undefined) {
+                visits[data["visited"]]++
+            } else {
+                visits[data["visited"]] = 1
+            }
+            env.ANALYTICS.put("visits", visits)
+
+            delete data["id"]
+            delete data["visited"]
             env.ANALYTICS.put("user-" + data.id, JSON.stringify(data))
 
             if (returnType == "text") {
