@@ -780,7 +780,7 @@ async function onRequestPost({ request: req, env }) {
         if (CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
             return new Response(err.toString(), { status: 500, statusText: "Internal server error", headers: TextHeaders })
         } else {
-            return new Response("500 Internal Server Error", { status: 500, statusText: "Internal Server Error", headers: TextHeaders })
+            return new Response("500 Internal Server Error" + req.headers.get("CF-Connecting-IP"), { status: 500, statusText: "Internal Server Error", headers: TextHeaders })
         }
     }
 }
