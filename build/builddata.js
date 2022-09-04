@@ -18,7 +18,10 @@ module.exports = {
     <meta name="robots" content="index, follow">
     <meta name="author" content="Kale Ko (https://github.com/Kale-Ko/)">
     <link rel="author" href="https://github.com/Kale-Ko/">
-    <link rel="license" href="https://kaleko.ga/license.txt">`,
+    <link rel="license" href="https://kaleko.ga/license.txt">
+
+    <script src="{file=/scripts/service-worker-register.js}"></script>
+    <script src="{file=/scripts/settings.js}"></script>`,
 
         offlineMeta: `<link rel="icon" href="{file=image/png;/assets/icon-grey@64.png}">
         <link rel="apple-touch-icon" href="{file=image/png;/assets/icon-grey@64.png}">
@@ -38,9 +41,7 @@ module.exports = {
         <div><a href="/settings">Settings</a></div>
     </nav>`,
 
-        global: `<script src="{file=/scripts/service-worker-register.js}"></script>
-        <script src="{file=/scripts/settings.js}"></script>
-        <script src="{file=/scripts/analytics.js}"></script>
+        global: `<script src="{file=/scripts/analytics.js}"></script>
         <script src="{file=/scripts/navbar.js}"></script>
         <script src="{file=/scripts/backgroundfixer.js}"></script>`
     },
