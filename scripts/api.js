@@ -739,6 +739,12 @@ async function onRequestPost({ request: req, env }) {
             if (env.ANALYTICS != undefined) {
                 var storedData = { os: data.os, browser: data.browser, language: data.language, usesDarkmode: data.usesDarkmode, usesQuickRedirects: data.usesQuickRedirects, usesNoBackgroundGradient: data.usesNoBackgroundGradient, usedSecureConnection: data.usedSecureConnection, visits: {} }
 
+                try {
+                return new Response(env.ANALYTICS.get("user-" + data.id) + "\n" + JSON.stringify(env.ANALYTICS.get("user-" + data.id)))
+                } catch {
+                    return new Response(env.ANALYTICS.get("user-" + data.id))
+                }
+
                 if (env.ANALYTICS.get("user-" + data.id) != null) {
                     storedData.visits = env.ANALYTICS.get("user-" + data.id, { type: "json" }).visits
                 }
