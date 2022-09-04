@@ -47,7 +47,7 @@ if (localStorage.getItem("allowAnalytics") == "true") {
 
     analyticsData.usedSecureConnection = window.location.protocol == "https:"
 
-    if (window.location.pathname.endsWith("/")) {
+    if (window.location.pathname != "/" && window.location.pathname.endsWith("/")) {
         analyticsData.visited = window.location.pathname.substring(0, window.location.pathname.length - 1)
     } else {
         analyticsData.visited = window.location.pathname
