@@ -681,7 +681,7 @@ async function onRequestGet({ request: req, env }) {
         if (returnType == "text") {
             return new Response("Online", { status: 200, statusText: "Ok", headers: TextHeaders })
         } else if (returnType == "json") {
-            return new Response(JSON.stringify({ "status": "Online" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            return new Response(JSON.stringify({ "status": "online" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
         } else {
             return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
         }

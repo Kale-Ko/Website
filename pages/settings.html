@@ -49,7 +49,7 @@
 
                 if (localStorage.getItem("allowAnalytics") == "true") {
                     document.getElementById("viewAnalytics").onclick = () => {
-                        alert(JSON.stringify(analyticsData))
+                        alert(JSON.stringify(analyticsData, null, 2))
                     }
                 } else {
                     document.getElementById("viewAnalytics").remove()
