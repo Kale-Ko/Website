@@ -46,28 +46,26 @@ if (localStorage.getItem("allowAnalytics") == "true") {
     analyticsData.usesNoBackgroundGradient = (localStorage.getItem("noGradient") == "true")
 
     analyticsData.usedSecureConnection = window.location.protocol == "https:"
-    analyticsData.visited = window.location.pathname
 
-    if ("userAgent" in navigator) {
-        analyticsData.id += navigator.userAgent
+    if (window.location.pathname.endsWith("/")) {
+        analyticsData.visited = window.location.pathname.substring(0, window.location.pathname.length - 1)
+    } else {
+        analyticsData.visited = window.location.pathname
     }
 
-    if ("platform" in navigator) {
-        analyticsData.id += navigator.platform
-    }
-    if ("oscpu" in navigator) {
-        analyticsData.id += navigator.oscpu
-    }
+    var properties = ["userAgent", "platform", "oscpu", "hardwareConcurrency", "languages", "language", "product", "productSub", "vendor", "vendorSub", "appCodeName", "appName", "appVersion", "buildID"]
 
-    if ("languages" in navigator) {
-        analyticsData.id += navigator.languages.join(",")
-    } else if ("language" in navigator) {
-        analyticsData.id += navigator.language
-    }
+    properties.forEach(property => {
+        if (property in navigator) {
+            analyticsData.id += navigator[property]
+        } else if (property in window) {
+            analyticsData.id += window[property]
+        }
+    })
 
-    crypto.subtle.digest("SHA-512", new TextEncoder().encode(analyticsData.id)).then(hashBuffer => {
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode(analyticsData.id)).then(hashBuffer => {
         analyticsData.id = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("")
 
-        fetch("/api/analytics", { method: "POST", body: JSON.stringify(analyticsData) })
+        fetch("/api/analytics?type=json", { method: "POST", body: JSON.stringify(analyticsData) })
     })
 }

@@ -17,9 +17,9 @@ self.addEventListener("fetch", event => {
     if (event.request.mode == "navigate") {
         (async () => {
             try {
-                await fetch("/api/online").then(res => {
-                    if (res.status != 200) {
-                        throw new Error("Offline")
+                await fetch("/api/online?type=json").then(res => res.json()).then(data => {
+                    if (data.status != "online") {
+                        throw new Error(data.status)
                     }
                 })
             } catch (error) {
