@@ -111,3 +111,4 @@ function updateSettings() {
 updateSettings()
 
 window.dispatchEvent(new CustomEvent("settingsLoaded"))
+window.settingsLoaded = true
