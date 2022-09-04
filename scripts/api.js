@@ -726,7 +726,7 @@ async function onRequestPost({ request: req, env }) {
         const ANALYTICS = env.ANALYTICS
 
         if (ANALYTICS != undefined) {
-            ANALYTICS.put(data.id, data)
+            ANALYTICS.put("user-" + data.id, data)
 
             if (returnType == "text") {
                 return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
