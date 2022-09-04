@@ -699,7 +699,7 @@ async function onRequestGet({ request: req, env }) {
         }
     } catch (err) {
         if (CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
-            return new Response(err.toString(), { status: 500, statusText: "Internal server error", headers: TextHeaders })
+            return new Response("500 Internal Server Error:\n" + err.toString(), { status: 500, statusText: "Internal server error", headers: TextHeaders })
         } else {
             return new Response("500 Internal Server Error", { status: 500, statusText: "Internal Server Error", headers: TextHeaders })
         }
@@ -778,9 +778,9 @@ async function onRequestPost({ request: req, env }) {
         }
     } catch (err) {
         if (CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
-            return new Response(err.toString(), { status: 500, statusText: "Internal server error", headers: TextHeaders })
+            return new Response("500 Internal Server Error:\n" + err.toString(), { status: 500, statusText: "Internal server error", headers: TextHeaders })
         } else {
-            return new Response("500 Internal Server Error " + CONFIG.TRUSTED_IPS + " " + CONFIG.TRUSTED_IPS.split(",") + " " + req.headers.get("CF-Connecting-IP"), { status: 500, statusText: "Internal Server Error", headers: TextHeaders })
+            return new Response("500 Internal Server Error", { status: 500, statusText: "Internal Server Error", headers: TextHeaders })
         }
     }
 }
