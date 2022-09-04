@@ -14,11 +14,6 @@ JsonHeaders.set("Content-Type", "application/json; charset=utf-8")
 const HtmlHeaders = new Headers(TextHeaders)
 HtmlHeaders.set("Content-Type", "text/html; charset=utf-8")
 
-const FetchHeaders = {
-    "User-Agent": "Mozilla/5.0 Cloudflare/Workers",
-    "Authorization": "Bearer " + CONFIG.GITHUB_API_TOKEN
-}
-
 async function onRequestGet({ request: req, env }) {
     const CONFIG = { GITHUB_USERNAME: env.GITHUB_USERNAME, GITHUB_API_TOKEN: env.GITHUB_API_TOKEN, TRUSTED_IPS: env.TRUSTED_IPS }
 
@@ -26,6 +21,11 @@ async function onRequestGet({ request: req, env }) {
         var url = new URL(req.url.replace("/api", ""))
         var endpoint = url.pathname.split("/").slice(1)
         var returnType = url.searchParams.get("type") || "json"
+
+        var FetchHeaders = {
+            "User-Agent": "Mozilla/5.0 Cloudflare/Workers",
+            "Authorization": "Bearer " + CONFIG.GITHUB_API_TOKEN
+        }
 
         if (endpoint[0] == "") {
             if (returnType == "json") {
