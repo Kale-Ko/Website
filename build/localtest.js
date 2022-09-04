@@ -172,7 +172,7 @@ exec("cd ./test && npm install trash-cli --location=global").on("exit", () => {
                     res.setHeader("Content-Type", typeMappings["html"])
                     res.end(fs.readFileSync("./test" + req.url + "/index.html").toString().replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http","ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
                 } else {
-                    res.statusCode = 200
+                    res.statusCode = 404
                     res.statusMessage = "Ok"
                     res.setHeader("Content-Type", typeMappings["html"])
 
