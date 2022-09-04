@@ -726,17 +726,19 @@ async function onRequestPost({ request: req, env }) {
         }
 
         if (env.ANALYTICS != undefined) {
-            var visits = env.ANALYTICS.get("visits", { type: "json" })
-            if (visits[data["visited"]] != undefined) {
-                visits[data["visited"]]++
-            } else {
-                visits[data["visited"]] = 1
-            }
-            env.ANALYTICS.put("visits", visits)
+            var storedData = { os: data.os, browser: data.browser, language: data.language, usesDarkmode: data.usesDarkmode, usesQuickRedirects: data.usesQuickRedirects, usesNoBackgroundGradient: data.usesNoBackgroundGradient, usedSecureConnection: data.usedSecureConnection, visits: {} }
 
-            delete data["id"]
-            delete data["visited"]
-            env.ANALYTICS.put("user-" + data.id, JSON.stringify(data))
+            if (env.ANALYTICS.get("user-" + data.id) != null) {
+                storedData.visits = env.ANALYTICS.get("user-" + data.id, { type: "json" }).visits
+            }
+
+            if (storedData.visits[data.visited] != undefined) {
+                storedData.visits[data.visited]++
+            } else {
+                storedData.visits[data.visited] = 1
+            }
+
+            env.ANALYTICS.put("user-" + data.id, JSON.stringify(storedData))
 
             if (returnType == "text") {
                 return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
