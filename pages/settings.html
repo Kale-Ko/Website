@@ -23,7 +23,13 @@
         <input type="file" class="hidden" id="importFile"></input>
 
         <script>
-            window.addEventListener("settingsLoaded", () => {
+            if (window.settingsLoaded) {
+                next()
+            } else {
+                window.addEventListener("settingsLoaded", next)
+            }
+
+            function next() {
                 settings.forEach(setting => {
                     if (!setting.handler.display()) {
                         return
@@ -108,7 +114,7 @@
                         }
                     }
                 }
-            })
+            }
         </script>
     </main>
 
