@@ -1,4 +1,4 @@
-const markedIt = require("https://cdn.jsdelivr.net/npm/marked/marked.min.js")
+const markedIt = require("marked")
 
 const TextHeaders = new Headers()
 TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
