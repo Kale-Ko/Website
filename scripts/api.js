@@ -1,3 +1,5 @@
+const markedIt = require("https://cdn.jsdelivr.net/npm/marked/marked.min.js")
+
 const TextHeaders = new Headers()
 TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
 TextHeaders.set("Access-Control-Allow-Origin", "kaleko.ga")
