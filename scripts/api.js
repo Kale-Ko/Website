@@ -1,4 +1,4 @@
-const markedIt = require("../../scripts/libs/marked.min.js")
+const marked = require("../../scripts/libs/marked.min.js")
 
 const TextHeaders = new Headers()
 TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
@@ -132,9 +132,9 @@ async function onRequestGet({ request: req, env }) {
                     if (returnType == "text") {
                         response = data
                     } else if (returnType == "json") {
-                        response = markedIt.parse(data)
+                        response = marked.lex(data)
                     } else if (returnType == "html") {
-                        response = markedIt.render(data)
+                        response = marked.parse(data)
                     }
                 })
 
