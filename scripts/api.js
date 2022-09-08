@@ -1,4 +1,4 @@
-const markedIt = require("/scripts/libs/marked.min.js")
+const markedIt = require("../../scripts/libs/marked.min.js")
 
 const TextHeaders = new Headers()
 TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
