@@ -132,9 +132,9 @@ async function onRequestGet({ request: req, env }) {
                     if (returnType == "text") {
                         response = data
                     } else if (returnType == "json") {
-                        response = marked.lex(data)
+                        response = marked.lexer(data, { gfm: true, breaks: true, headerIds: true })
                     } else if (returnType == "html") {
-                        response = marked.parse(data)
+                        response = marked.parse(data, { gfm: true, breaks: true, headerIds: true })
                     }
                 })
 
