@@ -5,11 +5,19 @@
         <priority>1.00</priority>
     </url>
     <url>
-        <loc>https://kaleko.ga/snake/</loc>
+        <loc>https://kaleko.ga/github/</loc>
+        <priority>0.75</priority>
+    </url>
+    <url>
+        <loc>https://kaleko.ga/twitter/</loc>
         <priority>0.70</priority>
     </url>
     <url>
-        <loc>https://kaleko.ga/settings/</loc>
+        <loc>https://kaleko.ga/snake/</loc>
         <priority>0.50</priority>
+    </url>
+    <url>
+        <loc>https://kaleko.ga/settings/</loc>
+        <priority>0.30</priority>
     </url>
 </urlset>

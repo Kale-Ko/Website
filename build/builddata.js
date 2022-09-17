@@ -36,9 +36,9 @@ module.exports = {
         nav: `<nav>
         <div class="dropdown"><img src="{file=/assets/menu@64.png}" alt="Menu Button" width="64" height="64"></img><div class="dropdown-content"></div></div>
         <div><a href="/" class="image"><img src="{file=/assets/icon@48.png}" width="44" height="44" alt="logo"><p> Home</p></a></div>
-        <div><a href="/snake">Snake</a></div>
-        <div><a href="/github">Github</a></div>
-        <div><a href="/settings">Settings</a></div>
+        <div><a href="/snake/">Snake</a></div>
+        <div><a href="/github/">Github</a></div>
+        <div><a href="/settings/">Settings</a></div>
     </nav>`,
 
         global: `<script src="{file=/scripts/analytics.js}"></script>
