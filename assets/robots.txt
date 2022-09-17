@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /api/
 Disallow: /assets/
 Disallow: /fonts/
 Disallow: /license.txt
