@@ -689,8 +689,8 @@ async function onRequestGet({ request: req, env }) {
             } else {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             }
-        } else if (endpoint[0] == "analytics") {
-
+        } else if (endpoint[0] == "analytics" && CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
+            return new Response(env.ANALYTICS.list("user-").keys)
         } else {
             if (returnType == "json") {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/online", "/github"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
