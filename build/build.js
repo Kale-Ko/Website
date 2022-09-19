@@ -4,10 +4,8 @@ const { exec } = require("child_process")
 if (process.argv.includes("--nodepend")) {
     next()
 } else {
-    exec("npm install trash-cli --location=global").on("exit", () => {
-        exec("npm install sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
-            next()
-        })
+    exec("npm install sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
+        next()
     })
 }
 
@@ -23,14 +21,28 @@ function next() {
     const minify_xml = require("minify-xml").minify
 
     builddata.moves.forEach(move => {
-        if (move.copy == true) {
-            fs.copyFileSync(move.from, move.to)
-        } else {
-            if (move.to.includes("/") && move.to.split("/").length > 2) {
-                fs.mkdirSync(move.to.split("/").slice(0, move.to.split("/").length - 1).join("/"), { recursive: true })
+        if (fs.statSync(move.from).isFile()) {
+            if (!fs.existsSync(move.to.substring(0, move.to.lastIndexOf("/")))) {
+                fs.mkdirSync(move.to.substring(0, move.to.lastIndexOf("/")), { recursive: true })
             }
 
-            fs.renameSync(move.from, move.to)
+            if (move.copy == true) {
+                fs.copyFileSync(move.from, move.to)
+            } else {
+                fs.renameSync(move.from, move.to)
+            }
+        } else {
+            if (!fs.existsSync(move.to)) {
+                fs.mkdirSync(move.to, { recursive: true })
+            }
+
+            fs.readdirSync(move.from).forEach(file => {
+                if (move.copy == true) {
+                    fs.copyFileSync(move.from + "/" + file, move.to + "/" + file)
+                } else {
+                    fs.renameSync(move.from + "/" + file, move.to + "/" + file)
+                }
+            })
         }
     })
 
@@ -52,12 +64,12 @@ function next() {
         }
     })
 
-    function resizeImages(dir, name) {
+    function resizeImages(dir) {
         var files = fs.readdirSync(dir)
 
         files.forEach(file => {
             if (fs.statSync(dir + file).isDirectory()) {
-                resizeImages(dir + file + "/", name + "/" + file)
+                resizeImages(dir + file + "/")
             } else {
                 if (file.endsWith(".png")) {
                     var image = fs.readFileSync(dir + file)
@@ -98,13 +110,13 @@ function next() {
     }
     resizeImages("./assets/", "/")
 
-    function scan(dir, name) {
+    function scan(dir) {
         var files = fs.readdirSync(dir)
 
         files.forEach(file => {
-            if (file != "build" && file != ".git" && file != ".gitignore" && file != "package-lock.json" && file != "node_modules") {
+            if (file != "build" && file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml") {
                 if (fs.statSync(dir + file).isDirectory()) {
-                    scan(dir + file + "/", name + "/" + file)
+                    scan(dir + file + "/")
                 } else {
                     var contents = fs.readFileSync(dir + file).toString()
 
@@ -158,8 +170,13 @@ function next() {
     scan("./", "/")
 
     if (!process.argv.includes("--nodepend")) {
-        exec("trash pages/** package.json package-lock.json node_modules/** build/**")
+        fs.rmSync("pages", { recursive: true })
+        fs.rmSync("package.json")
+        fs.rmSync("package-lock.json")
+        fs.rmSync("node_modules", { recursive: true })
+        fs.rmSync("build", { recursive: true })
     } else {
-        exec("trash pages/** build/**")
+        fs.rmSync("pages", { recursive: true })
+        fs.rmSync("build", { recursive: true })
     }
 }
