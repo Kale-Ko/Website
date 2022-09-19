@@ -690,7 +690,19 @@ async function onRequestGet({ request: req, env }) {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             }
         } else if (endpoint[0] == "analytics" && CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
-            return new Response(env.ANALYTICS.list("user-").keys)
+            var response = { visitors: 0, hits: 0, raw: env.ANALYTICS.list({ prefix: "user-" }).keys }
+
+            response.raw.forEach(point => {
+                response.visitors++
+            })
+
+            if (returnType == "text") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
+            } else if (returnType == "json") {
+                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
+            } else {
+                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
+            }
         } else {
             if (returnType == "json") {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/online", "/github"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
