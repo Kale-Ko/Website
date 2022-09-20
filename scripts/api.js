@@ -700,18 +700,12 @@ async function onRequestGet({ request: req, env }) {
             })
 
             for (point in pointsList) {
-                var point = await env.ANALYTICS.get(point.name)
+                var point = await env.ANALYTICS.get(point)
 
                 response.visitors++
 
                 response.raw.push(point)
             }
-
-            pointsList.forEach(point => {
-                response.visitors++
-
-                response.raw.push(point)
-            })
 
             if (returnType == "text") {
                 return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
