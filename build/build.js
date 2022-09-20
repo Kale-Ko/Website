@@ -104,6 +104,17 @@ function next() {
                             sharp(image).jpeg().resize(currentsize, currentsize).toFile(dir + file.replace(".jpeg", "@" + currentsize + ".jpeg"))
                         })
                     }
+                } else if (file.endsWith(".webp")) {
+                    var image = fs.readFileSync(dir + file)
+                    var size = imageSize(image)
+
+                    if (size.width == size.height) {
+                        sharp(image).webp().toFile(dir + file.replace(".webp", "@" + size.width + ".webp"))
+
+                        builddata.imageSizes.forEach(currentsize => {
+                            sharp(image).webp().resize(currentsize, currentsize).toFile(dir + file.replace(".webp", "@" + currentsize + ".webp"))
+                        })
+                    }
                 }
             }
         })
@@ -128,6 +139,8 @@ function next() {
                         contents = contents.replace(replacement.from, replacement.to)
                     })
 
+                    contents = contents.replace(/{baseUrl}/g, builddata.baseUrl)
+
                     while (contents.includes("{file=")) {
                         var start = contents.indexOf("{file=")
                         var end = contents.indexOf("}", contents.indexOf("{file=")) + 1
@@ -138,15 +151,15 @@ function next() {
                                 contents = contents.replace(contents.substring(start, end), "data:text/plain,base64;" + "404 File Not Found".toString("base64"))
                             }
                         } else {
-                            contents = contents.replace(contents.substring(start, end), contents.substring(start + 6, end - 1))
+                            contents = contents.replace(contents.substring(start, end), builddata.baseUrl + contents.substring(start + 6, end - 1))
                         }
                     }
 
-                    if (file.endsWith(".html")) {
-                        contents = contents.replace("{title}", contents.substring(contents.indexOf("<title>") + 7, contents.indexOf("</title>")))
+                    if (file.endsWith(".html") && !dir.includes("pages")) {
+                        contents = contents.replace(/{title}/g, contents.substring(contents.indexOf("<title>") + 7, contents.indexOf("</title>"))).replace(/{canonical}/g, (builddata.baseUrl + dir.replace("./", "/") + file.replace("index", "").replace(".html", "") + "/").replace(/\/\//g, "/"))
 
                         contents = minify_html(contents, {
-                            collapseBooleanAttributes: true, collapseInlineTagWhitespace: true, collapseWhitespace: true, quoteCharacter: '"', removeAttributeQuotes: true, removeComments: true,
+                            collapseBooleanAttributes: true, collapseInlineTagWhitespace: true, collapseWhitespace: true, quoteCharacter: '"', removeAttributeQuotes: false, removeComments: true,
                             minifyJS: text => minify_js(text).code,
                             minifyCSS: text => new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(text).styles
                         });

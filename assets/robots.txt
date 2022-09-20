@@ -5,4 +5,4 @@ Disallow: /fonts/
 Disallow: /license.txt
 Disallow: /publicKey.gpg
 
-Sitemap: https://kaleko.ga/sitemap.xml
+Sitemap: {baseUrl}/sitemap.xml

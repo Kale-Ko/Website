@@ -6,7 +6,7 @@ self.addEventListener("activate", event => {
     event.waitUntil(caches.open("offline").then(cache => {
         return cache.addAll([
             "/offline",
-            "/assets/icon-grey@64.png"
+            "/assets/icon-grey@64.webp"
         ])
     }))
 
@@ -37,7 +37,7 @@ self.addEventListener("fetch", event => {
             url = url.slice(0, url.length - 1)
         }
 
-        if ((cachedFiles.includes(url.split("/")[url.split("/").length - 1]) || cachedFormats.includes(url.split(".")[url.split(".").length - 1])) && new URL(url).hostname != "api.kaleko.ga") {
+        if (cachedFiles.includes(url.split("/")[url.split("/").length - 1]) || cachedFormats.includes(url.split(".")[url.split(".").length - 1])) {
             event.respondWith((async () => {
                 var cache = await caches.open("cachedData")
                 var cached = await cache.match(event.request)
