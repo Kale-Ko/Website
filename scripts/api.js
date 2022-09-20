@@ -690,7 +690,7 @@ async function onRequestGet({ request: req, env }) {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             }
         } else if (endpoint[0] == "analytics" && CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
-            var response = { visitors: 0, hits: 0, raw: [] }
+            var response = { visitors: 0, hits: 0, data: [] }
 
             var rawPointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
             var pointsList = []
@@ -700,11 +700,12 @@ async function onRequestGet({ request: req, env }) {
             })
 
             for (point in pointsList) {
+                response.data.push(point)
                 var point = await env.ANALYTICS.get(point)
 
                 response.visitors++
 
-                response.raw.push(point)
+                response.data.push(point)
             }
 
             if (returnType == "text") {
