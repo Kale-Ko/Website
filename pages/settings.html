@@ -30,7 +30,7 @@
             }
 
             function next() {
-                settings.forEach(setting => {
+                for (setting in settings) {
                     if (!setting.handler.display()) {
                         return
                     }
@@ -51,7 +51,7 @@
 
                     settingObject.appendChild(valueObject)
                     document.getElementById("settings-list").appendChild(settingObject)
-                })
+                }
 
                 if (localStorage.getItem("allowAnalytics") == "true") {
                     document.getElementById("viewAnalytics").onclick = () => {
@@ -65,11 +65,11 @@
                 document.getElementById("export").onclick = () => {
                     var data = ""
 
-                    settings.forEach(setting => {
+                    for (setting in settings) {
                         if (setting.export && localStorage.getItem(setting.id).toLowerCase() != "undefined" && localStorage.getItem(setting.id).toLowerCase().toLowerCase() != "null") {
                             data += setting.id + "=" + localStorage.getItem(setting.id) + "\n"
                         }
-                    })
+                    }
 
                     var element = document.createElement("a")
                     element.setAttribute("href", "data:text/plain," + encodeURIComponent(data))
@@ -91,7 +91,7 @@
                             document.getElementById("importFile").files[0].text().then(text => {
                                 var settings = text.split("\n")
 
-                                settings.forEach(setting => {
+                                for (setting in settings) {
                                     if (setting.split("=").length != 2 || setting.split("=")[1].toLowerCase() == "undefined" || setting.split("=")[1].toLowerCase() == "null") {
                                         return
                                     }
@@ -107,7 +107,7 @@
                                     } else {
                                         document.getElementById("setting-" + setting.split("=")[0] + "-value").value = setting.split("=")[1]
                                     }
-                                })
+                                }
 
                                 updateSettings()
                             })

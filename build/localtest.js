@@ -24,18 +24,16 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
 
         console.log("Removing old files")
 
-        fs.readdirSync("./test").forEach(file => {
+        for (file in fs.readdirSync("./test")) {
             if (file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml") {
                 fs.rmSync("./test/" + file, { recursive: true })
             }
-        })
+        }
 
         console.log("Cloning files")
 
         function scan(dir) {
-            var files = fs.readdirSync(dir)
-
-            files.forEach(file => {
+            for (file in fs.readdirSync(dir) ){
                 if (file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml" && file != "test") {
                     if (fs.statSync(dir + file).isDirectory()) {
                         if (!fs.existsSync("./test/" + dir.replace("./", "") + file)) {
@@ -47,7 +45,7 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
                         fs.copyFileSync(dir + file, "./test/" + dir.replace("./", "") + "/" + file)
                     }
                 }
-            })
+            }
         }
         scan("./")
 
@@ -118,11 +116,11 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
         if (fs.existsSync("./test" + req.url) && !fs.statSync("./test" + req.url).isDirectory()) {
             res.statusCode = 200
             res.statusMessage = "Ok"
-            Object.keys(typeMappings).forEach(key => {
+            for (key in Object.keys(typeMappings)) {
                 if (req.url.endsWith("." + key)) {
                     res.setHeader("Content-Type", typeMappings[key])
                 }
-            })
+            }
 
             if (res.getHeader("Content-Type") == typeMappings["html"]) {
                 res.end(fs.readFileSync("./test" + req.url).toString().replace("</body>", '<script>var socket=new WebSocket(window.location.protocol.replace("http","ws")+"//"+window.location.host+"/livereload");socket.onmessage=(msg)=>{if(msg.data=="reload")window.location.reload()}</script></body>'))
@@ -154,9 +152,7 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
     console.log("Watching files")
 
     function scan(dir) {
-        var files = fs.readdirSync(dir)
-
-        files.forEach(file => {
+        for (file in fs.readdirSync(dir)) {
             if (file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml" && file != "test") {
                 if (fs.statSync(dir + file).isDirectory()) {
                     scan(dir + file + "/")
@@ -178,7 +174,7 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
                     })
                 }
             }
-        })
+        }
     }
     scan("./", "/")
 })
