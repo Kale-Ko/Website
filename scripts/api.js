@@ -700,8 +700,7 @@ async function onRequestGet({ request: req, env }) {
             })
 
             for (point in pointsList) {
-                response.data.push(point)
-                var point = await env.ANALYTICS.get(point)
+                var point = await env.ANALYTICS.get(pointsList[point])
 
                 response.visitors++
 
