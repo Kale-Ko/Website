@@ -702,14 +702,6 @@ async function onRequestGet({ request: req, env }) {
                 response.raw.push(point)
             })
 
-            for (pointId in pointsList) {
-                var point = await env.ANALYTICS.get(pointId.name)
-
-                response.visitors++
-
-                response.raw.push(point)
-            }
-
             if (returnType == "text") {
                 return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
             } else if (returnType == "json") {
