@@ -694,8 +694,16 @@ async function onRequestGet({ request: req, env }) {
 
             var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
 
+            pointsList.forEach(async pointId => {
+                var point = await env.ANALYTICS.get(pointId.name)
+
+                response.visitors++
+
+                response.raw.push(point)
+            })
+
             for (pointId in pointsList) {
-                var point = await env.ANALYTICS.get(pointId)
+                var point = await env.ANALYTICS.get(pointId.name)
 
                 response.visitors++
 
