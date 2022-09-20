@@ -700,15 +700,17 @@ async function onRequestGet({ request: req, env }) {
             })
 
             for (point in pointsList) {
-                var point = await env.ANALYTICS.get(pointsList[point], {type:"json"})
+                var point = await env.ANALYTICS.get(pointsList[point], { type: "json" })
 
-                response.visitors++
+                if (point.usedSecureConnection != false) {
+                    response.visitors++
 
-                Object.keys(point.visits).forEach(key => {
-                    response.hits += point.visits[key]
-                })
+                    Object.keys(point.visits).forEach(key => {
+                        response.hits += point.visits[key]
+                    })
 
-                response.data.push(point)
+                    response.data.push(point)
+                }
             }
 
             if (returnType == "text") {
