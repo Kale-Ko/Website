@@ -693,7 +693,7 @@ async function onRequestGet({ request: req, env }) {
             var response = { visitors: 0, hits: 0, raw: [] }
 
             var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
-
+            return new Response(JSON.parse(JSON.stringify(pointsList)))
             for (point in JSON.parse(JSON.stringify(pointsList))) {
                 pointsList[pointsList.indexOf(point)] = await env.ANALYTICS.get(point.name)
             }
