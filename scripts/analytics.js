@@ -53,13 +53,15 @@ if (localStorage.getItem("allowAnalytics") == "true") {
         analyticsData.visited = window.location.pathname
     }
 
-    for (property in ["userAgent", "platform", "oscpu", "hardwareConcurrency", "languages", "language", "product", "productSub", "vendor", "vendorSub", "appCodeName", "appName", "appVersion", "buildID"]) {
+    var properties = ["userAgent", "platform", "oscpu", "hardwareConcurrency", "languages", "language", "product", "productSub", "vendor", "vendorSub", "appCodeName", "appName", "appVersion", "buildID"]
+
+    properties.forEach(property => {
         if (property in navigator) {
             analyticsData.id += navigator[property]
         } else if (property in window) {
             analyticsData.id += window[property]
         }
-    }
+    })
 
     crypto.subtle.digest("SHA-256", new TextEncoder().encode(analyticsData.id)).then(hashBuffer => {
         analyticsData.id = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("")
