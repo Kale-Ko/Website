@@ -20,7 +20,7 @@ function next() {
     const minify_css = require("clean-css")
     const minify_xml = require("minify-xml").minify
 
-    for (move in builddata.moves) {
+    builddata.moves.forEach(move => {
         if (fs.statSync(move.from).isFile()) {
             if (!fs.existsSync(move.to.substring(0, move.to.lastIndexOf("/")))) {
                 fs.mkdirSync(move.to.substring(0, move.to.lastIndexOf("/")), { recursive: true })
@@ -36,17 +36,19 @@ function next() {
                 fs.mkdirSync(move.to, { recursive: true })
             }
 
-            for (file in fs.readdirSync(move.from)) {
+            fs.readdirSync(move.from).forEach(file => {
                 if (move.copy == true) {
                     fs.copyFileSync(move.from + "/" + file, move.to + "/" + file)
                 } else {
                     fs.renameSync(move.from + "/" + file, move.to + "/" + file)
                 }
-            }
+            })
         }
-    }
+    })
 
-    for (page in fs.readdirSync("./pages/")) {
+    var pages = fs.readdirSync("./pages/")
+
+    pages.forEach(page => {
         if (page.endsWith(".html")) {
             var content = fs.readFileSync("./pages/" + page).toString()
 
@@ -60,10 +62,12 @@ function next() {
                 fs.writeFileSync("./" + page.replace(".html", "") + "/index.html", content)
             }
         }
-    }
+    })
 
     function resizeImages(dir) {
-        for (file in fs.readdirSync(dir)) {
+        var files = fs.readdirSync(dir)
+
+        files.forEach(file => {
             if (fs.statSync(dir + file).isDirectory()) {
                 resizeImages(dir + file + "/")
             } else {
@@ -74,9 +78,9 @@ function next() {
                     if (size.width == size.height) {
                         sharp(image).png().toFile(dir + file.replace(".png", "@" + size.width + ".png"))
 
-                        for (currentSize in builddata.imageSizes) {
+                        builddata.imageSizes.forEach(currentsize => {
                             sharp(image).png().resize(currentsize, currentsize).toFile(dir + file.replace(".png", "@" + currentsize + ".png"))
-                        }
+                        })
                     }
                 } else if (file.endsWith(".jpg")) {
                     var image = fs.readFileSync(dir + file)
@@ -85,9 +89,9 @@ function next() {
                     if (size.width == size.height) {
                         sharp(image).jpeg().toFile(dir + file.replace(".jpg", "@" + size.width + ".jpg"))
 
-                        for (currentsize in builddata.imageSizes) {
+                        builddata.imageSizes.forEach(currentsize => {
                             sharp(image).jpeg().resize(currentsize, currentsize).toFile(dir + file.replace(".jpg", "@" + currentsize + ".jpg"))
-                        }
+                        })
                     }
                 } else if (file.endsWith(".jpeg")) {
                     var image = fs.readFileSync(dir + file)
@@ -96,31 +100,33 @@ function next() {
                     if (size.width == size.height) {
                         sharp(image).jpeg().toFile(dir + file.replace(".jpeg", "@" + size.width + ".jpeg"))
 
-                        for (currentsize in builddata.imageSizes) {
+                        builddata.imageSizes.forEach(currentsize => {
                             sharp(image).jpeg().resize(currentsize, currentsize).toFile(dir + file.replace(".jpeg", "@" + currentsize + ".jpeg"))
-                        }
+                        })
                     }
                 }
             }
-        }
+        })
     }
     resizeImages("./assets/", "/")
 
     function scan(dir) {
-        for (file in fs.readdirSync(dir)) {
+        var files = fs.readdirSync(dir)
+
+        files.forEach(file => {
             if (file != "build" && file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml") {
                 if (fs.statSync(dir + file).isDirectory()) {
                     scan(dir + file + "/")
                 } else {
                     var contents = fs.readFileSync(dir + file).toString()
 
-                    for (key in Object.keys(builddata.placeholders)) {
+                    Object.keys(builddata.placeholders).forEach(key => {
                         contents = contents.replace(new RegExp("{" + key + "}", "g"), builddata.placeholders[key])
-                    }
+                    })
 
-                    for (replacement in builddata.replacements) {
+                    builddata.replacements.forEach(replacement => {
                         contents = contents.replace(replacement.from, replacement.to)
-                    }
+                    })
 
                     while (contents.includes("{file=")) {
                         var start = contents.indexOf("{file=")
@@ -159,7 +165,7 @@ function next() {
                     fs.writeFileSync(dir + file, contents)
                 }
             }
-        }
+        })
     }
     scan("./", "/")
 
