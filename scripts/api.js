@@ -692,10 +692,19 @@ async function onRequestGet({ request: req, env }) {
         } else if (endpoint[0] == "analytics" && CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
             var response = { visitors: 0, hits: 0, raw: [] }
 
-            var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
-            return new Response(JSON.stringify(JSON.parse(JSON.stringify(pointsList))))
-            for (point in JSON.parse(JSON.stringify(pointsList))) {
-                pointsList[pointsList.indexOf(point)] = await env.ANALYTICS.get(point.name)
+            var rawPointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
+            var pointsList = []
+
+            rawPointsList.forEach(point => {
+                pointsList.push(point.name)
+            })
+
+            for (point in pointsList) {
+                var point = await env.ANALYTICS.get(point.name)
+
+                response.visitors++
+
+                response.raw.push(point)
             }
 
             pointsList.forEach(point => {
