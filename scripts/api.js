@@ -694,6 +694,8 @@ async function onRequestGet({ request: req, env }) {
 
             var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
 
+            return new Response(JSON.stringify(pointsList, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
+
             pointsList.forEach(async pointId => {
                 var point = await env.ANALYTICS.get(pointId.name)
 
