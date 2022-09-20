@@ -246,7 +246,7 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.repositories.nodes
 
-                    data.forEach(repo => {
+                    for (repo in data) {
                         if (repo.visibility != "PUBLIC") {
                             return data.splice(data.indexOf(repo), 1)
                         }
@@ -256,7 +256,7 @@ async function onRequestGet({ request: req, env }) {
                         data[data.indexOf(repo)].releases = repo.releases.nodes
                         data[data.indexOf(repo)].issues = repo.issues.nodes
                         data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
+                    }
 
                     data.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                     data.sort((a, b) => b.stargazerCount - a.stargazerCount)
@@ -367,7 +367,7 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.pinnedItems.nodes
 
-                    data.forEach(repo => {
+                    for (repo in data) {
                         if (repo.visibility != "PUBLIC") {
                             return data.splice(data.indexOf(repo), 1)
                         }
@@ -377,7 +377,7 @@ async function onRequestGet({ request: req, env }) {
                         data[data.indexOf(repo)].releases = repo.releases.nodes
                         data[data.indexOf(repo)].issues = repo.issues.nodes
                         data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
+                    }
 
                     response = data
                 })
@@ -487,7 +487,7 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.starredRepositories.nodes
 
-                    data.forEach(repo => {
+                    for (repo in data) {
                         if (repo.visibility != "PUBLIC") {
                             return data.splice(data.indexOf(repo), 1)
                         }
@@ -497,7 +497,7 @@ async function onRequestGet({ request: req, env }) {
                         data[data.indexOf(repo)].releases = repo.releases.nodes
                         data[data.indexOf(repo)].issues = repo.issues.nodes
                         data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
+                    }
 
                     data.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                     data.sort((a, b) => b.stargazerCount - a.stargazerCount)
@@ -552,11 +552,11 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.gists.nodes
 
-                    data.forEach(gist => {
+                    for (gist in data) {
                         if (!gist.isPublic) {
                             return data.splice(data.indexOf(gist), 1)
                         }
-                    })
+                    }
 
                     response = data
                 })
@@ -607,13 +607,13 @@ async function onRequestGet({ request: req, env }) {
 
                     data = data.data.user.packages.nodes
 
-                    data.forEach(gitPackage => {
+                    for (gitPackage in data) {
                         if (gitPackage.name.startsWith("deleted_")) {
                             return data.splice(data.indexOf(gitPackage), 1)
                         }
 
                         data[data.indexOf(gitPackage)].versions = gitPackage.versions.nodes
-                    })
+                    }
 
                     response = data
                 })
@@ -656,11 +656,11 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.projectsV2.nodes
 
-                    data.forEach(project => {
+                    for (project in data) {
                         if (!project.public) {
                             return data.splice(data.indexOf(project), 1)
                         }
-                    })
+                    }
 
                     response = data
                 })
@@ -694,13 +694,13 @@ async function onRequestGet({ request: req, env }) {
 
             var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
 
-            pointsList.forEach(async pointId => {
+            for (pointId in pointsList) {
                 var point = await env.ANALYTICS.get(pointId)
 
                 response.visitors++
 
                 response.raw.push(point)
-            })
+            }
 
             if (returnType == "text") {
                 return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })

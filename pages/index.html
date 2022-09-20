@@ -33,12 +33,12 @@
 
             <script>
                 fetch("/api/github/pins?type=json").then(res => res.json()).then(repos => {
-                    repos.forEach(repo => {
+                    for (repo in repos) {
                         var element = document.createElement("p")
                         element.innerHTML = (repo.homepageUrl != "" && repo.homepageUrl != null ? '<a href="' + repo.homepageUrl + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
 
                         document.getElementById("projectsList").appendChild(element)
-                    })
+                    }
 
                     document.getElementById("loadingProjects").setAttribute("class", "hidden")
                     document.getElementById("projectsList").removeAttribute("class")

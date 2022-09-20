@@ -98,15 +98,15 @@ const settings = [
 window.settings = settings
 
 function updateSettings() {
-    settings.forEach(setting => {
+    for (setting in settings) {
         if (localStorage.getItem(setting.id) == null) {
             setting.handler.set({ value: setting.default, checked: setting.default })
         }
-    })
+    }
 
-    settings.forEach(setting => {
+    for (setting in settings) {
         setting.handler.update()
-    })
+    }
 }
 updateSettings()
 
