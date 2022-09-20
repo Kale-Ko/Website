@@ -704,6 +704,10 @@ async function onRequestGet({ request: req, env }) {
 
                 response.visitors++
 
+                Object.keys(point.visits).forEach(key => {
+                    response.hits += point.visits[key]
+                })
+
                 response.data.push(point)
             }
 
