@@ -691,16 +691,16 @@ async function onRequestGet({ request: req, env }) {
             }
         } else if (endpoint[0] == "analytics" && CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
             var response = { visitors: 0, hits: 0, raw: [] }
-            
+
             var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
-            
-            pointsList.forEach(async pointId => {
+
+            for (pointId in pointsList) {
                 var point = await env.ANALYTICS.get(pointId)
-                
+
                 response.visitors++
 
                 response.raw.push(point)
-            })
+            }
 
             if (returnType == "text") {
                 return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
