@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
-        <loc>https://kaleko.ga/</loc>
+        <loc>{baseUrl}/</loc>
         <priority>1.00</priority>
     </url>
     <url>
-        <loc>https://kaleko.ga/github/</loc>
+        <loc>{baseUrl}/github/</loc>
         <priority>0.75</priority>
     </url>
     <url>
-        <loc>https://kaleko.ga/twitter/</loc>
+        <loc>{baseUrl}/twitter/</loc>
         <priority>0.70</priority>
     </url>
     <url>
-        <loc>https://kaleko.ga/snake/</loc>
+        <loc>{baseUrl}/snake/</loc>
         <priority>0.50</priority>
     </url>
     <url>
-        <loc>https://kaleko.ga/settings/</loc>
+        <loc>{baseUrl}/settings/</loc>
         <priority>0.30</priority>
     </url>
 </urlset>
