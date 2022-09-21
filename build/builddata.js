@@ -1,9 +1,7 @@
 module.exports = {
     baseUrl: "https://kaleko.ga",
     placeholders: {
-        meta: `<meta charset="UTF-8">
-
-    <link rel="icon" href="{file=/assets/icon@64.webp}">
+        meta: `<link rel="icon" href="{file=/assets/icon@64.webp}">
     <link rel="apple-touch-icon" href="{file=/assets/icon@64.webp}">
     <link rel="stylesheet" href="{file=/styles/global.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,8 +25,7 @@ module.exports = {
     <script src="{file=/scripts/service-worker-register.js}"></script>
     <script src="{file=/scripts/settings.js}"></script>`,
 
-        offlineMeta: `<meta charset="UTF-8">
-        <link rel="icon" href="{file=image/webp;/assets/icon-grey@64.webp}">
+        offlineMeta: `<link rel="icon" href="{file=image/webp;/assets/icon-grey@64.webp}">
         <link rel="apple-touch-icon" href="{file=image/webp;/assets/icon-grey@64.webp}">
         <link rel="stylesheet" href="{file=/styles/style=offline.css}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,6 +49,7 @@ module.exports = {
     },
     replacements: [
         { from: "<html>", to: "<html lang=\"en\" prefix=\"og: https://ogp.me/ns#\">" },
+        { from: "<head>", to: "<head>\n    <meta charset=\"UTF-8\">" },
         { from: "<title>", to: "<title>Kale Ko - " }
     ],
     moves: [

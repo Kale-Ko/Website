@@ -171,8 +171,6 @@ function next() {
                         contents = minify_xml(contents)
                     } else if (file.endsWith(".json")) {
                         contents = JSON.stringify(JSON.parse(contents))
-                    } else {
-                        return
                     }
 
                     fs.writeFileSync(dir + file, contents)
