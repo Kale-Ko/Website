@@ -151,7 +151,7 @@ function next() {
                                 contents = contents.replace(contents.substring(start, end), "data:text/plain,base64;" + "404 File Not Found".toString("base64"))
                             }
                         } else {
-                            contents = contents.replace(contents.substring(start, end), builddata.baseUrl + contents.substring(start + 6, end - 1))
+                            contents = contents.replace(contents.substring(start, end), contents.substring(start + 6, end - 1))
                         }
                     }
 
