@@ -695,7 +695,7 @@ async function onRequestGet({ request: req, env }) {
             var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
 
             for (var point of pointsList) {
-                point = point.metadata.data
+                point = point.metadata.storedData
 
                 if (point.usedSecureConnection != false) {
                     response.visitors++
@@ -779,7 +779,7 @@ async function onRequestPost({ request: req, env }) {
                     storedData.visits[data.visited] = 1
                 }
 
-                await env.ANALYTICS.put("user-" + data.id, JSON.stringify(storedData), { metadata: { data: JSON.stringify(storedData) } })
+                await env.ANALYTICS.put("user-" + data.id, JSON.stringify(storedData), { metadata: { storedData } })
 
                 if (returnType == "text") {
                     return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
