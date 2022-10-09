@@ -692,15 +692,10 @@ async function onRequestGet({ request: req, env }) {
         } else if (endpoint[0] == "analytics" && CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
             var response = { visitors: 0, hits: 0, data: [] }
 
-            var rawPointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
-            var pointsList = []
+            var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
 
-            rawPointsList.forEach(point => {
-                pointsList.push(point.name)
-            })
-
-            for (point in pointsList) {
-                var point = await env.ANALYTICS.get(pointsList[point], { type: "json" })
+            for (var point of pointsList) {
+                point = point.metadata.data
 
                 if (point.usedSecureConnection != false) {
                     response.visitors++
@@ -769,10 +764,13 @@ async function onRequestPost({ request: req, env }) {
             }
 
             if (env.ANALYTICS != undefined) {
-                var storedData = { os: data.os, browser: data.browser, language: data.language, usesDarkmode: data.usesDarkmode, usesQuickRedirects: data.usesQuickRedirects, usesNoBackgroundGradient: data.usesNoBackgroundGradient, usedSecureConnection: data.usedSecureConnection, visits: {} }
+                var storedData = { os: data.os, browser: data.browser, language: data.language, usesDarkmode: data.usesDarkmode, usesQuickRedirects: data.usesQuickRedirects, usesNoBackgroundGradient: data.usesNoBackgroundGradient, usedSecureConnection: data.usedSecureConnection, firstVisit: data.timeStamp, lastVisit: data.timeStamp, visits: {} }
 
-                if (await env.ANALYTICS.get("user-" + data.id) != null) {
-                    storedData.visits = (await env.ANALYTICS.get("user-" + data.id, { type: "json" })).visits
+                var fetchedData = await env.ANALYTICS.get("user-" + data.id, { type: "json" })
+                if (fetchedData != null) {
+                    storedData.visits = fetchedData.visits
+
+                    storedData.firstVisit = fetchedData.firstVisit
                 }
 
                 if (storedData.visits[data.visited] != undefined) {
@@ -781,7 +779,7 @@ async function onRequestPost({ request: req, env }) {
                     storedData.visits[data.visited] = 1
                 }
 
-                await env.ANALYTICS.put("user-" + data.id, JSON.stringify(storedData))
+                await env.ANALYTICS.put("user-" + data.id, JSON.stringify(storedData), { metadata: { data: JSON.stringify(storedData) } })
 
                 if (returnType == "text") {
                     return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
