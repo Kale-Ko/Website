@@ -764,7 +764,7 @@ async function onRequestPost({ request: req, env }) {
             }
 
             if (env.ANALYTICS != undefined) {
-                var storedData = { os: data.os, browser: data.browser, language: data.language, usesDarkmode: data.usesDarkmode, usesQuickRedirects: data.usesQuickRedirects, usesNoBackgroundGradient: data.usesNoBackgroundGradient, usedSecureConnection: data.usedSecureConnection, firstVisit: data.timeStamp, lastVisit: data.timeStamp, visits: {} }
+                var storedData = { os: data.os, browser: data.browser, language: data.language, usesDarkmode: data.usesDarkmode, usesQuickRedirects: data.usesQuickRedirects, usesNoBackgroundGradient: data.usesNoBackgroundGradient, usedSecureConnection: data.usedSecureConnection, firstVisit: data.timestamp, lastVisit: data.timestamp, visits: {} }
 
                 var fetchedData = await env.ANALYTICS.get("user-" + data.id, { type: "json" })
                 if (fetchedData != null) {
