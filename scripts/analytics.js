@@ -53,6 +53,8 @@ if (localStorage.getItem("allowAnalytics") == "true") {
         analyticsData.visited = window.location.pathname
     }
 
+    analyticsData.timestamp = Math.round(new Date().getTime() / 1000)
+
     var properties = ["userAgent", "platform", "oscpu", "hardwareConcurrency", "languages", "language", "product", "productSub", "vendor", "vendorSub", "appCodeName", "appName", "appVersion", "buildID"]
 
     properties.forEach(property => {
