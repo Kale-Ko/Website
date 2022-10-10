@@ -2,7 +2,7 @@ const marked = require("../../scripts/libs/marked.min.js")
 
 const TextHeaders = new Headers()
 TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
-TextHeaders.set("Access-Control-Allow-Origin", "kaleko.ga")
+TextHeaders.set("Access-Control-Allow-Origin", "*")
 TextHeaders.set("Access-Control-Allow-Methods", "OPTIONS, HEAD, GET, POST")
 TextHeaders.set("Allow", "OPTIONS, HEAD, GET, POST")
 TextHeaders.set("Content-Language", "en")
@@ -246,7 +246,7 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.repositories.nodes
 
-                    data.forEach(repo => {
+                    for (var repo of data) {
                         if (repo.visibility != "PUBLIC") {
                             return data.splice(data.indexOf(repo), 1)
                         }
@@ -256,7 +256,7 @@ async function onRequestGet({ request: req, env }) {
                         data[data.indexOf(repo)].releases = repo.releases.nodes
                         data[data.indexOf(repo)].issues = repo.issues.nodes
                         data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
+                    }
 
                     data.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                     data.sort((a, b) => b.stargazerCount - a.stargazerCount)
@@ -367,7 +367,7 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.pinnedItems.nodes
 
-                    data.forEach(repo => {
+                    for (var repo of data) {
                         if (repo.visibility != "PUBLIC") {
                             return data.splice(data.indexOf(repo), 1)
                         }
@@ -377,7 +377,7 @@ async function onRequestGet({ request: req, env }) {
                         data[data.indexOf(repo)].releases = repo.releases.nodes
                         data[data.indexOf(repo)].issues = repo.issues.nodes
                         data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
+                    }
 
                     response = data
                 })
@@ -487,7 +487,7 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.starredRepositories.nodes
 
-                    data.forEach(repo => {
+                    for (var repo of data) {
                         if (repo.visibility != "PUBLIC") {
                             return data.splice(data.indexOf(repo), 1)
                         }
@@ -497,7 +497,7 @@ async function onRequestGet({ request: req, env }) {
                         data[data.indexOf(repo)].releases = repo.releases.nodes
                         data[data.indexOf(repo)].issues = repo.issues.nodes
                         data[data.indexOf(repo)].pullRequests = repo.pullRequests.nodes
-                    })
+                    }
 
                     data.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                     data.sort((a, b) => b.stargazerCount - a.stargazerCount)
@@ -552,11 +552,11 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.gists.nodes
 
-                    data.forEach(gist => {
+                    for (var gist of data) {
                         if (!gist.isPublic) {
                             return data.splice(data.indexOf(gist), 1)
                         }
-                    })
+                    }
 
                     response = data
                 })
@@ -607,13 +607,13 @@ async function onRequestGet({ request: req, env }) {
 
                     data = data.data.user.packages.nodes
 
-                    data.forEach(gitPackage => {
+                    for (var gitPackage of data) {
                         if (gitPackage.name.startsWith("deleted_")) {
                             return data.splice(data.indexOf(gitPackage), 1)
                         }
 
                         data[data.indexOf(gitPackage)].versions = gitPackage.versions.nodes
-                    })
+                    }
 
                     response = data
                 })
@@ -656,11 +656,11 @@ async function onRequestGet({ request: req, env }) {
                 }).then(res => res.json()).then(data => {
                     data = data.data.user.projectsV2.nodes
 
-                    data.forEach(project => {
+                    for (var project of data) {
                         if (!project.public) {
                             return data.splice(data.indexOf(project), 1)
                         }
-                    })
+                    }
 
                     response = data
                 })
@@ -700,9 +700,9 @@ async function onRequestGet({ request: req, env }) {
                 if (point.usedSecureConnection != false) {
                     response.visitors++
 
-                    Object.keys(point.visits).forEach(key => {
+                    for (var key of Object.keys(point.visits)) {
                         response.hits += point.visits[key]
-                    })
+                    }
 
                     response.data.push(point)
                 }

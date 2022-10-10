@@ -1,36 +1,10 @@
-self.addEventListener("install", () => {
-    self.skipWaiting()
-})
+self.addEventListener("install", () => { self.skipWaiting() })
+self.addEventListener("activate", () => { self.clients.claim() })
 
-self.addEventListener("activate", event => {
-    event.waitUntil(caches.open("offline").then(cache => {
-        return cache.addAll([
-            "/offline",
-            "/assets/icon-grey@64.webp"
-        ])
-    }))
-
-    self.clients.claim()
-})
-
-self.addEventListener("fetch", event => {
-    if (event.request.mode == "navigate") {
-        (async () => {
-            try {
-                await fetch("/api/online?type=json").then(res => res.json()).then(data => {
-                    if (data.status != "online") {
-                        throw new Error(data.status)
-                    }
-                })
-            } catch (error) {
-                event.respondWith(caches.open("offline").then(async cache => {
-                    return await cache.match(event.request) || await cache.match("/offline")
-                }))
-            }
-        })()
-    } else {
+self.addEventListener("fetch", async event => {
+    if (event.request.mode != "navigate") {
         var cachedFiles = ["noto-serif.css", "kaisei-harunoumi.css"]
-        var cachedFormats = ["png", "jpg", "jpeg", "ico", "woff", "woff2"]
+        var cachedFormats = ["png", "jpg", "jpeg", "webp", "weba", "webm", "ico", "woff", "woff2"]
 
         var url = event.request.url
         if (url.endsWith("/")) {
