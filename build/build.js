@@ -20,7 +20,7 @@ function next() {
     const minify_css = require("clean-css")
     const minify_xml = require("minify-xml").minify
 
-    builddata.moves.forEach(move => {
+    for (var move of builddata.moves) {
         if (fs.statSync(move.from).isFile()) {
             if (!fs.existsSync(move.to.substring(0, move.to.lastIndexOf("/")))) {
                 fs.mkdirSync(move.to.substring(0, move.to.lastIndexOf("/")), { recursive: true })
@@ -36,19 +36,17 @@ function next() {
                 fs.mkdirSync(move.to, { recursive: true })
             }
 
-            fs.readdirSync(move.from).forEach(file => {
+            for (var file of fs.readdirSync(move.from)) {
                 if (move.copy == true) {
                     fs.copyFileSync(move.from + "/" + file, move.to + "/" + file)
                 } else {
                     fs.renameSync(move.from + "/" + file, move.to + "/" + file)
                 }
-            })
+            }
         }
-    })
+    }
 
-    var pages = fs.readdirSync("./pages/")
-
-    pages.forEach(page => {
+    for (var page of fs.readdirSync("./pages/")) {
         if (page.endsWith(".html")) {
             var content = fs.readFileSync("./pages/" + page).toString()
 
@@ -62,82 +60,51 @@ function next() {
                 fs.writeFileSync("./" + page.replace(".html", "") + "/index.html", content)
             }
         }
-    })
+    }
 
     function resizeImages(dir) {
-        var files = fs.readdirSync(dir)
-
-        files.forEach(file => {
+        for (var file of fs.readdirSync(dir)) {
             if (fs.statSync(dir + file).isDirectory()) {
                 resizeImages(dir + file + "/")
             } else {
-                if (file.endsWith(".png")) {
+                if ((file.endsWith(".png") || file.endsWith(".jpg") || file.endsWith(".jpeg") || file.endsWith(".webp")) && !file.includes("@")) {
                     var image = fs.readFileSync(dir + file)
                     var size = imageSize(image)
 
                     if (size.width == size.height) {
-                        sharp(image).png().toFile(dir + file.replace(".png", "@" + size.width + ".png"))
+                        sharp(image).png({ quality: 80, effort: 8, compressionLevel: 8 }).toFile(dir + file.replace(".png", "@" + size.width + ".png").replace(".jpg", "@" + size.width + ".png").replace(".jpeg", "@" + size.width + ".png").replace(".webp", "@" + size.width + ".png"))
+                        sharp(image).jpeg({ quality: 100 }).toFile(dir + file.replace(".jpg", "@" + size.width + ".jpg").replace(".png", "@" + size.width + ".jpg").replace(".jpeg", "@" + size.width + ".jpg").replace(".webp", "@" + size.width + ".jpg"))
+                        sharp(image).jpeg({ quality: 100 }).toFile(dir + file.replace(".jpeg", "@" + size.width + ".jpeg").replace(".png", "@" + size.width + ".jpeg").replace(".jpg", "@" + size.width + ".jpeg").replace(".webp", "@" + size.width + ".jpeg"))
+                        sharp(image).webp({ quality: 60, alphaQuality: 0, effort: 6 }).toFile(dir + file.replace(".webp", "@" + size.width + ".webp").replace(".png", "@" + size.width + ".webp").replace(".jpg", "@" + size.width + ".webp").replace(".jpeg", "@" + size.width + ".webp"))
 
-                        builddata.imageSizes.forEach(currentsize => {
-                            sharp(image).png().resize(currentsize, currentsize).toFile(dir + file.replace(".png", "@" + currentsize + ".png"))
-                        })
-                    }
-                } else if (file.endsWith(".jpg")) {
-                    var image = fs.readFileSync(dir + file)
-                    var size = imageSize(image)
-
-                    if (size.width == size.height) {
-                        sharp(image).jpeg().toFile(dir + file.replace(".jpg", "@" + size.width + ".jpg"))
-
-                        builddata.imageSizes.forEach(currentsize => {
-                            sharp(image).jpeg().resize(currentsize, currentsize).toFile(dir + file.replace(".jpg", "@" + currentsize + ".jpg"))
-                        })
-                    }
-                } else if (file.endsWith(".jpeg")) {
-                    var image = fs.readFileSync(dir + file)
-                    var size = imageSize(image)
-
-                    if (size.width == size.height) {
-                        sharp(image).jpeg().toFile(dir + file.replace(".jpeg", "@" + size.width + ".jpeg"))
-
-                        builddata.imageSizes.forEach(currentsize => {
-                            sharp(image).jpeg().resize(currentsize, currentsize).toFile(dir + file.replace(".jpeg", "@" + currentsize + ".jpeg"))
-                        })
-                    }
-                } else if (file.endsWith(".webp")) {
-                    var image = fs.readFileSync(dir + file)
-                    var size = imageSize(image)
-
-                    if (size.width == size.height) {
-                        sharp(image).webp().toFile(dir + file.replace(".webp", "@" + size.width + ".webp"))
-
-                        builddata.imageSizes.forEach(currentsize => {
-                            sharp(image).webp().resize(currentsize, currentsize).toFile(dir + file.replace(".webp", "@" + currentsize + ".webp"))
-                        })
+                        for (var currentSize of builddata.imageSizes) {
+                            sharp(image).png({ quality: 80, effort: 8, compressionLevel: 8 }).resize(currentSize, currentSize).toFile(dir + file.replace(".png", "@" + currentSize + ".png").replace(".jpg", "@" + currentSize + ".png").replace(".jpeg", "@" + currentSize + ".png").replace(".webp", "@" + currentSize + ".png"))
+                            sharp(image).jpeg({ quality: 100 }).resize(currentSize, currentSize).toFile(dir + file.replace(".jpg", "@" + currentSize + ".jpg").replace(".png", "@" + currentSize + ".jpg").replace(".jpeg", "@" + currentSize + ".jpg").replace(".webp", "@" + currentSize + ".jpg"))
+                            sharp(image).jpeg({ quality: 100 }).resize(currentSize, currentSize).toFile(dir + file.replace(".jpeg", "@" + currentSize + ".jpeg").replace(".png", "@" + currentSize + ".jpeg").replace(".jpg", "@" + currentSize + ".jpeg").replace(".webp", "@" + currentSize + ".jpeg"))
+                            sharp(image).webp({ quality: 60, alphaQuality: 0, effort: 6 }).resize(currentSize, currentSize).toFile(dir + file.replace(".webp", "@" + currentSize + ".webp").replace(".png", "@" + currentSize + ".webp").replace(".jpg", "@" + currentSize + ".webp").replace(".jpeg", "@" + currentSize + ".webp"))
+                        }
                     }
                 }
             }
-        })
+        }
     }
     resizeImages("./assets/", "/")
 
     function scan(dir) {
-        var files = fs.readdirSync(dir)
-
-        files.forEach(file => {
+        for (var file of fs.readdirSync(dir)) {
             if (file != "build" && file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml") {
                 if (fs.statSync(dir + file).isDirectory()) {
                     scan(dir + file + "/")
                 } else {
                     var contents = fs.readFileSync(dir + file).toString()
 
-                    Object.keys(builddata.placeholders).forEach(key => {
+                    for (var key of Object.keys(builddata.placeholders)) {
                         contents = contents.replace(new RegExp("{" + key + "}", "g"), builddata.placeholders[key])
-                    })
+                    }
 
-                    builddata.replacements.forEach(replacement => {
+                    for (var replacement of builddata.replacements) {
                         contents = contents.replace(replacement.from, replacement.to)
-                    })
+                    }
 
                     contents = contents.replace(/{baseUrl}/g, builddata.baseUrl)
 
@@ -176,7 +143,7 @@ function next() {
                     fs.writeFileSync(dir + file, contents)
                 }
             }
-        })
+        }
     }
     scan("./", "/")
 

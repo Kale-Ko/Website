@@ -1,8 +1,9 @@
 /*
-  Access-Control-Allow-Origin: kaleko.ga
+  Access-Control-Allow-Origin: www.kaleko.ga
   Access-Control-Allow-Methods: OPTIONS, HEAD, GET
   Allow: OPTIONS, HEAD, GET
   Content-Language: en
+  Content-Security-Policy: default-src 'self' 'unsafe-inline' data:; script-src 'self' 'unsafe-inline'; worker-src 'self'; child-src 'self'; form-action 'self'; style-src 'self' 'unsafe-inline';
   Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
@@ -14,3 +15,6 @@ https://kaleko.ga/*
 
 https://www.kaleko.ga/*
   Access-Control-Allow-Origin: www.kaleko.ga
+
+https://kaleko-website.pages.dev/*
+  Access-Control-Allow-Origin: kaleko-website.pages.dev

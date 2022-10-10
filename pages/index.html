@@ -21,6 +21,8 @@
                 <br>
                 <br>
                 I know how to code in a wide variety of languages including Java, JavaScript, C++, and Python.
+                <br>
+                Check out some of my projects on the&nbsp;<a href="/projects/">projects page</a>
             </p>
         </div>
 
@@ -31,17 +33,28 @@
             <div id="projectsList" class="hidden"></div>
 
             <script>
-                fetch("/api/github/pins?type=json").then(res => res.json()).then(repos => {
-                    repos.forEach(repo => {
-                        var element = document.createElement("p")
-                        element.innerHTML = (repo.homepageUrl != "" && repo.homepageUrl != null ? '<a href="' + repo.homepageUrl + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
+                function loadProjects(attempts = 3) {
+                    if (attempts == 0) {
+                        document.getElementById("loadingProjects").innerHTML = "Failed to load projects"
 
-                        document.getElementById("projectsList").appendChild(element)
+                        return
+                    }
+
+                    fetch("/api/github/pins?type=json").then(res => res.json()).then(repos => {
+                        for (var repo of repos) {
+                            var element = document.createElement("p")
+                            element.innerHTML = (repo.homepageUrl != "" && repo.homepageUrl != null ? '<a href="' + repo.homepageUrl + '">' + repo.name.replace(/-/g, " ") + "</a>" : repo.name.replace(/-/g, " ")) + " - " + repo.description + ' <a href="' + repo.url + '">(Source)</a>'
+
+                            document.getElementById("projectsList").appendChild(element)
+                        }
+
+                        document.getElementById("loadingProjects").setAttribute("class", "hidden")
+                        document.getElementById("projectsList").removeAttribute("class")
+                    }).catch(e => {
+                        loadProjects(attempts - 1)
                     })
-
-                    document.getElementById("loadingProjects").setAttribute("class", "hidden")
-                    document.getElementById("projectsList").removeAttribute("class")
-                })
+                }
+                loadProjects()
             </script>
         </div>
 
@@ -52,7 +65,7 @@
 
             <script>
                 function openEmail() {
-                    window.open("mailto:" + atob("Y29udGFjdEBrYWxla28uZ2E="))
+                    window.open("mailto:" + atob("Y29udGFjdEBrYWxla28uZ2E=")) // Email encoded in base64 to prevent web scrapers
                 }
             </script>
         </div>

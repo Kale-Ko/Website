@@ -3,7 +3,6 @@
 @import url("/fonts/noto-serif.css");
 
 
-
 /* Variables */
 html {
     --background: radial-gradient(#038d7b 15%, #026b5d 85%);
@@ -44,7 +43,6 @@ html.darkmode.noGradient {
 }
 
 
-
 /* Layout */
 html,
 head,
@@ -75,7 +73,6 @@ main {
 .hidden {
     display: none;
 }
-
 
 
 /* Navigation bar */
@@ -199,7 +196,6 @@ nav div a.image p {
 nav div:hover {
     background: var(--altforgroundcolor);
 }
-
 
 
 /* Text */

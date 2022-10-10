@@ -1,4 +1,4 @@
-if (localStorage.getItem("allowAnalytics") == "true") {
+if (localStorage.getItem("allowAnalytics") == "true" && window.location.hostname != "localhost") {
     var analyticsData = { id: "", os: "unknown", browser: "unknown", language: "unknown", usesDarkmode: null, usesQuickRedirects: null, usesNoBackgroundGradient: null, usedSecureConnection: "unknown", visited: null }
 
     if ("platform" in navigator) {
@@ -57,13 +57,13 @@ if (localStorage.getItem("allowAnalytics") == "true") {
 
     var properties = ["userAgent", "platform", "oscpu", "hardwareConcurrency", "languages", "language", "product", "productSub", "vendor", "vendorSub", "appCodeName", "appName", "appVersion", "buildID"]
 
-    properties.forEach(property => {
+    for (var property of properties) {
         if (property in navigator) {
             analyticsData.id += navigator[property]
         } else if (property in window) {
             analyticsData.id += window[property]
         }
-    })
+    }
 
     crypto.subtle.digest("SHA-256", new TextEncoder().encode(analyticsData.id)).then(hashBuffer => {
         analyticsData.id = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("")
