@@ -1,6 +1,6 @@
-/* Imports */
-@import url("/fonts/kaisei-harunoumi.css");
-@import url("/fonts/noto-serif.css");
+/* Font Import */
+@import url("https://fonts.googleapis.com/css?family=Kaisei HarunoUmi:regular,bold");
+@import url("https://fonts.googleapis.com/css?family=Noto Serif:regular");
 
 
 /* Variables */
@@ -50,7 +50,7 @@ body {
     margin: 0px;
     padding: 0px;
 
-    font-family: var(--font), Arial, sans-serif;
+    font-family: var(--font), serif;
     color: var(--textcolor);
 
     text-align: center;
@@ -200,7 +200,7 @@ nav div:hover {
 
 /* Text */
 h1 {
-    font-family: var(--headerfont), Arial, sans-serif;
+    font-family: var(--headerfont), sans-serif;
     color: var(--headercolor);
 
     font-size: 56px;

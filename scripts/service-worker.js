@@ -3,7 +3,7 @@ self.addEventListener("activate", () => { self.clients.claim() })
 
 self.addEventListener("fetch", async event => {
     if (event.request.mode != "navigate") {
-        var cachedFiles = ["noto-serif.css", "kaisei-harunoumi.css"]
+        var cachedFiles = []
         var cachedFormats = ["png", "jpg", "jpeg", "webp", "weba", "webm", "ico", "woff", "woff2"]
 
         var url = event.request.url
