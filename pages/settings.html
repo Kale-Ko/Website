@@ -14,8 +14,6 @@
         <h1>Settings</h1>
 
         <div id="settings-list"></div>
-        <button type="button" id="viewAnalytics">View current analytics data</button>
-        <br id="viewAnalyticsLine">
         <br>
         <button type="button" id="import">Import settings</button>
         <button type="button" id="export">Export settings</button>
@@ -29,7 +27,7 @@
             }
 
             function next() {
-                for (var setting of settings) {
+                settings.forEach(setting => {
                     if (!setting.handler.display()) {
                         return
                     }
@@ -50,16 +48,7 @@
 
                     settingObject.appendChild(valueObject)
                     document.getElementById("settings-list").appendChild(settingObject)
-                }
-
-                if (localStorage.getItem("allowAnalytics") == "true") {
-                    document.getElementById("viewAnalytics").onclick = () => {
-                        alert(JSON.stringify(analyticsData, null, 2))
-                    }
-                } else {
-                    document.getElementById("viewAnalytics").remove()
-                    document.getElementById("viewAnalyticsLine").remove()
-                }
+                })
 
                 document.getElementById("export").onclick = () => {
                     var data = ""
@@ -92,7 +81,7 @@
 
                                 for (var setting of settings) {
                                     if (setting.split("=").length != 2 || setting.split("=")[1].toLowerCase() == "undefined" || setting.split("=")[1].toLowerCase() == "null") {
-                                        return
+                                        break
                                     }
 
                                     localStorage.setItem(setting.split("=")[0], setting.split("=")[1])

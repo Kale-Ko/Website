@@ -2,6 +2,10 @@ var navbar = document.querySelector("nav")
 var menu = navbar.querySelector("div.dropdown")
 var menuContent = navbar.querySelector("div.dropdown>div.dropdown-content")
 
+if (document.querySelector("html").offsetHeight < window.innerHeight) {
+    document.querySelector("html").style.height = "100vh"
+}
+
 menu.addEventListener("click", () => {
     if (navbar.children.length > 1) {
         for (var index = 0; navbar.children.length > 1; index++) {

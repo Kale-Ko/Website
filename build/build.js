@@ -122,21 +122,22 @@ function next() {
                         }
                     }
 
-                    if (file.endsWith(".html") && !dir.includes("pages")) {
+                    if ((file.endsWith(".html") || file.endsWith(".htm")) && !dir.includes("pages")) {
                         contents = contents.replace(/{title}/g, contents.substring(contents.indexOf("<title>") + 7, contents.indexOf("</title>"))).replace(/{canonical}/g, (builddata.baseUrl + dir.replace("./", "/") + file.replace("index", "").replace(".html", "") + "/").replace(/\/\//g, "/"))
+                        contents = contents.replace(/([a-zA-Z]) \<([^=])(.*)\>/g, "$1&nbsp;<$2$3>").replace(/\<(.*)([^=])\> ([a-zA-Z])/g, "<$1$2>&nbsp;$3")
 
                         contents = minify_html(contents, {
                             collapseBooleanAttributes: true, collapseInlineTagWhitespace: true, collapseWhitespace: true, quoteCharacter: '"', removeAttributeQuotes: false, removeComments: true,
                             minifyJS: text => minify_js(text).code,
                             minifyCSS: text => new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(text).styles
                         });
-                    } else if (file.endsWith(".js")) {
+                    } else if (file.endsWith(".js") || file.endsWith(".mjs")) {
                         contents = minify_js(contents, { output: { beautify: false } }).code
                     } else if (file.endsWith(".css")) {
                         contents = new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(contents).styles
                     } else if (file.endsWith(".xml")) {
                         contents = minify_xml(contents)
-                    } else if (file.endsWith(".json")) {
+                    } else if (file.endsWith(".json") || file.endsWith(".json5")) {
                         contents = JSON.stringify(JSON.parse(contents))
                     }
 
