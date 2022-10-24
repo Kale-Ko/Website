@@ -49,51 +49,7 @@ const settings = [
                 localStorage.setItem("noGradient", element.checked)
             }
         }
-    },
-    {
-        id: "allowAnalytics", title: "Allow Anonymous Analytics", type: "checkbox", default: ("doNotTrack" in navigator ? (navigator.doNotTrack != "1") : true), export: true,
-        handler: {
-            display: () => true,
-            updateElement: (element) => {
-                element.checked = (localStorage.getItem("allowAnalytics") == "true")
-            },
-            update: () => { },
-            set: (element) => {
-                localStorage.setItem("allowAnalytics", element.checked)
-
-                window.location.reload()
-            }
-        }
-    },
-    // {
-    //     id: "notifications", title: "Notifications", type: "checkbox", default: false, export: false,
-    //     handler: {
-    //         display: () => {
-    //             return Notification.permission != "denied"
-    //         },
-    //         updateElement: (element) => {
-    //             element.checked = Notification.permission == "granted"
-    // 
-    //             element.disabled = Notification.permission != "default"
-    //         },
-    //         update: () => { },
-    //         set: (element) => {
-    //             if (element.checked == true) {
-    //                 if (Notification.permission == "default") {
-    //                     Notification.requestPermission().then(permission => {
-    //                         if (permission == "granted") {
-    //                             element.disabled = true
-    //                         } else if (permission == "denied") {
-    //                             element.parentElement.remove()
-    //                         } else {
-    //                             element.checked = false
-    //                         }
-    //                     })
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+    }
 ]
 window.settings = settings
 

@@ -689,32 +689,6 @@ async function onRequestGet({ request: req, env }) {
             } else {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
             }
-        } else if (endpoint[0] == "analytics" && CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
-            var response = { visitors: 0, hits: 0, data: [] }
-
-            var pointsList = (await env.ANALYTICS.list({ prefix: "user-" })).keys
-
-            for (var point of pointsList) {
-                point = point.metadata.storedData
-
-                if (point.usedSecureConnection != false) {
-                    response.visitors++
-
-                    for (var key of Object.keys(point.visits)) {
-                        response.hits += point.visits[key]
-                    }
-
-                    response.data.push(point)
-                }
-            }
-
-            if (returnType == "text") {
-                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: TextHeaders })
-            } else if (returnType == "json") {
-                return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-            } else {
-                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-            }
         } else {
             if (returnType == "json") {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/online", "/github"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
@@ -748,54 +722,6 @@ async function onRequestPost({ request: req, env }) {
                 return new Response(JSON.stringify({ "code": "welcome", "message": "Welcome to the api, try sending a request (eg GET {baseUrl}/api/github/profile)" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
             } else {
                 return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-            }
-        } else if (endpoint[0] == "analytics") {
-            var data = null
-            try {
-                data = JSON.parse(await req.text())
-            } catch {
-                if (returnType == "text") {
-                    return new Response("Invalid payload sent for this endpoint", { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_payload", "message": "Invalid payload sent for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            }
-
-            if (env.ANALYTICS != undefined) {
-                var storedData = { os: data.os, browser: data.browser, language: data.language, usesDarkmode: data.usesDarkmode, usesQuickRedirects: data.usesQuickRedirects, usesNoBackgroundGradient: data.usesNoBackgroundGradient, usedSecureConnection: data.usedSecureConnection, firstVisit: data.timestamp, lastVisit: data.timestamp, visits: {} }
-
-                var fetchedData = await env.ANALYTICS.get("user-" + data.id, { type: "json" })
-                if (fetchedData != null) {
-                    storedData.visits = fetchedData.visits
-
-                    storedData.firstVisit = fetchedData.firstVisit
-                }
-
-                if (storedData.visits[data.visited] != undefined) {
-                    storedData.visits[data.visited]++
-                } else {
-                    storedData.visits[data.visited] = 1
-                }
-
-                await env.ANALYTICS.put("user-" + data.id, JSON.stringify(storedData), { metadata: { storedData } })
-
-                if (returnType == "text") {
-                    return new Response("Accepted", { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify({ "code": "accepted", "message": "Accepted" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
-            } else {
-                if (returnType == "text") {
-                    return new Response("Not Enabled", { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify({ "code": "not-enabled", "message": "Not Enabled" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else {
-                    return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-                }
             }
         } else {
             if (returnType == "json") {

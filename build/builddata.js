@@ -24,7 +24,8 @@ module.exports = {
 
     <script src="{file=/scripts/service-worker-register.js}"></script>
     <script src="{file=/scripts/wwwRedirect.js}"></script>
-    <script src="{file=/scripts/settings.js}"></script>`,
+    <script src="{file=/scripts/settings.js}"></script>
+    <script src="{file=/scripts/mobileFixers.js}"></script>`,
 
         metaNoCanonical: `<link rel="icon" href="{file=/assets/icon@64.webp}">
     <link rel="apple-touch-icon" href="{file=/assets/icon@64.webp}">
@@ -47,7 +48,9 @@ module.exports = {
     <link rel="license" href="{baseUrl}/license.txt">
 
     <script src="{file=/scripts/service-worker-register.js}"></script>
-    <script src="{file=/scripts/settings.js}"></script>`,
+    <script src="{file=/scripts/wwwRedirect.js}"></script>
+    <script src="{file=/scripts/settings.js}"></script>
+    <script src="{file=/scripts/mobileFixers.js}"></script>`,
 
         metaNoIndex: `<link rel="icon" href="{file=/assets/icon@64.webp}">
     <link rel="apple-touch-icon" href="{file=/assets/icon@64.webp}">
@@ -60,19 +63,19 @@ module.exports = {
     <link rel="license" href="{baseUrl}/license.txt">
 
     <script src="{file=/scripts/service-worker-register.js}"></script>
-    <script src="{file=/scripts/settings.js}"></script>`,
+    <script src="{file=/scripts/wwwRedirect.js}"></script>
+    <script src="{file=/scripts/settings.js}"></script>
+    <script src="{file=/scripts/mobileFixers.js}"></script>`,
 
         nav: `<nav>
         <div class="dropdown"><img src="{file=/assets/menu@64.webp}" alt="Menu Button" width="64" height="64"></img><div class="dropdown-content"></div></div>
-        <div><a href="/" class="image"><img src="{file=/assets/icon@48.webp}" width="44" height="44" alt="logo"><p> Home</p></a></div>
+        <div><a href="/" class="image"><img src="{file=/assets/icon@48.webp}" width="44" height="44" alt="logo"><p>Home</p></a></div>
         <div><a href="/snake/">Snake</a></div>
         <div><a href="/github/">Github</a></div>
         <div><a href="/settings/">Settings</a></div>
     </nav>`,
 
-        global: `<script src="{file=/scripts/navbar.js}"></script>
-    <script src="{file=/scripts/backgroundfixer.js}"></script>
-    <script src="{file=/scripts/analytics.js}"></script>`
+        global: ``
     },
     replacements: [
         { from: "<html>", to: "<html lang=\"en\" prefix=\"og: https://ogp.me/ns#\">" },
@@ -83,12 +86,11 @@ module.exports = {
         { from: "./assets/redirects", to: "./_redirects" },
         { from: "./assets/headers", to: "./_headers" },
         { from: "./scripts/api.js", to: "./functions/api/[[path]].js" },
-        { from: "./assets/.well-known", to: "./.well-known" },
         { from: "./assets/icon.ico", to: "./favicon.ico", copy: true },
-        { from: "./scripts/service-worker.js", to: "./service-worker.js" },
+        { from: "./scripts/service-worker.js", to: "./service-worker.js", copy: true },
         { from: "./assets/robots.txt", to: "./robots.txt" },
         { from: "./assets/sitemap.xml", to: "./sitemap.xml" },
-        { from: "./LICENSE", to: "./license.txt", copy: true },
+        { from: "./LICENSE", to: "./license.txt" },
         { from: "./assets/files/publickey.gpg", to: "./publickey.gpg", copy: true }
     ],
     imageSizes: [
