@@ -102,7 +102,7 @@ function next() {
     }
     resizeImages("./assets/", "/")
 
-    function scan(dir) {
+    async function scan(dir) {
         for (var file of fs.readdirSync(dir)) {
             if (file != "build" && file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml") {
                 if (fs.statSync(dir + file).isDirectory()) {
@@ -123,11 +123,30 @@ function next() {
                     while (contents.includes("{file=")) {
                         var start = contents.indexOf("{file=")
                         var end = contents.indexOf("}", contents.indexOf("{file=")) + 1
-                        if (contents.substring(start + 6, end - 1).includes(";")) {
+                        if (contents.substring(start + 6, end - 1).startsWith("http") && contents.substring(start + 6, end - 1).includes(";")) {
+                            var data
+
+                            if (fs.existsSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]))) {
+                                data = fs.readFileSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]), { encoding: "base64" })
+                            } else {
+                                data = Buffer.from(await fetch(contents.substring(start + 6, end - 1).split(";")[0]).then(res => res.arrayBuffer()))
+
+                                if (!fs.existsSync("../build/cache")) {
+                                    fs.mkdirSync("../build/cache")
+                                }
+
+                                fs.writeFileSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]), data, { encoding: "base64" })
+                            }
+
+                            fs.mkdirSync("." + contents.substring(start + 6, end - 1).split(";")[1].split("/").slice(0, contents.substring(start + 6, end - 1).split(";")[1].split("/").length - 1).join("/"), { recursive: true })
+                            fs.writeFileSync("." + contents.substring(start + 6, end - 1).split(";")[1], data, { encoding: "base64" })
+
+                            contents = contents.replace(contents.substring(start, end), contents.substring(start + 6, end - 1).split(";")[1])
+                        } else if (contents.substring(start + 6, end - 1).includes(";")) {
                             if (fs.existsSync("." + contents.substring(start + 6, end - 1).split(";")[1])) {
                                 contents = contents.replace(contents.substring(start, end), "data:" + contents.substring(start + 6, end - 1).split(";")[0] + ";base64," + fs.readFileSync("." + contents.substring(start + 6, end - 1).split(";")[1]).toString("base64"))
                             } else {
-                                contents = contents.replace(contents.substring(start, end), "data:text/plain,base64;" + "404 File Not Found".toString("base64"))
+                                contents = contents.replace(contents.substring(start, end), "data:text/plain," + "404")
                             }
                         } else {
                             contents = contents.replace(contents.substring(start, end), contents.substring(start + 6, end - 1))
@@ -141,12 +160,12 @@ function next() {
                         contents = minify_html(contents, {
                             collapseBooleanAttributes: true, collapseInlineTagWhitespace: true, collapseWhitespace: true, quoteCharacter: '"', removeAttributeQuotes: false, removeComments: true,
                             minifyJS: text => minify_js(text).code,
-                            minifyCSS: text => new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(text).styles
+                            minifyCSS: text => new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: [] }).minify(text).styles
                         });
                     } else if (file.endsWith(".js") || file.endsWith(".mjs")) {
                         contents = minify_js(contents, { output: { beautify: false } }).code
                     } else if (file.endsWith(".css")) {
-                        contents = new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: ["local"] }).minify(contents).styles
+                        contents = new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: [] }).minify(contents).styles
                     } else if (file.endsWith(".xml")) {
                         contents = minify_xml(contents)
                     } else if (file.endsWith(".json") || file.endsWith(".json5")) {
