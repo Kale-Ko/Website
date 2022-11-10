@@ -1,6 +1,12 @@
 const fs = require("fs")
 const { exec } = require("child_process")
 
+var noCache = false
+
+if (process.argv.indexOf("--nocache")) {
+    noCache = true
+}
+
 if (process.argv.includes("--nodepend")) {
     next()
 } else {
@@ -126,16 +132,18 @@ function next() {
                         if (contents.substring(start + 6, end - 1).startsWith("http") && contents.substring(start + 6, end - 1).includes(";")) {
                             var data
 
-                            if (fs.existsSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]))) {
+                            if (!noCache && fs.existsSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]))) {
                                 data = fs.readFileSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]), { encoding: "base64" })
                             } else {
                                 data = Buffer.from(await fetch(contents.substring(start + 6, end - 1).split(";")[0]).then(res => res.arrayBuffer()))
 
-                                if (!fs.existsSync("../build/cache")) {
-                                    fs.mkdirSync("../build/cache")
-                                }
+                                if (!noCache) {
+                                    if (!fs.existsSync("../build/cache")) {
+                                        fs.mkdirSync("../build/cache")
+                                    }
 
-                                fs.writeFileSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]), data, { encoding: "base64" })
+                                    fs.writeFileSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]), data, { encoding: "base64" })
+                                }
                             }
 
                             fs.mkdirSync("." + contents.substring(start + 6, end - 1).split(";")[1].split("/").slice(0, contents.substring(start + 6, end - 1).split(";")[1].split("/").length - 1).join("/"), { recursive: true })
