@@ -1,7 +1,7 @@
 self.addEventListener("install", () => { self.skipWaiting() })
 self.addEventListener("activate", () => { self.clients.claim() })
 
-self.addEventListener("fetch", async event => {
+self.addEventListener("fetch", event => {
     if (event.request.mode != "navigate") {
         var cachedFiles = []
         var cachedFormats = ["png", "jpg", "jpeg", "webp", "weba", "webm", "ico", "woff", "woff2"]

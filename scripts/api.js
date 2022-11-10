@@ -1,19 +1,12 @@
 const TextHeaders = new Headers()
 TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
 TextHeaders.set("Access-Control-Allow-Origin", "*")
-TextHeaders.set("Access-Control-Allow-Methods", "OPTIONS, HEAD, GET, POST")
-TextHeaders.set("Allow", "OPTIONS, HEAD, GET, POST")
+TextHeaders.set("Access-Control-Allow-Methods", "OPTIONS, GET")
+TextHeaders.set("Allow", "OPTIONS, GET")
 TextHeaders.set("Content-Language", "en")
-TextHeaders.set("Cross-Origin-Embedder-Policy", "require-corp")
-TextHeaders.set("Cross-Origin-Opener-Policy", "same-origin")
-TextHeaders.set("Cross-Origin-Resource-Policy", "same-origin")
-TextHeaders.set("X-Frame-Options", "SAMEORIGIN")
-TextHeaders.set("X-Content-Type-Options", "nosniff")
 TextHeaders.set("Cache-Control", "no-store")
 const JsonHeaders = new Headers(TextHeaders)
 JsonHeaders.set("Content-Type", "application/json; charset=utf-8")
-const HtmlHeaders = new Headers(TextHeaders)
-HtmlHeaders.set("Content-Type", "text/html; charset=utf-8")
 
 async function onRequestGet({ request: req, env }) {
     const CONFIG = { GITHUB_USERNAME: env.GITHUB_USERNAME, GITHUB_API_TOKEN: env.GITHUB_API_TOKEN, TRUSTED_IPS: env.TRUSTED_IPS }
@@ -695,38 +688,4 @@ async function onRequestGet({ request: req, env }) {
     }
 }
 
-async function onRequestPost({ request: req, env }) {
-    const CONFIG = { GITHUB_USERNAME: env.GITHUB_USERNAME, GITHUB_API_TOKEN: env.GITHUB_API_TOKEN, TRUSTED_IPS: env.TRUSTED_IPS }
-
-    try {
-        var url = new URL(req.url.replace("/api", ""))
-        var endpoint = url.pathname.split("/").slice(1)
-        var returnType = url.searchParams.get("type") || "json"
-
-        if (endpoint[0] == "") {
-            if (returnType == "json") {
-                return new Response("Welcome to the api, try sending a request (eg GET {baseUrl}/api/github/profile)", { status: 200, statusText: "Ok", headers: TextHeaders })
-            } else if (returnType == "text") {
-                return new Response(JSON.stringify({ "code": "welcome", "message": "Welcome to the api, try sending a request (eg GET {baseUrl}/api/github/profile)" }, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-            } else {
-                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-            }
-        } else {
-            if (returnType == "json") {
-                return new Response(JSON.stringify({ "error": { "code": "invalid_path", "message": "The specified endpoint you are trying to access does not exist", "valid": ["/online", "/github", "/analytics"] } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-            } else if (returnType == "text") {
-                return new Response("The specified endpoint you are trying to access does not exist\n\n/online\n/github\n/analytics", { status: 400, statusText: "Bad Request", headers: TextHeaders })
-            } else {
-                return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
-            }
-        }
-    } catch (err) {
-        if (CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
-            return new Response("500 Internal Server Error:\n" + err.toString(), { status: 500, statusText: "Internal server error", headers: TextHeaders })
-        } else {
-            return new Response("500 Internal Server Error", { status: 500, statusText: "Internal Server Error", headers: TextHeaders })
-        }
-    }
-}
-
-export { onRequestGet, onRequestPost }
+export { onRequestGet }
