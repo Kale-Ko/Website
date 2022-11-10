@@ -13,7 +13,3 @@ if ("serviceWorker" in navigator) {
 if ("matchMedia" in window ? window.matchMedia("(prefers-color-scheme: dark)").matches : false) {
     document.querySelector("html").classList.add("darkmode")
 }
-
-if (document.querySelector("html").offsetHeight < window.innerHeight) {
-    document.querySelector("html").style.height = "100vh"
-}
