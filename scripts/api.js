@@ -1,5 +1,3 @@
-const marked = require("../../scripts/libs/marked.min.js")
-
 const TextHeaders = new Headers()
 TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
 TextHeaders.set("Access-Control-Allow-Origin", "*")
@@ -130,21 +128,11 @@ async function onRequestGet({ request: req, env }) {
                 var response = ""
 
                 await fetch("https://raw.githubusercontent.com/" + CONFIG.GITHUB_USERNAME + "/" + CONFIG.GITHUB_USERNAME + "/master/README.md", { headers: FetchHeaders }).then(res => res.text()).then(data => {
-                    if (returnType == "text") {
-                        response = data
-                    } else if (returnType == "json") {
-                        response = marked.lexer(data, { gfm: true, breaks: true, headerIds: true })
-                    } else if (returnType == "html") {
-                        response = marked.parse(data, { gfm: true, breaks: true, headerIds: true })
-                    }
+                    response = data
                 })
 
                 if (returnType == "text") {
                     return new Response(response, { status: 200, statusText: "Ok", headers: TextHeaders })
-                } else if (returnType == "json") {
-                    return new Response(JSON.stringify(response, null, 2), { status: 200, statusText: "Ok", headers: JsonHeaders })
-                } else if (returnType == "html") {
-                    return new Response(response, { status: 200, statusText: "Ok", headers: HtmlHeaders })
                 } else {
                     return new Response(JSON.stringify({ "error": { "code": "invalid_type", "message": "Invalid data type for this endpoint" } }, null, 2), { status: 400, statusText: "Bad Request", headers: JsonHeaders })
                 }

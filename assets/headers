@@ -4,10 +4,6 @@
   Allow: OPTIONS, HEAD, GET
   Content-Language: en
   Content-Security-Policy: default-src 'self' 'unsafe-inline' data:; script-src 'self' 'unsafe-inline'; worker-src 'self'; child-src 'self'; form-action 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com;
-  Cross-Origin-Embedder-Policy: require-corp
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Resource-Policy: same-origin
-  X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
 
 https://kaleko.ga/*

@@ -1,7 +1,5 @@
 User-agent: *
 Disallow: /assets/
-Disallow: /license.txt
-Disallow: /publicKey.gpg
 Disallow: /api/
 
 Sitemap: {baseUrl}/sitemap.xml

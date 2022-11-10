@@ -13,7 +13,7 @@ self.addEventListener("fetch", async event => {
 
         if (cachedFiles.includes(url.split("/")[url.split("/").length - 1]) || cachedFormats.includes(url.split(".")[url.split(".").length - 1])) {
             event.respondWith((async () => {
-                var cache = await caches.open("cachedData")
+                var cache = await caches.open("cachedDataV2")
                 var cached = await cache.match(event.request)
 
                 if (cached == undefined) {

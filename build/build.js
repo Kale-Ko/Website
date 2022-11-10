@@ -66,21 +66,33 @@ function next() {
         for (var file of fs.readdirSync(dir)) {
             if (fs.statSync(dir + file).isDirectory()) {
                 resizeImages(dir + file + "/")
-            } else {
-                if ((file.endsWith(".png") || file.endsWith(".jpg") || file.endsWith(".jpeg") || file.endsWith(".webp")) && !file.includes("@")) {
-                    var image = fs.readFileSync(dir + file)
-                    var size = imageSize(image)
+            } else if (!file.includes("@")) {
+                var image = fs.readFileSync(dir + file)
+                var size = imageSize(image)
 
-                    if (size.width == size.height) {
+                if (size.width == size.height) {
+                    if (file.endsWith(".png")) {
                         sharp(image).png({ quality: 80, effort: 8, compressionLevel: 8 }).toFile(dir + file.replace(".png", "@" + size.width + ".png").replace(".jpg", "@" + size.width + ".png").replace(".jpeg", "@" + size.width + ".png").replace(".webp", "@" + size.width + ".png"))
-                        sharp(image).jpeg({ quality: 100 }).toFile(dir + file.replace(".jpg", "@" + size.width + ".jpg").replace(".png", "@" + size.width + ".jpg").replace(".jpeg", "@" + size.width + ".jpg").replace(".webp", "@" + size.width + ".jpg"))
-                        sharp(image).jpeg({ quality: 100 }).toFile(dir + file.replace(".jpeg", "@" + size.width + ".jpeg").replace(".png", "@" + size.width + ".jpeg").replace(".jpg", "@" + size.width + ".jpeg").replace(".webp", "@" + size.width + ".jpeg"))
-                        sharp(image).webp({ quality: 60, alphaQuality: 0, effort: 6 }).toFile(dir + file.replace(".webp", "@" + size.width + ".webp").replace(".png", "@" + size.width + ".webp").replace(".jpg", "@" + size.width + ".webp").replace(".jpeg", "@" + size.width + ".webp"))
 
                         for (var currentSize of builddata.imageSizes) {
                             sharp(image).png({ quality: 80, effort: 8, compressionLevel: 8 }).resize(currentSize, currentSize).toFile(dir + file.replace(".png", "@" + currentSize + ".png").replace(".jpg", "@" + currentSize + ".png").replace(".jpeg", "@" + currentSize + ".png").replace(".webp", "@" + currentSize + ".png"))
+                        }
+                    } else if (file.endsWith(".jpg")) {
+                        sharp(image).jpeg({ quality: 100 }).toFile(dir + file.replace(".jpg", "@" + size.width + ".jpg").replace(".png", "@" + size.width + ".jpg").replace(".jpeg", "@" + size.width + ".jpg").replace(".webp", "@" + size.width + ".jpg"))
+
+                        for (var currentSize of builddata.imageSizes) {
                             sharp(image).jpeg({ quality: 100 }).resize(currentSize, currentSize).toFile(dir + file.replace(".jpg", "@" + currentSize + ".jpg").replace(".png", "@" + currentSize + ".jpg").replace(".jpeg", "@" + currentSize + ".jpg").replace(".webp", "@" + currentSize + ".jpg"))
+                        }
+                    } else if (file.endsWith(".jpeg")) {
+                        sharp(image).jpeg({ quality: 100 }).toFile(dir + file.replace(".jpeg", "@" + size.width + ".jpeg").replace(".png", "@" + size.width + ".jpeg").replace(".jpg", "@" + size.width + ".jpeg").replace(".webp", "@" + size.width + ".jpeg"))
+
+                        for (var currentSize of builddata.imageSizes) {
                             sharp(image).jpeg({ quality: 100 }).resize(currentSize, currentSize).toFile(dir + file.replace(".jpeg", "@" + currentSize + ".jpeg").replace(".png", "@" + currentSize + ".jpeg").replace(".jpg", "@" + currentSize + ".jpeg").replace(".webp", "@" + currentSize + ".jpeg"))
+                        }
+                    } else if (file.endsWith(".webp")) {
+                        sharp(image).webp({ quality: 60, alphaQuality: 0, effort: 6 }).toFile(dir + file.replace(".webp", "@" + size.width + ".webp").replace(".png", "@" + size.width + ".webp").replace(".jpg", "@" + size.width + ".webp").replace(".jpeg", "@" + size.width + ".webp"))
+
+                        for (var currentSize of builddata.imageSizes) {
                             sharp(image).webp({ quality: 60, alphaQuality: 0, effort: 6 }).resize(currentSize, currentSize).toFile(dir + file.replace(".webp", "@" + currentSize + ".webp").replace(".png", "@" + currentSize + ".webp").replace(".jpg", "@" + currentSize + ".webp").replace(".jpeg", "@" + currentSize + ".webp"))
                         }
                     }
