@@ -5,19 +5,7 @@
         <priority>1.00</priority>
     </url>
     <url>
-        <loc>{baseUrl}/github/</loc>
-        <priority>0.75</priority>
-    </url>
-    <url>
-        <loc>{baseUrl}/twitter/</loc>
-        <priority>0.70</priority>
-    </url>
-    <url>
         <loc>{baseUrl}/snake/</loc>
-        <priority>0.50</priority>
-    </url>
-    <url>
-        <loc>{baseUrl}/settings/</loc>
-        <priority>0.30</priority>
+        <priority>0.40</priority>
     </url>
 </urlset>
