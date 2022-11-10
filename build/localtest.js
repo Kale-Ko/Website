@@ -1,5 +1,5 @@
 const fs = require("fs")
-const { exec } = require("child_process")
+const childProcess = require("child_process")
 const http = require("http")
 const WebSocketServer = require("websocket").server
 
@@ -9,7 +9,7 @@ if (!fs.existsSync("./test")) {
     fs.mkdirSync("./test")
 }
 
-exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
+childProcess.exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
     console.log("Finished installing dependencies")
 
     var building = false
@@ -34,7 +34,7 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
 
         function scan(dir) {
             for (var file of fs.readdirSync(dir)) {
-                if (file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml" && file != "test") {
+                if (file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml" && file != "test" && file != "cache") {
                     if (fs.statSync(dir + file).isDirectory()) {
                         if (!fs.existsSync("./test/" + dir.replace("./", "") + file)) {
                             fs.mkdirSync("./test/" + dir.replace("./", "") + file)
@@ -51,19 +51,29 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
 
         console.log("Building pages")
 
-        exec("cd ./test/ && node build/build.js --nodepend", (err, stdout, stderr) => {
-            if (stdout) {
-                console.log(stdout)
+        var buildProcess = childProcess.spawn("node", ["build/build.js", "--nodepend"], { cwd: "./test" })
+
+        buildProcess.stdout.on("data", (message) => {
+            message = message.toString()
+
+            while (message.endsWith(" ") || message.endsWith("\n")) {
+                message = message.substring(0, message.length - 1)
             }
 
-            if (stderr) {
-                console.error(stderr)
+            console.log(message)
+        })
+
+        buildProcess.stderr.on("data", (message) => {
+            message = message.toString()
+
+            while (message.endsWith(" ") || message.endsWith("\n")) {
+                message = message.substring(0, message.length - 1)
             }
 
-            if (err) {
-                console.error(err)
-            }
-        }).on("exit", () => {
+            console.error(message)
+        })
+
+        buildProcess.on("exit", () => {
             console.log("Finished building")
 
             building = false
@@ -155,8 +165,8 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
     console.log("Watching files")
 
     function scan(dir) {
-        for (var file of fs.readdirSync(dir)) {
-            if (file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml" && file != "test") {
+        fs.readdirSync(dir).forEach(file => {
+            if (file != ".git" && file != ".gitignore" && file != "package.json" && file != "package-lock.json" && file != "node_modules" && file != ".deepsource.toml" && file != "test" && file != "cache") {
                 if (fs.statSync(dir + file).isDirectory()) {
                     scan(dir + file + "/")
                 } else {
@@ -177,7 +187,7 @@ exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-cs
                     })
                 }
             }
-        }
+        })
     }
     scan("./", "/")
 })

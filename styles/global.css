@@ -1,5 +1,6 @@
 /* Font Import */
-@import url("https://fonts.googleapis.com/css?family=Kaisei%20HarunoUmi:regular,bold|Noto%20Serif:regular");
+@import url("/styles/fonts/kaisei-harunoumi.css");
+@import url("/styles/fonts/noto-serif.css");
 
 
 /* Variables */
