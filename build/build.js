@@ -10,7 +10,7 @@ if (process.argv.indexOf("--nocache")) {
 if (process.argv.includes("--nodepend")) {
     next()
 } else {
-    exec("npm install sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
+    exec("npm install sharp image-size html-minifier uglify-js clean-css minify-xml --no-save").on("exit", () => {
         next()
     })
 }
