@@ -188,13 +188,13 @@ function next() {
     scan("./", "/")
 
     if (!process.argv.includes("--nodepend")) {
-        fs.rmSync("pages", { recursive: true })
-        fs.rmSync("package.json")
-        fs.rmSync("package-lock.json")
-        fs.rmSync("node_modules", { recursive: true })
-        fs.rmSync("build", { recursive: true })
+        if (fs.existsSync("pages")) fs.rmSync("pages", { recursive: true })
+        if (fs.existsSync("package.json")) fs.rmSync("package.json")
+        if (fs.existsSync("package-lock.json")) fs.rmSync("package-lock.json")
+        if (fs.existsSync("package.json")) fs.rmSync("node_modules", { recursive: true })
+        if (fs.existsSync("build")) fs.rmSync("build", { recursive: true })
     } else {
-        fs.rmSync("pages", { recursive: true })
-        fs.rmSync("build", { recursive: true })
+        if (fs.existsSync("pages")) fs.rmSync("pages", { recursive: true })
+        if (fs.existsSync("build")) fs.rmSync("build", { recursive: true })
     }
 }
