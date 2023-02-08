@@ -1,5 +1,5 @@
 module.exports = {
-    baseUrl: "https://www.kaleko.ga",
+    baseUrl: "https://www.kaleko.dev",
     placeholders: {
         meta: `<link rel="icon" href="{file=/assets/icon@64.png}">
     <link rel="apple-touch-icon" href="{file=/assets/icon@64.png}">

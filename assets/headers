@@ -1,5 +1,5 @@
 /*
-  Access-Control-Allow-Origin: www.kaleko.ga
+  Access-Control-Allow-Origin: www.kaleko.dev
   Access-Control-Allow-Methods: OPTIONS, HEAD, GET
   Allow: OPTIONS, HEAD, GET
   Content-Language: en
@@ -10,8 +10,8 @@
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
 
-https://kaleko.ga/*
-  Access-Control-Allow-Origin: kaleko.ga
+https://kaleko.dev/*
+  Access-Control-Allow-Origin: kaleko.dev
 
-https://www.kaleko.ga/*
-  Access-Control-Allow-Origin: www.kaleko.ga
+https://www.kaleko.dev/*
+  Access-Control-Allow-Origin: www.kaleko.dev
