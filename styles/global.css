@@ -1,37 +1,43 @@
 /* Font Import */
 @import url("/styles/fonts/kaisei-harunoumi.css");
 @import url("/styles/fonts/noto-serif.css");
+@import url("/styles/fonts/symbols.css");
 
 
 /* Variables */
 html {
     --background: radial-gradient(#038d7b 15%, #026b5d 85%);
-    --forgroundcolor: #085c51;
-    --altforgroundcolor: #07473f;
+    --foregroundColor: #085c51;
+    --altForegroundColor: #07473f;
 
     --font: "Kaisei HarunoUmi";
-    --textcolor: #ffffff;
-    --alternatetextcolor: #000000;
+    --fontSize: 16px;
 
-    --headerfont: "Noto Serif";
-    --headercolor: #ffbb00;
+    --headerFont: "Noto Serif";
+    --headerFontSize: 56px;
+    --subHeaderFontSize: 24px;
 
-    --linkcolor: #0000ff;
-    --linkhovercolor: #000064;
+    --headerColor: #ffbb00;
+
+    --textColor: #ffffff;
+    --alternateTextColor: #000000;
+
+    --linkColor: #0000ff;
+    --linkHoverColor: #000064;
 }
 
 html.darkmode {
     --background: radial-gradient(#555555 15%, #444444 85%);
-    --forgroundcolor: #333333;
-    --altforgroundcolor: #242424;
+    --foregroundColor: #333333;
+    --altForegroundColor: #242424;
 
-    --textcolor: #cecece;
-    --alternatetextcolor: #000000;
+    --headerColor: #d49c00;
 
-    --headercolor: #d49c00;
+    --textColor: #cecece;
+    --alternateTextColor: #000000;
 
-    --linkcolor: #0000be;
-    --linkhovercolor: #000064;
+    --linkColor: #0000be;
+    --linkHoverColor: #000064;
 }
 
 
@@ -41,9 +47,6 @@ head,
 body {
     margin: 0px;
     padding: 0px;
-
-    font-family: var(--font), serif;
-    color: var(--textcolor);
 
     text-align: center;
 }
@@ -69,23 +72,24 @@ main {
 
 /* Navigation bar */
 nav {
-    background: var(--forgroundcolor);
+    background: var(--foregroundColor);
     border-radius: 12px;
 
     position: relative;
-    top: 2vh;
+    top: 1.25vh;
     left: 50%;
     transform: translate(-50%, 0);
 
-    padding-left: 12px;
+    padding-left: 10px;
 
-    width: 96%;
+    width: 98%;
     height: 60px;
 }
 
 nav div {
     padding: 0px 30px;
 
+    width: 90px;
     height: 100%;
 
     float: left;
@@ -96,7 +100,7 @@ nav div.dropdown {
 
     position: relative;
 
-    background: var(--forgroundcolor);
+    background: var(--foregroundColor);
 
     padding: 0px 0px;
 }
@@ -104,13 +108,12 @@ nav div.dropdown {
 nav div.dropdown div.dropdown-content {
     display: none;
 
-    float: none;
-
     position: absolute;
-    min-width: 150px;
+    float: none;
+    min-width: 100px;
     z-index: 1;
 
-    background: var(--forgroundcolor);
+    background: var(--foregroundColor);
 }
 
 nav div.dropdown.visible div.dropdown-content {
@@ -122,13 +125,13 @@ nav div.dropdown.visible div.dropdown-content {
 nav div.dropdown div.dropdown-content div {
     display: block;
 
-    background: var(--forgroundcolor);
+    background: var(--foregroundColor);
 
     padding: 0px 0px;
-    width: 230px;
+    width: 160px;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 600px) {
     nav div {
         display: none;
     }
@@ -150,64 +153,98 @@ nav div.dropdown div.dropdown-content div {
     }
 }
 
+nav div:hover {
+    background: var(--altForegroundColor);
+}
+
 nav div a,
 nav div a:link,
 nav div a:visited,
 nav div a:hover,
 nav div a:active {
     display: block;
+
+    color: var(--textColor);
     text-decoration: none;
-
-    color: var(--textcolor);
-
-    padding-top: 16px;
 
     width: 100%;
     height: 75%;
+
+    padding-top: 16px;
 }
 
 nav div a.image {
-    padding-top: 0px;
-
     position: relative;
-
     top: 50%;
     transform: translate(0, -50%);
+
+    padding-top: 0px;
 }
 
 nav div a.image p {
     position: relative;
-
-    margin-right: 10px;
-
+    float: right;
     transform: translate(10px, -25%);
 
-    float: right;
-}
-
-nav div:hover {
-    background: var(--altforgroundcolor);
+    margin-right: 10px;
 }
 
 
 /* Text */
 h1 {
-    font-family: var(--headerfont), sans-serif;
-    color: var(--headercolor);
+    font-family: var(--headerFont);
+    font-size: var(--headerFontSize);
 
-    font-size: 56px;
+    color: var(--headerColor);
+
+    text-decoration: none;
 }
 
-p {
-    color: var(--textcolor);
+h2 {
+    font-family: var(--font);
+    font-size: var(--subHeaderFontSize);
+
+    color: var(--textColor);
+
+    text-decoration: none;
+}
+
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+    font-family: var(--font);
+    font-size: var(--fontSize);
+
+    color: var(--textColor);
+
+    text-decoration: none;
 }
 
 a,
 a:visited,
 a:active {
-    color: var(--linkcolor);
+    color: var(--linkColor);
+
+    text-decoration: underline;
 }
 
 a:hover {
-    color: var(--linkhovercolor);
+    color: var(--linkHoverColor);
+}
+
+
+/* Symbols */
+.material-symbols {
+    font-family: "Material Symbols";
+    font-variation-settings: "FILL" 1, "wght" 300, "opsz" 24;
+}
+
+.material-symbols-large {
+    float: left;
+    transform: translate(0, -10px);
+
+    font-size: 38px;
 }
