@@ -14,7 +14,7 @@ module.exports = {
     <meta property="og:locale" content="en">
 
     <meta name="description" content="My website where I put all my projects">
-    <meta name="keywords" content="Kale, Ko, Kale Ko, Kale-Ko, Kale_Ko, Coding, Development, Website, Personal, Github, Game, Games, Snake, Projects">
+    <meta name="keywords" content="Kale, Ko, Kale Ko, Kale-Ko, Kale_Ko, Coding, Development, Dev, Website, Personal, Github, Software, Game, Games, Snake, Projects">
     <meta name="image" content="{file=/assets/icon@256.png}">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{canonical}">
@@ -39,9 +39,10 @@ module.exports = {
         nav: `<nav>
         <div class="dropdown"><img src="{file=/assets/menu@64.png}" alt="Menu Button" width="64" height="64"></img><div class="dropdown-content"></div></div>
 
-        <div><a href="/" class="image"><img src="{file=/assets/icon@64.png}" width="44" height="44" alt="Logo"><p>Home</p></a></div>
-        <div><a href="/snake/">Snake</a></div>
-        <div><a href="https://github.com/Kale-Ko">Github</a></div>
+        <div><a href="/"><span class="material-symbols material-symbols-large">&#xE88A;</span> Home</a></div>
+        <div><a href="/projects/">Projects</a></div>
+        <div><a href="/projects/snake/">Snake</a></div>
+        <div><a href="https://github.com/Kale-Ko" target="_blank">Github<span class="material-symbols">&#xE89E;</span></a></div>
     </nav>`,
 
         global: `<script src="{file=/scripts/app.js}"></script>`
@@ -49,7 +50,7 @@ module.exports = {
     replacements: [
         { from: "<html>", to: "<html lang=\"en\" prefix=\"og: https://ogp.me/ns#\">" },
         { from: "<head>", to: "<head>\n    <meta charset=\"UTF-8\">" },
-        { from: "<title>", to: "<title>Kale Ko - " }
+        { from: "<title>", to: "<title>kaleko.dev - " }
     ],
     moves: [
         { from: "./assets/headers", to: "./_headers" },

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Projects</title>
+
+    {meta}
+</head>
+
+<body>
+    {nav}
+
+    <main>
+        <h1>Projects</h1>
+
+        <p id="loadingProjects">Loading projects..</p>
+        <div id="projectsList" class="hidden">
+            <a href="/projects/snake">
+                <h2>Snake</h2>
+            </a>
+        </div>
+
+        <script>
+            function loadProjects(attempts = 3) {
+                if (attempts == 0) {
+                    document.getElementById("loadingProjects").innerHTML = "Failed to load projects"
+
+                    return
+                }
+
+                fetch("/api/github/pins?type=json").then(res => res.json()).then(repos => {
+                    for (var repo of repos) {
+                        var element = document.createElement("a")
+                        element.href = repo.homepageUrl ? repo.homepageUrl : repo.url
+                        element.innerHTML = `<h2>${repo.name.replace("-", " ")}</h2> - ${repo.description}`
+
+                        document.getElementById("projectsList").appendChild(element)
+                    }
+
+                    document.getElementById("loadingProjects").setAttribute("class", "hidden")
+                    document.getElementById("projectsList").removeAttribute("class")
+                }).catch(e => {
+                    loadProjects(attempts - 1)
+                })
+            }
+            loadProjects()
+        </script>
+    </main>
+
+    {global}
+</body>
+
+</html>

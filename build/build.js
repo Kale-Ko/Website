@@ -52,21 +52,32 @@ function next() {
         }
     }
 
-    for (var page of fs.readdirSync("./pages/")) {
-        if (page.endsWith(".html")) {
-            var content = fs.readFileSync("./pages/" + page).toString()
+    function scanPages(dir) {
+        for (var page of fs.readdirSync(dir)) {
+            if (fs.statSync(dir + "/" + page).isFile()) {
+                if (page.endsWith(".html")) {
+                    var content = fs.readFileSync(dir + "/" + page).toString()
 
-            if (page == "index.html" || page == "404.html") {
-                fs.writeFileSync("./" + page, content)
-            } else {
-                if (!fs.existsSync("./" + page.replace(".html", ""))) {
-                    fs.mkdirSync("./" + page.replace(".html", ""))
+                    if (page == "index.html" || page == "404.html") {
+                        if (!fs.existsSync(dir.replace("./pages", "."))) {
+                            fs.mkdirSync(dir.replace("./pages", "."), { recursive: true })
+                        }
+
+                        fs.writeFileSync(dir.replace("./pages", ".") + "/" + page, content)
+                    } else {
+                        if (!fs.existsSync(dir.replace("./pages", ".") + "/" + page.replace(".html", ""))) {
+                            fs.mkdirSync(dir.replace("./pages", ".") + "/" + page.replace(".html", ""), { recursive: true })
+                        }
+
+                        fs.writeFileSync(dir.replace("./pages", ".") + "/" + page.replace(".html", "") + "/index.html", content)
+                    }
                 }
-
-                fs.writeFileSync("./" + page.replace(".html", "") + "/index.html", content)
+            } else {
+                scanPages(dir + "/" + page)
             }
         }
     }
+    scanPages("./pages")
 
     function resizeImages(dir) {
         for (var file of fs.readdirSync(dir)) {
