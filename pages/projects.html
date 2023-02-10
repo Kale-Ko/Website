@@ -14,11 +14,7 @@
         <h1>Projects</h1>
 
         <p id="loadingProjects">Loading projects..</p>
-        <div id="projectsList" class="hidden">
-            <a href="/projects/snake">
-                <h2>Snake</h2>
-            </a>
-        </div>
+        <div id="projectsList" class="hidden"></div>
 
         <script>
             function loadProjects(attempts = 3) {
@@ -29,10 +25,12 @@
                 }
 
                 fetch("/api/github/pins?type=json").then(res => res.json()).then(repos => {
+                    repos.push({ name: "Snake", url: "/projects/snake/", description: "A fun little snake game" })
+
                     for (var repo of repos) {
                         var element = document.createElement("a")
                         element.href = repo.homepageUrl ? repo.homepageUrl : repo.url
-                        element.innerHTML = `<h2>${repo.name.replace("-", " ")}</h2> - ${repo.description}`
+                        element.innerHTML = `<p><h2>${repo.name.replace("-", " ")}</h2> - ${repo.description}</p>`
 
                         document.getElementById("projectsList").appendChild(element)
                     }
