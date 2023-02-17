@@ -1,10 +1,11 @@
 const fs = require("fs")
+const crypto = require("crypto")
 const { exec } = require("child_process")
 
-var noCache = false
+var shouldCache = false
 
-if (process.argv.indexOf("--nocache")) {
-    noCache = true
+if (process.argv.indexOf("--cache") != -1) {
+    shouldCache = true
 }
 
 if (process.argv.includes("--nodepend")) {
@@ -147,17 +148,19 @@ function next() {
                         if (contents.substring(start + 6, end - 1).startsWith("http") && contents.substring(start + 6, end - 1).includes(";")) {
                             var data
 
-                            if (!noCache && fs.existsSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]))) {
-                                data = fs.readFileSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]), { encoding: "base64" })
+                            var hash = crypto.createHash("sha1").update(btoa(contents.substring(start + 6, end - 1).split(";")[0].replace("http://", "").replace("https://", ""))).digest().toString("hex")
+
+                            if (shouldCache && fs.existsSync("../build/cache/" + hash)) {
+                                data = fs.readFileSync("../build/cache/" + hash, { encoding: "base64" })
                             } else {
                                 data = Buffer.from(await fetch(contents.substring(start + 6, end - 1).split(";")[0]).then(res => res.arrayBuffer()))
 
-                                if (!noCache) {
+                                if (shouldCache) {
                                     if (!fs.existsSync("../build/cache")) {
                                         fs.mkdirSync("../build/cache")
                                     }
 
-                                    fs.writeFileSync("../build/cache/" + btoa(contents.substring(start + 6, end - 1).split(";")[0]), data, { encoding: "base64" })
+                                    fs.writeFileSync("../build/cache/" + hash, data, { encoding: "base64" })
                                 }
                             }
 
