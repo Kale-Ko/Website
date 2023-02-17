@@ -51,7 +51,7 @@ childProcess.exec("cd ./test && npm install sharp image-size html-minifier uglif
 
         console.log("Building pages")
 
-        var buildProcess = childProcess.spawn("node", ["build/build.js", "--nodepend"], { cwd: "./test" })
+        var buildProcess = childProcess.spawn("node", ["build/build.js", "--nodepend", "--cache"], { cwd: "./test" })
 
         buildProcess.stdout.on("data", (message) => {
             message = message.toString()
