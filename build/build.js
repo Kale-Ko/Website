@@ -137,6 +137,10 @@ function next() {
 
                     contents = contents.replace(/{baseUrl}/g, builddata.baseUrl)
 
+                    var date = new Date()
+                    date.setSeconds(0, 0)
+                    contents = contents.replace(/{buildDate}/g, date.toUTCString())
+
                     while (contents.includes("{file=")) {
                         var start = contents.indexOf("{file=")
                         var end = contents.indexOf("}", contents.indexOf("{file=")) + 1
