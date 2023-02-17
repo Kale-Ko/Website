@@ -4,6 +4,7 @@
   Allow: OPTIONS, HEAD, GET
   Content-Language: en
   X-Content-Type-Options: nosniff
+  Last-Modified: {buildDate}
 
 /*.html
   Content-Security-Policy: default-src 'self' 'unsafe-inline' data:; script-src 'self' 'unsafe-inline'; worker-src 'self'; child-src 'self'; form-action 'self'; style-src 'self' 'unsafe-inline';
@@ -16,3 +17,6 @@ https://kaleko.dev/*
 
 https://www.kaleko.dev/*
   Access-Control-Allow-Origin: www.kaleko.dev
+
+/files/*
+  Content-Disposition: attachment

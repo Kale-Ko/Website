@@ -3,7 +3,7 @@ module.exports = {
     placeholders: {
         meta: `<link rel="icon" href="{file=/assets/icon@64.png}">
     <link rel="apple-touch-icon" href="{file=/assets/icon@64.png}">
-    <link rel="stylesheet" href="{file=/styles/global.css}">
+    <link rel="stylesheet" href="{file=/styles/global.css}" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="og:type" content="website">
@@ -59,7 +59,8 @@ module.exports = {
         { from: "./scripts/service-worker.js", to: "./service-worker.js", copy: true },
         { from: "./assets/robots.txt", to: "./robots.txt" },
         { from: "./assets/sitemap.xml", to: "./sitemap.xml" },
-        { from: "./LICENSE", to: "./license.txt", copy: true }
+        { from: "./LICENSE", to: "./license.txt", copy: true },
+        { from: "./assets/files", to: "./files" },
     ],
     imageSizes: [
         16,
