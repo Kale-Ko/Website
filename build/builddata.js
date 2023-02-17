@@ -42,7 +42,7 @@ module.exports = {
         <div><a href="/"><span class="material-symbols material-symbols-large">&#xE88A;</span> Home</a></div>
         <div><a href="/projects/">Projects</a></div>
         <div><a href="/projects/snake/">Snake</a></div>
-        <div><a href="https://github.com/Kale-Ko" target="_blank">Github<span class="material-symbols">&#xE89E;</span></a></div>
+        <div><a href="https://github.com/Kale-Ko" target="_blank" rel="noopener">Github<span class="material-symbols">&#xE89E;</span></a></div>
     </nav>`,
 
         global: `<script src="{file=/scripts/app.js}"></script>`
