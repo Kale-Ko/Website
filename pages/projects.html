@@ -30,7 +30,7 @@
                     for (var repo of repos) {
                         var element = document.createElement("a")
                         element.href = repo.homepageUrl ? repo.homepageUrl : repo.url
-                        element.innerHTML = `<p><h2>${repo.name.replace("-", " ")}</h2> - ${repo.description}</p>`
+                        element.innerHTML = `<h2>${repo.name.replace("-", " ")}</h2> - ${repo.description}`
 
                         document.getElementById("projectsList").appendChild(element)
                     }

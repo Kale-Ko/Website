@@ -126,7 +126,14 @@ childProcess.exec("cd ./test && npm install sharp image-size html-minifier uglif
             "anything": "application/octet-stream"
         }
 
-        if (fs.existsSync("./test" + req.url) && !fs.statSync("./test" + req.url).isDirectory()) {
+        if (req.url.startsWith("/api")) {
+            fetch("https://www.kaleko.dev" + req.url).then(res2 => res2.text()).then(data => {
+                res.statusCode = 200
+                res.statusMessage = "Ok"
+                res.setHeader("Content-Type", typeMappings["json"])
+                res.end(data)
+            })
+        } else if (fs.existsSync("./test" + req.url) && !fs.statSync("./test" + req.url).isDirectory()) {
             res.statusCode = 200
             res.statusMessage = "Ok"
             for (var key of Object.keys(typeMappings)) {
