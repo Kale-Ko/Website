@@ -5,6 +5,51 @@
     <title>Projects</title>
 
     {meta}
+
+    <style>
+        #projectsList {
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0);
+
+            width: 85%;
+        }
+
+        #projectsList div {
+            display: block;
+            float: left;
+
+            width: calc(50% - 26px);
+            height: 160px;
+
+            margin: 34px 10px 0px 10px;
+            padding: 0px;
+
+            background: #626262;
+            border: 3px solid #424242;
+            border-radius: 12px;
+        }
+
+        #projectsList div a h2 {
+            height: 36px;
+
+            margin: 0px;
+            padding: 10px 3%;
+
+            border: 2px solid #424242;
+            border-radius: 8px;
+        }
+
+        #projectsList div p {
+            height: 76px;
+
+            margin: 0px;
+            padding: 10px 3%;
+
+            border: 2px solid #424242;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,9 +73,8 @@
                     repos.push({ name: "Snake", url: "/projects/snake/", description: "A fun little snake game" })
 
                     for (var repo of repos) {
-                        var element = document.createElement("a")
-                        element.href = repo.homepageUrl ? repo.homepageUrl : repo.url
-                        element.innerHTML = `<h2>${repo.name.replace("-", " ")}</h2> - ${repo.description}`
+                        var element = document.createElement("div")
+                        element.innerHTML = `<a href="${repo.homepageUrl ? repo.homepageUrl : repo.url}"><h2>${repo.name.replace("-", " ")}</h2></a><p>${repo.description}</p>`
 
                         document.getElementById("projectsList").appendChild(element)
                     }
