@@ -1,16 +1,16 @@
 const TextHeaders = new Headers()
-TextHeaders.set("Allow", "OPTIONS, GET")
-TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
-TextHeaders.set("Content-Language", "en")
 TextHeaders.set("Access-Control-Allow-Origin", "*")
-TextHeaders.set("Access-Control-Allow-Methods", "OPTIONS, GET")
+TextHeaders.set("Access-Control-Allow-Methods", "GET, POST")
+TextHeaders.set("Allow", "GET, POST")
+TextHeaders.set("Content-Language", "en")
+TextHeaders.set("Content-Type", "text/plain; charset=utf-8")
 TextHeaders.set("X-Content-Type-Options", "nosniff")
 TextHeaders.set("Cache-Control", "no-store")
 const JsonHeaders = new Headers(TextHeaders)
 JsonHeaders.set("Content-Type", "application/json; charset=utf-8")
 
 async function onRequestGet({ request: req, env }) {
-    const CONFIG = { GITHUB_USERNAME: env.GITHUB_USERNAME, GITHUB_API_TOKEN: env.GITHUB_API_TOKEN, TRUSTED_IPS: env.TRUSTED_IPS }
+    const CONFIG = { IS_PREVIEW: env.IS_PREVIEW, GITHUB_USERNAME: env.GITHUB_USERNAME, GITHUB_API_TOKEN: env.GITHUB_API_TOKEN }
 
     try {
         var url = new URL(req.url.replace("/api", ""))
@@ -681,7 +681,7 @@ async function onRequestGet({ request: req, env }) {
             }
         }
     } catch (err) {
-        if (CONFIG.TRUSTED_IPS.split(",").includes(req.headers.get("CF-Connecting-IP"))) {
+        if (CONFIG.IS_PREVIEW == "true") {
             return new Response("500 Internal Server Error:\n" + err.toString(), { status: 500, statusText: "Internal server error", headers: TextHeaders })
         } else {
             return new Response("500 Internal Server Error", { status: 500, statusText: "Internal Server Error", headers: TextHeaders })
