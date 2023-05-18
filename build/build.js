@@ -180,7 +180,7 @@ function next() {
                     }
 
                     if ((file.endsWith(".html") || file.endsWith(".htm")) && !dir.includes("pages")) {
-                        contents = contents.replace(/{title}/g, contents.substring(contents.indexOf("<title>") + 7, contents.indexOf("</title>"))).replace(/{canonical}/g, (builddata.baseUrl + dir.replace("./", "/") + file.replace("index", "").replace(".html", "") + "/").replace(/\/\//g, "/"))
+                        contents = contents.replace(/{title}/g, contents.substring(contents.indexOf("<title>") + 7, contents.indexOf("</title>"))).replace(/{canonical}/g, builddata.baseUrl + (dir.replace("./", "/") + file.replace("index", "").replace(".html", "") + "/").replace(/\/\//g, "/"))
                         contents = contents.replace(/([a-zA-Z]) \<([^=])(.*)\>/g, "$1&nbsp;<$2$3>").replace(/\<(.*)([^=])\> ([a-zA-Z])/g, "<$1$2>&nbsp;$3")
 
                         contents = minify_html(contents, {
