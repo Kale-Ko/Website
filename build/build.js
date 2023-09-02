@@ -11,7 +11,7 @@ if (process.argv.indexOf("--cache") != -1) {
 if (process.argv.includes("--nodepend")) {
     next()
 } else {
-    exec("npm install sharp image-size html-minifier uglify-js clean-css --no-save").on("exit", () => {
+    exec("npm install sharp image-size html-minifier uglify-js clean-css pretty-data --no-save").on("exit", () => {
         next()
     })
 }
@@ -25,7 +25,8 @@ function next() {
     const minify_html = require("html-minifier").minify
     const minify_js = require("uglify-js").minify
     const minify_css = require("clean-css")
-    // const minify_xml = require("minify-xml").minify
+    const minify_xml = require("pretty-data").pd.xmlmin
+    const minify_json = require("pretty-data").pd.jsonmin
 
     for (var move of builddata.moves) {
         if (fs.statSync(move.from).isFile()) {
@@ -192,10 +193,10 @@ function next() {
                         contents = minify_js(contents, { output: { beautify: false } }).code
                     } else if (file.endsWith(".css")) {
                         contents = new minify_css({ level: { 2: { all: true, roundingPrecision: false, removeUnusedAtRules: false } }, inline: [] }).minify(contents).styles
-                    // } else if (file.endsWith(".xml")) {
-                    //     contents = minify_xml(contents)
+                    } else if (file.endsWith(".xml")) {
+                        contents = minify_xml(contents)
                     } else if (file.endsWith(".json") || file.endsWith(".json5")) {
-                        contents = JSON.stringify(JSON.parse(contents))
+                        contents = minify_json(contents)
                     }
 
                     fs.writeFileSync(dir + file, contents)
