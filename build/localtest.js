@@ -9,7 +9,7 @@ if (!fs.existsSync("./test")) {
     fs.mkdirSync("./test")
 }
 
-childProcess.exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-css minify-xml").on("exit", () => {
+childProcess.exec("cd ./test && npm install sharp image-size html-minifier uglify-js clean-css pretty-data").on("exit", () => {
     console.log("Finished installing dependencies")
 
     var building = false
